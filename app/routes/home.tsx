@@ -1,5 +1,3 @@
-import { Welcome } from '../welcome/welcome';
-
 export function meta() {
   return [
     { title: 'New React Router App' },
@@ -8,5 +6,13 @@ export function meta() {
 }
 
 export default function () {
-  return <Welcome />;
+  return (
+    <div>
+      <div className="bg-destructive">
+        <span className="text-primary font-mono text-sm font-bold">
+          플레이어, 게임, 기록 검색...
+        </span>
+      </div>
+    </div>
+  );
 }
