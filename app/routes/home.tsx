@@ -1,3 +1,8 @@
+import Logo from '~/components/main/Logo';
+import { Ranking } from '~/components/main/Ranking';
+import RecentClears from '~/components/main/RecentClears';
+import SearchInput from '~/components/main/SearchInput';
+
 export function meta() {
   return [
     { title: 'New React Router App' },
@@ -7,12 +12,15 @@ export function meta() {
 
 export default function () {
   return (
-    <div>
-      <div className="bg-destructive">
-        <span className="text-primary font-mono text-sm font-bold">
-          플레이어, 게임, 기록 검색...
-        </span>
+    <main className="mx-auto max-w-4xl px-8">
+      <section className="flex flex-col items-center gap-6 py-16">
+        <Logo />
+        <SearchInput />
+      </section>
+      <div className="grid gap-6 pb-12">
+        <RecentClears />
+        <Ranking />
       </div>
-    </div>
+    </main>
   );
 }
