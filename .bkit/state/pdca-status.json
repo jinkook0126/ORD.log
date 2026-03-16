@@ -1,0 +1,67 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-03-16T08:23:57.267Z",
+  "activeFeatures": [
+    "ord-log",
+    "routes"
+  ],
+  "primaryFeature": "ord-log",
+  "features": {
+    "ord-log": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-16T00:45:42.450Z",
+        "lastUpdated": "2026-03-16T00:45:42.450Z"
+      },
+      "lastFile": "D:\\jinqook\\ord-log\\app\\routes.ts"
+    },
+    "routes": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-16T00:52:08.209Z",
+        "lastUpdated": "2026-03-16T08:23:57.267Z"
+      },
+      "lastFile": "D:\\jinqook\\ord-log\\app\\routes\\login.tsx"
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-03-16T00:42:30.217Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-03-16T08:23:57.267Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-03-16T00:45:42.450Z",
+      "feature": "ord-log",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T00:52:08.209Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-16T08:23:57.267Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    }
+  ]
+}
