@@ -1,4 +1,5 @@
 import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
 
 export function meta() {
   return [
@@ -14,54 +15,37 @@ export default function Login() {
   };
 
   return (
-    <main className="from-background to-background/95 flex min-h-[calc(100vh-56px)] items-center justify-center bg-gradient-to-br px-4 py-8 transition-colors duration-300">
-      <div className="w-full max-w-md">
-        {/* 로고 및 제목 */}
-        <div className="mb-10 text-center">
-          <div className="mb-4 flex justify-center">
-            <div className="text-4xl font-bold">
-              <span className="bg-gradient-to-r from-[#6d5fe8] to-[#8b7dff] bg-clip-text text-transparent">
-                ORD
-              </span>
-              <span className="text-muted-foreground">.log</span>
+    <main className="relative overflow-hidden">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.16),transparent_32%),radial-gradient(circle_at_bottom_right,hsl(var(--accent)/0.14),transparent_30%)]" />
+      <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] w-full max-w-xl items-center justify-center px-8 py-10 md:py-16">
+        <Card className="border-border/80 bg-card/90 shadow-primary/10 w-full overflow-hidden rounded-[2rem] shadow-2xl backdrop-blur-xl">
+          <CardContent className="p-0">
+            <div className="border-border border-b px-6 py-5 md:px-8">
+              <p className="text-muted-foreground font-mono text-xs tracking-[0.28em] uppercase">
+                ORD.log Access
+              </p>
             </div>
-          </div>
-          <h2 className="text-foreground mb-2 text-xl font-semibold">로그인</h2>
-          <p className="text-muted-foreground text-sm">오목 랭킹 로그에 접속하세요</p>
-        </div>
 
-        {/* 로그인 버튼 영역 */}
-        <div className="border-border/40 bg-card/50 space-y-3 rounded-lg border p-6 backdrop-blur-sm">
-          <Button
-            onClick={handleNaverLogin}
-            className="h-12 w-full bg-[#00C73C] text-base font-semibold text-white transition-all duration-200 hover:bg-[#00AA2E] hover:shadow-lg active:scale-95"
-          >
-            <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M16.334 2H7.667C4.553 2 2 4.554 2 7.666v8.668C2 19.446 4.553 22 7.666 22h8.668C19.447 22 22 19.446 22 16.334V7.666C22 4.554 19.447 2 16.334 2zm-3.667 13.5h-2V8h2v7.5z" />
-            </svg>
-            네이버로 로그인
-          </Button>
-        </div>
+            <div className="space-y-8 px-6 py-10 md:px-10 md:py-12">
+              <div className="space-y-3 text-center">
+                <div className="bg-secondary text-secondary-foreground inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium">
+                  <span className="bg-primary h-2 w-2 rounded-full" />
+                  Social login only
+                </div>
+              </div>
 
-        {/* 하단 안내 텍스트 */}
-        <div className="mt-8 text-center">
-          <p className="text-muted-foreground text-xs leading-relaxed">
-            로그인을 통해 기록을 저장하고
-            <br />
-            랭킹에 참여할 수 있습니다.
-          </p>
-        </div>
-
-        {/* 하단 링크 */}
-        <div className="border-border/30 mt-6 flex items-center justify-center gap-4 border-t pt-6">
-          <button className="text-muted-foreground hover:text-foreground text-xs transition-colors">
-            고객센터
-          </button>
-          <span className="text-border/50">•</span>
-          <button className="text-muted-foreground hover:text-foreground text-xs transition-colors">
-            광고 문의
-          </button>
-        </div>
+              <div className="border-border bg-background/80 rounded-3xl border p-5 md:p-6">
+                <Button
+                  size="lg"
+                  className="shadow-primary/20 h-14 w-full justify-center rounded-2xl text-base font-semibold shadow-lg"
+                  onClick={handleNaverLogin}
+                >
+                  네이버로 로그인
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </main>
   );
