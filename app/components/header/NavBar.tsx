@@ -12,7 +12,8 @@ import {
 import { useState } from 'react';
 import { Link } from 'react-router';
 
-import { Badge } from '../ui/badge';
+import { Avatar, AvatarImage } from '~/components/ui/avatar';
+
 import { NavLink } from './NavLink';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -60,18 +61,15 @@ const NavBar = () => {
             <div className="relative">
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="hover:ring-primary/50 relative overflow-hidden rounded-full transition-all hover:ring-2"
+                className="relative cursor-pointer overflow-hidden rounded-full transition-all"
               >
-                <Badge
-                  variant="outline"
-                  className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full p-0"
-                >
-                  <img
+                <Avatar className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-white p-0">
+                  <AvatarImage
                     src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
                     alt="profile"
                     className="h-full w-full object-cover"
                   />
-                </Badge>
+                </Avatar>
                 <ChevronDown
                   className={`bg-primary absolute -right-1 -bottom-1 h-3 w-3 rounded-full p-0.5 text-white transition-transform ${
                     userDropdownOpen ? 'rotate-180' : ''
