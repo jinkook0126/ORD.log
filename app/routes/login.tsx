@@ -1,4 +1,3 @@
-import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 
 export function meta() {
@@ -33,16 +32,13 @@ export default function Login() {
                   Social login only
                 </div>
               </div>
-
-              <div className="border-border bg-background/80 rounded-3xl border p-5 md:p-6">
-                <Button
-                  size="lg"
-                  className="shadow-primary/20 h-14 w-full justify-center rounded-2xl text-base font-semibold shadow-lg"
-                  onClick={handleNaverLogin}
-                >
-                  네이버로 로그인
-                </Button>
-              </div>
+              <button className="cursor-pointer" onClick={handleNaverLogin}>
+                <img
+                  src="/assets/NAVER_login_Light_KR_green_wide_H56.png"
+                  alt="naver login"
+                  className="h-auto w-full"
+                />
+              </button>
             </div>
           </CardContent>
         </Card>
