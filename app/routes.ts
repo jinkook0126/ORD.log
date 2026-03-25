@@ -5,4 +5,5 @@ export default [
   index('routes/home.tsx'),
   route('login', 'routes/login.tsx'),
   route('clears', 'routes/clears.tsx'),
+  route('ranking', 'routes/ranking.tsx'),
 ] satisfies RouteConfig;
