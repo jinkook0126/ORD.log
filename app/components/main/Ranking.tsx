@@ -37,7 +37,26 @@ function getRankColor(rank: number): string {
   }
 }
 
+function EmptyRankList({ mode }: { mode: '신' | '악몽' }) {
+  return (
+    <div className="flex-1 space-y-1">
+      <div className="mb-3">
+        <Badge variant={mode === '신' ? 'default' : 'destructive'} className="text-xs">
+          {mode}
+        </Badge>
+      </div>
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <span className="mb-2 text-2xl">🏆</span>
+        <p className="text-muted-foreground text-sm">아직 클리어 기록이 없습니다</p>
+        <p className="text-muted-foreground/60 mt-1 text-xs">첫 번째 도전자가 되어보세요!</p>
+      </div>
+    </div>
+  );
+}
+
 function RankList({ data, mode }: { data: RankItem[]; mode: '신' | '악몽' }) {
+  if (data.length === 0) return <EmptyRankList mode={mode} />;
+
   return (
     <div className="flex-1 space-y-1">
       <div className="mb-3">
