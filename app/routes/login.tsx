@@ -17,7 +17,7 @@ export default function Login() {
     <main className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.16),transparent_32%),radial-gradient(circle_at_bottom_right,hsl(var(--accent)/0.14),transparent_30%)]" />
       <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] w-full max-w-xl items-center justify-center px-8 py-10 md:py-16">
-        <Card className="border-border/80 bg-card/90 shadow-primary/10 w-full overflow-hidden rounded-[2rem] shadow-2xl backdrop-blur-xl">
+        <Card className="border-border/80 bg-card/90 shadow-primary/10 w-full overflow-hidden rounded-4xl shadow-2xl backdrop-blur-xl">
           <CardContent className="p-0">
             <div className="border-border border-b px-6 py-5 md:px-8">
               <p className="text-muted-foreground font-mono text-xs tracking-[0.28em] uppercase">

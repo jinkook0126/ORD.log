@@ -85,12 +85,12 @@ function ClearCard({ item }: { item: ClearItem }) {
   const remaining = item.units.length - MAX_VISIBLE_UNITS;
 
   return (
-    <div className="group border-border bg-card hover:border-primary/40 hover:shadow-primary/10 overflow-hidden rounded-lg border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <div className="group border-border bg-card hover:border-primary/40 hover:shadow-primary/10 cursor-pointer overflow-hidden rounded-lg border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="bg-muted relative aspect-video w-full overflow-hidden">
         <img
           src={item.photo}
           alt={item.nickname}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
         />
         <div className="from-background/80 absolute inset-x-0 bottom-0 h-20 bg-linear-to-t to-transparent" />
         <div className="absolute top-3 right-3">
@@ -152,7 +152,7 @@ function ClearCard({ item }: { item: ClearItem }) {
 }
 const clears = () => {
   return (
-    <div className="container max-w-5xl pb-12">
+    <main className="mx-auto max-w-5xl px-8 py-10 md:py-16">
       <div className="py-6">
         <h1 className="font-mono text-xl font-semibold">
           <span className="text-primary">&gt;</span> 최근 클리어
@@ -172,7 +172,7 @@ const clears = () => {
           ))}
         </div>
       )}
-    </div>
+    </main>
   );
 };
 export default clears;

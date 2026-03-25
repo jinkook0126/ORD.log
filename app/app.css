@@ -3,9 +3,9 @@
 @import 'shadcn/tailwind.css';
 @import '@fontsource-variable/jetbrains-mono';
 
-* {
+/* * {
   @apply transition-colors duration-300;
-}
+} */
 
 @custom-variant dark (&:is(.dark *));
 
