@@ -6,4 +6,5 @@ export default [
   route('login', 'routes/login.tsx'),
   route('clears', 'routes/clears.tsx'),
   route('ranking', 'routes/ranking.tsx'),
+  route('user/:nickname', 'routes/user.$nickname.tsx'),
 ] satisfies RouteConfig;
