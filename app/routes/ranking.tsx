@@ -9,6 +9,8 @@ interface RankItem {
   nickname: string;
   value: number;
   topUnits: string[];
+  wins: number;
+  losses: number;
 }
 
 type TabKey = '신-클리어' | '신-점수' | '악몽-클리어' | '악몽-점수';
@@ -21,6 +23,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'StormBringer',
       value: 55,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 55,
+      losses: 5,
     },
     {
       rank: 2,
@@ -28,6 +32,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'PhoenixRise',
       value: 49,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 49,
+      losses: 11,
     },
     {
       rank: 3,
@@ -35,6 +41,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'DarkSlayer',
       value: 44,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 44,
+      losses: 14,
     },
     {
       rank: 4,
@@ -42,6 +50,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '루나틱',
       value: 36,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 36,
+      losses: 16,
     },
     {
       rank: 5,
@@ -49,6 +59,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '섀도우',
       value: 30,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 30,
+      losses: 18,
     },
     {
       rank: 6,
@@ -56,6 +68,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '눈떠보니옆에',
       value: 28,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 28,
+      losses: 20,
     },
     {
       rank: 7,
@@ -63,6 +77,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'NightOwl',
       value: 21,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 21,
+      losses: 22,
     },
     {
       rank: 8,
@@ -70,6 +86,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '천둥번개',
       value: 18,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 18,
+      losses: 25,
     },
   ],
   '신-점수': [
@@ -79,6 +97,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'PhoenixRise',
       value: 112400,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 52,
+      losses: 8,
     },
     {
       rank: 2,
@@ -86,6 +106,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'StormBringer',
       value: 105800,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 55,
+      losses: 5,
     },
     {
       rank: 3,
@@ -93,6 +115,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'DarkSlayer',
       value: 98520,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 44,
+      losses: 14,
     },
     {
       rank: 4,
@@ -100,6 +124,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '루나틱',
       value: 87300,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 38,
+      losses: 18,
     },
     {
       rank: 5,
@@ -107,6 +133,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '섀도우',
       value: 76100,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 32,
+      losses: 20,
     },
     {
       rank: 6,
@@ -114,6 +142,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '눈떠보니옆에',
       value: 65400,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 28,
+      losses: 22,
     },
     {
       rank: 7,
@@ -121,6 +151,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'NightOwl',
       value: 54200,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 22,
+      losses: 28,
     },
     {
       rank: 8,
@@ -128,6 +160,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '천둥번개',
       value: 43800,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 18,
+      losses: 30,
     },
   ],
   '악몽-클리어': [
@@ -137,6 +171,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'DarkSlayer',
       value: 42,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 42,
+      losses: 8,
     },
     {
       rank: 2,
@@ -144,6 +180,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '루나틱',
       value: 38,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 38,
+      losses: 12,
     },
     {
       rank: 3,
@@ -151,6 +189,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '섀도우',
       value: 31,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 31,
+      losses: 15,
     },
     {
       rank: 4,
@@ -158,6 +198,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'StormBringer',
       value: 27,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 27,
+      losses: 18,
     },
     {
       rank: 5,
@@ -165,6 +207,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'PhoenixRise',
       value: 22,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 22,
+      losses: 20,
     },
     {
       rank: 6,
@@ -172,6 +216,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '눈떠보니옆에',
       value: 19,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 19,
+      losses: 22,
     },
     {
       rank: 7,
@@ -179,6 +225,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'NightOwl',
       value: 14,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 14,
+      losses: 25,
     },
     {
       rank: 8,
@@ -186,6 +234,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '천둥번개',
       value: 11,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 11,
+      losses: 28,
     },
   ],
   '악몽-점수': [
@@ -195,6 +245,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '섀도우',
       value: 85100,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 35,
+      losses: 10,
     },
     {
       rank: 2,
@@ -202,6 +254,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '루나틱',
       value: 76300,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 38,
+      losses: 12,
     },
     {
       rank: 3,
@@ -209,6 +263,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'DarkSlayer',
       value: 68900,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 42,
+      losses: 8,
     },
     {
       rank: 4,
@@ -216,6 +272,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'StormBringer',
       value: 59400,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 27,
+      losses: 18,
     },
     {
       rank: 5,
@@ -223,6 +281,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'PhoenixRise',
       value: 51200,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 22,
+      losses: 20,
     },
     {
       rank: 6,
@@ -230,6 +290,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '눈떠보니옆에',
       value: 44700,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 19,
+      losses: 22,
     },
     {
       rank: 7,
@@ -237,6 +299,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: 'NightOwl',
       value: 37600,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 16,
+      losses: 24,
     },
     {
       rank: 8,
@@ -244,6 +308,8 @@ const DUMMY: Record<TabKey, RankItem[]> = {
       nickname: '천둥번개',
       value: 29100,
       topUnits: Array(3).fill('/placeholder.svg'),
+      wins: 12,
+      losses: 28,
     },
   ],
 };
@@ -267,6 +333,38 @@ function getRankBg(rank: number) {
   if (rank === 2) return 'bg-gray-300/5';
   if (rank === 3) return 'bg-amber-600/5';
   return '';
+}
+
+function WinRateBar({ wins, losses }: { wins: number; losses: number }) {
+  const total = wins + losses;
+  const winPercentage = total > 0 ? (wins / total) * 100 : 0;
+  const lossPercentage = 100 - winPercentage;
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex h-5 w-24 overflow-hidden rounded-sm">
+        <div
+          className="flex h-full items-center justify-start bg-blue-500"
+          style={{ width: `${winPercentage}%` }}
+        >
+          {winPercentage > 25 && (
+            <span className="pl-1 text-[9px] font-bold text-white">{wins}승</span>
+          )}
+        </div>
+        <div
+          className="flex h-full items-center justify-end bg-red-500"
+          style={{ width: `${lossPercentage}%` }}
+        >
+          {lossPercentage > 25 && (
+            <span className="pr-1 text-[9px] font-bold text-white">{losses}패</span>
+          )}
+        </div>
+      </div>
+      <span className="text-muted-foreground text-xs font-medium whitespace-nowrap">
+        {winPercentage.toFixed(0)}%
+      </span>
+    </div>
+  );
 }
 
 function Ranking() {
@@ -306,17 +404,20 @@ function Ranking() {
       {/* Table */}
       <div className="border-border bg-card overflow-hidden rounded-lg border">
         {/* Header */}
-        <div className="border-border bg-secondary/30 grid grid-cols-[3rem_1fr_auto] items-center border-b px-4 py-3 md:grid-cols-[3rem_1fr_auto_auto]">
+        <div className="border-border bg-secondary/30 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 md:grid-cols-[3rem_1fr_100px_160px_90px]">
           <span className="text-muted-foreground text-center font-mono text-xs font-semibold tracking-widest uppercase">
             #
           </span>
           <span className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
             닉네임
           </span>
-          <span className="text-muted-foreground hidden text-xs font-semibold tracking-widest uppercase md:block">
+          <span className="text-muted-foreground hidden min-w-[90px] px-2 pr-6 text-xs font-semibold tracking-widest uppercase md:block">
             모스트 상위
           </span>
-          <span className="text-muted-foreground text-right text-xs font-semibold tracking-widest uppercase">
+          <span className="text-muted-foreground hidden min-w-[100px] px-2 pl-6 text-xs font-semibold tracking-widest uppercase md:block">
+            승률
+          </span>
+          <span className="text-muted-foreground min-w-[70px] px-2 text-right text-xs font-semibold tracking-widest uppercase">
             {currentTab.label.split(' · ')[1]}
           </span>
         </div>
@@ -325,7 +426,7 @@ function Ranking() {
         {data.map((item) => (
           <div
             key={item.rank}
-            className={`border-border hover:bg-secondary/40 grid grid-cols-[3rem_1fr_auto] items-center border-b px-4 py-3 transition-colors last:border-b-0 md:grid-cols-[3rem_1fr_auto_auto] ${getRankBg(item.rank)}`}
+            className={`border-border hover:bg-secondary/40 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 transition-colors last:border-b-0 md:grid-cols-[3rem_1fr_100px_160px_90px] ${getRankBg(item.rank)}`}
           >
             {/* Rank */}
             <span className={`text-center font-mono text-sm font-bold ${getRankStyle(item.rank)}`}>
@@ -349,7 +450,7 @@ function Ranking() {
             </div>
 
             {/* Top Units — desktop only */}
-            <div className="hidden items-center gap-1 md:flex">
+            <div className="hidden min-w-[90px] items-center gap-1 px-2 pr-6 md:flex">
               {item.topUnits.map((src, i) => (
                 <Avatar key={i} className="border-border bg-background h-7 w-7 border">
                   <AvatarImage src={src} />
@@ -358,8 +459,13 @@ function Ranking() {
               ))}
             </div>
 
+            {/* Win Rate — desktop only */}
+            <div className="hidden min-w-[100px] px-2 pl-6 md:flex">
+              <WinRateBar wins={item.wins} losses={item.losses} />
+            </div>
+
             {/* Value */}
-            <span className="text-foreground font-mono text-sm font-semibold">
+            <span className="text-foreground min-w-[70px] px-2 text-right font-mono text-sm font-semibold">
               {item.value.toLocaleString()}
               <span className="text-muted-foreground ml-0.5 text-xs font-normal">
                 {currentTab.unit}

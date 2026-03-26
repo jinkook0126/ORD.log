@@ -1,10 +1,11 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-25T08:25:07.852Z",
+  "lastUpdated": "2026-03-26T05:43:29.521Z",
   "activeFeatures": [
     "ord-log",
     "routes",
-    "header"
+    "header",
+    "main"
   ],
   "primaryFeature": "ord-log",
   "features": {
@@ -30,9 +31,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-16T00:52:08.209Z",
-        "lastUpdated": "2026-03-16T08:23:57.267Z"
+        "lastUpdated": "2026-03-26T05:43:29.521Z"
       },
-      "lastFile": "D:\\jinqook\\ord-log\\app\\routes\\login.tsx"
+      "lastFile": "D:\\jinqook\\ord-log\\app\\routes\\ranking.tsx"
     },
     "header": {
       "phase": "do",
@@ -46,6 +47,19 @@
         "lastUpdated": "2026-03-25T08:25:07.852Z"
       },
       "lastFile": "D:\\jinqook\\ord-log\\app\\components\\header\\MobileMenu.tsx"
+    },
+    "main": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-26T00:33:50.614Z",
+        "lastUpdated": "2026-03-26T00:36:10.819Z"
+      },
+      "lastFile": "D:\\jinqook\\ord-log\\app\\components\\main\\Ranking.tsx"
     }
   },
   "pipeline": {
@@ -56,7 +70,7 @@
   "session": {
     "startedAt": "2026-03-16T00:42:30.217Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-25T08:25:07.852Z"
+    "lastActivity": "2026-03-26T05:43:29.521Z"
   },
   "history": [
     {
@@ -170,6 +184,216 @@
     {
       "timestamp": "2026-03-25T08:25:07.852Z",
       "feature": "header",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:33:50.614Z",
+      "feature": "main",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:33:55.820Z",
+      "feature": "main",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:34:01.185Z",
+      "feature": "main",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:01.157Z",
+      "feature": "main",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:06.182Z",
+      "feature": "main",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:10.819Z",
+      "feature": "main",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:21.734Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:29.296Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:38.593Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:47.970Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:36:56.762Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:37:04.740Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:37:13.771Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:37:22.606Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:40:41.546Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:48:19.474Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:49:37.542Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:53:16.832Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:53:21.546Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:53:26.748Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T00:53:38.430Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:20:12.199Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:20:16.765Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:25:44.804Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:25:49.970Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:25:54.693Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:27:22.797Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:27:28.105Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:27:34.731Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:27:50.554Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:27:54.354Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T01:27:59.056Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T05:43:11.693Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T05:43:25.724Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-26T05:43:29.521Z",
+      "feature": "routes",
       "phase": "do",
       "action": "updated"
     }
