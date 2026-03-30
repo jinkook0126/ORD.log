@@ -7,4 +7,6 @@ export default [
   route('clears', 'routes/clears.tsx'),
   route('ranking', 'routes/ranking.tsx'),
   route('user/:nickname', 'routes/user.$nickname.tsx'),
+  route('oauth', 'routes/oauth.tsx'),
+  route('api/auth/naver', 'routes/api.auth.naver.ts'),
 ] satisfies RouteConfig;

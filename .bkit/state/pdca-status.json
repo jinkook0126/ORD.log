@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-27T04:45:51.912Z",
+  "lastUpdated": "2026-03-30T07:52:34.418Z",
   "activeFeatures": [
     "ord-log",
     "routes",
@@ -31,9 +31,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-16T00:52:08.209Z",
-        "lastUpdated": "2026-03-27T04:45:51.912Z"
+        "lastUpdated": "2026-03-30T07:52:34.418Z"
       },
-      "lastFile": "D:\\jinqook\\ord-log\\app\\routes\\user.$nickname.tsx"
+      "lastFile": "D:\\jinqook\\ord-log\\app\\routes\\api.auth.naver.ts"
     },
     "header": {
       "phase": "do",
@@ -70,7 +70,7 @@
   "session": {
     "startedAt": "2026-03-16T00:42:30.217Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-27T04:45:51.912Z"
+    "lastActivity": "2026-03-30T07:52:34.418Z"
   },
   "history": [
     {
@@ -627,6 +627,12 @@
     },
     {
       "timestamp": "2026-03-27T04:45:51.912Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T07:52:34.418Z",
       "feature": "routes",
       "phase": "do",
       "action": "updated"

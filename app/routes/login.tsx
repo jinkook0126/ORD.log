@@ -8,9 +8,12 @@ export function meta() {
 }
 
 export default function Login() {
-  const handleNaverLogin = () => {
-    // TODO: 네이버 OAuth 인증 로직 구현
+  const handleNaverLogin = async () => {
     console.log('Naver login clicked');
+    const state = crypto.randomUUID();
+    sessionStorage.setItem('oauth_state', state);
+
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=FBJrVg1w1LoMKhYr2BRC&state=${state}&redirect_uri=${encodeURIComponent('http://localhost:5174/oauth')}`;
   };
 
   return (
