@@ -13,7 +13,7 @@ export default function Login() {
     const state = crypto.randomUUID();
     sessionStorage.setItem('oauth_state', state);
 
-    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=FBJrVg1w1LoMKhYr2BRC&state=${state}&redirect_uri=${encodeURIComponent('http://localhost:5174/oauth')}`;
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=FBJrVg1w1LoMKhYr2BRC&state=${state}&redirect_uri=${encodeURIComponent(`${process.env.BASE_URL}/oauth`)}`;
   };
 
   return (
