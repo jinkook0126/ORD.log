@@ -1,5 +1,6 @@
 import './app.css';
 
+import { QueryClientProvider } from '@tanstack/react-query';
 import {
   isRouteErrorResponse,
   Links,
@@ -12,6 +13,7 @@ import {
 import type { Route } from './+types/root';
 import NavBar from './components/header/NavBar';
 import { ThemeProvider } from './hooks/use-theme';
+import { queryClient } from './lib/queryClient';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -46,10 +48,12 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       `,
           }}
         />
-        <ThemeProvider>
-          <NavBar />
-          {children}
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <NavBar />
+            {children}
+          </ThemeProvider>
+        </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

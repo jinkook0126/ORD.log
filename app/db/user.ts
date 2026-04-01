@@ -14,3 +14,39 @@ export const getUserBySocialAccount = async (provider: string, providerUserId: s
   });
   return user;
 };
+
+export const getUserByNickname = async (nickname: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      nickname,
+    },
+  });
+  return user;
+};
+
+export const saveUserNickname = async ({
+  nickname,
+  providerUserId,
+  email,
+  provider,
+}: {
+  nickname: string;
+  providerUserId: string;
+  email: string;
+  provider: string;
+}) => {
+  const newUser = await prisma.user.create({
+    data: {
+      nickname,
+      email,
+    },
+  });
+  await prisma.socialAccount.create({
+    data: {
+      userId: newUser.id,
+      provider,
+      providerUserId,
+    },
+  });
+  return newUser;
+};

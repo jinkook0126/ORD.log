@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-31T06:29:07.395Z",
+  "lastUpdated": "2026-04-01T06:00:46.179Z",
   "activeFeatures": [
     "ord-log",
     "routes",
@@ -18,9 +18,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-16T00:45:42.450Z",
-        "lastUpdated": "2026-03-16T00:45:42.450Z"
+        "lastUpdated": "2026-04-01T06:00:46.178Z"
       },
-      "lastFile": "D:\\jinqook\\ord-log\\app\\routes.ts"
+      "lastFile": "D:\\jinqook\\ord-log\\app\\root.tsx"
     },
     "routes": {
       "phase": "do",
@@ -31,9 +31,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-16T00:52:08.209Z",
-        "lastUpdated": "2026-03-31T06:29:07.395Z"
+        "lastUpdated": "2026-04-01T05:28:33.492Z"
       },
-      "lastFile": "D:\\jinqook\\ord-log\\app\\routes\\oauth.tsx"
+      "lastFile": "D:\\jinqook\\ord-log\\app\\routes\\oauth.nickname.tsx"
     },
     "header": {
       "phase": "do",
@@ -70,7 +70,7 @@
   "session": {
     "startedAt": "2026-03-16T00:42:30.217Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-31T06:29:07.395Z"
+    "lastActivity": "2026-04-01T06:00:46.179Z"
   },
   "history": [
     {
@@ -646,6 +646,72 @@
     {
       "timestamp": "2026-03-31T06:29:07.395Z",
       "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:11:36.505Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:11:40.190Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:11:44.577Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:11:49.930Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:14:03.735Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:14:07.923Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:14:14.745Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T05:28:33.492Z",
+      "feature": "routes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T06:00:37.299Z",
+      "feature": "ord-log",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T06:00:41.371Z",
+      "feature": "ord-log",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T06:00:46.178Z",
+      "feature": "ord-log",
       "phase": "do",
       "action": "updated"
     }

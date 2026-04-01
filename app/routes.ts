@@ -9,4 +9,6 @@ export default [
   route('user/:nickname', 'routes/user.$nickname.tsx'),
   route('oauth', 'routes/oauth.tsx'),
   route('api/auth/naver', 'routes/api.auth.naver.ts'),
+  route('api/user', 'routes/api.user.ts'),
+  route('oauth/nickname', 'routes/oauth.nickname.tsx'),
 ] satisfies RouteConfig;
