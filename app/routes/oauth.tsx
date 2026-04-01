@@ -1,4 +1,5 @@
-import { type LoaderFunctionArgs, redirect } from 'react-router';
+import { Loader2 } from 'lucide-react';
+import { type LoaderFunctionArgs, redirect, useNavigation } from 'react-router';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -25,8 +26,20 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 };
 
-const oauth = () => {
-  return <div>oauth</div>;
+const OAuth = () => {
+  const navigation = useNavigation();
+  const isLoading = navigation.state === 'loading';
+
+  return (
+    <div className="bg-background flex h-screen w-full items-center justify-center">
+      {isLoading && (
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="text-primary animate-spin" size={48} />
+          <p className="text-muted-foreground text-sm">로그인 처리 중...</p>
+        </div>
+      )}
+    </div>
+  );
 };
 
-export default oauth;
+export default OAuth;
