@@ -19,7 +19,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return new Response('Method not allowed', { status: 405 });
   }
   const body = await request.json();
-  const { nickname, tempToken } = body;
+  const { nickname, tempToken, thumbnailUrl } = body;
   if (!nickname || typeof nickname !== 'string' || nickname.trim().length === 0) {
     return new Response(JSON.stringify({ message: '닉네임을 입력해주세요.' }), { status: 400 });
   }
@@ -43,6 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       providerUserId: payload.providerUserId,
       email: payload.email ?? '',
       provider: payload.provider,
+      thumbnailUrl,
     });
     const accessToken = await createAccessToken(newUser.id);
     return new Response(null, {

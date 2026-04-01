@@ -1,21 +1,19 @@
-import { type LoaderFunctionArgs, redirect, useLoaderData } from 'react-router';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 import { Card, CardContent } from '~/components/ui/card';
 import SignUpForm from '~/components/user/SignUpForm';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const url = new URL(request.url);
-  const tempToken = url.searchParams.get('tempToken');
-
-  if (!tempToken) {
-    return redirect('/login');
-  }
-
-  return { tempToken };
-};
-
 export default function SetupNickname() {
-  const { tempToken } = useLoaderData<typeof loader>();
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const tempToken = state?.tempToken as string | undefined;
+
+  useEffect(() => {
+    if (!tempToken) {
+      navigate('/login', { replace: true });
+    }
+  }, [tempToken, navigate]);
 
   return (
     <main className="relative overflow-hidden">
@@ -37,7 +35,7 @@ export default function SetupNickname() {
                 </p>
               </div>
 
-              <SignUpForm tempToken={tempToken} />
+              {tempToken && <SignUpForm tempToken={tempToken} />}
             </div>
           </CardContent>
         </Card>

@@ -1,5 +1,12 @@
 import { Loader2 } from 'lucide-react';
-import { type LoaderFunctionArgs, redirect, useNavigation } from 'react-router';
+import { useEffect } from 'react';
+import {
+  type LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+} from 'react-router';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -16,7 +23,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     });
     const data = await res.json();
     if (data.isNewUser) {
-      return redirect(`/oauth/nickname?tempToken=${data.tempToken}`);
+      // return redirect(`/oauth/nickname?tempToken=${data.tempToken}`);
+      return data;
     } else {
       return redirect('/');
     }
@@ -27,15 +35,27 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 const OAuth = () => {
+  const data = useLoaderData<typeof loader>();
+  // console.log(tempToken);
   const navigation = useNavigation();
+  const navigate = useNavigate();
   const isLoading = navigation.state === 'loading';
+
+  useEffect(() => {
+    if (data.isNewUser) {
+      sessionStorage.setItem('thumbnailUrl', data.thumbnailUrl);
+      // redirect(`/oauth/nickname?tempToken=${data.tempToken}`);
+      // redirect(`/`);
+      navigate('/oauth/nickname', { state: { tempToken: data.tempToken } });
+    }
+  }, [data, navigate]);
 
   return (
     <div className="bg-background flex h-screen w-full items-center justify-center">
       {isLoading && (
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="text-primary animate-spin" size={48} />
-          <p className="text-muted-foreground text-sm">로그인 처리 중...</p>
+          <p className="text-muted-foreground text-sm">로그인 진행 중...</p>
         </div>
       )}
     </div>

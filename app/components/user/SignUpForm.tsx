@@ -21,9 +21,14 @@ const SignUpForm = ({ tempToken }: { tempToken: string }) => {
   const nickname = watch('nickname');
   const onSubmit = (data: { nickname: string; tempToken: string }) => {
     saveUserNickname(
-      { nickname: data.nickname, tempToken: data.tempToken },
+      {
+        nickname: data.nickname,
+        tempToken: data.tempToken,
+        thumbnailUrl: sessionStorage.getItem('thumbnailUrl') ?? '',
+      },
       {
         onSuccess: () => {
+          sessionStorage.removeItem('thumbnailUrl');
           navigate('/');
         },
         onError: (error) => {

@@ -51,6 +51,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       return Response.json({
         isNewUser: true,
         tempToken,
+        thumbnailUrl: userNaverInfo.response.profile_image,
       });
     }
   } catch (error) {
