@@ -43,6 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       providerUserId: payload.providerUserId,
       email: payload.email ?? '',
       provider: payload.provider,
+      thumbnailUrl: `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${nickname}`,
     });
     const accessToken = await createAccessToken(newUser.id);
     return new Response(null, {

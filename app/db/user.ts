@@ -29,16 +29,19 @@ export const saveUserNickname = async ({
   providerUserId,
   email,
   provider,
+  thumbnailUrl,
 }: {
   nickname: string;
   providerUserId: string;
   email: string;
   provider: string;
+  thumbnailUrl: string;
 }) => {
   const newUser = await prisma.user.create({
     data: {
       nickname,
       email,
+      thumbnailUrl,
     },
   });
   await prisma.socialAccount.create({
