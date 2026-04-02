@@ -7,6 +7,10 @@ const tempTokenSchema = z.object({
   email: z.string().optional(),
 });
 
+const accessTokenSchema = z.object({
+  userId: z.number(),
+});
+
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function createAccessToken(userId: number) {
@@ -15,6 +19,15 @@ export async function createAccessToken(userId: number) {
     .setIssuedAt()
     .setExpirationTime('1h')
     .sign(secret);
+}
+
+export async function verifyAccessToken(token: string) {
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    return accessTokenSchema.parse(payload);
+  } catch (err) {
+    throw new Error('Invalid or expired accessToken', { cause: err });
+  }
 }
 
 export async function createTempToken(providerUserId: string, email: string) {

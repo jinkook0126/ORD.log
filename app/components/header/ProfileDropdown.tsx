@@ -1,4 +1,5 @@
 import { ClipboardList, LogOutIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import {
   DropdownMenu,
@@ -9,15 +10,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
+import { useMe } from '~/query/user';
 
 import { Avatar, AvatarImage } from '../ui/avatar';
 const ProfileDropdown = () => {
+  const { data: me } = useMe();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white p-0">
           <AvatarImage
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
+            src={me?.thumbnailUrl}
             alt="profile"
             className="h-full w-full object-cover"
           />
@@ -25,10 +28,10 @@ const ProfileDropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuLabel>닉네임</DropdownMenuLabel>
+          <DropdownMenuLabel>{me?.nickname}</DropdownMenuLabel>
           <DropdownMenuItem>
             <ClipboardList />
-            나의 로그
+            <Link to={`/user/${me?.nickname}`}>나의 로그</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
@@ -5,6 +6,7 @@ import { useSaveUserNickname } from '~/query/user';
 
 const SignUpForm = ({ tempToken }: { tempToken: string }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { mutate: saveUserNickname } = useSaveUserNickname();
   const {
     register,
@@ -24,6 +26,7 @@ const SignUpForm = ({ tempToken }: { tempToken: string }) => {
       { nickname: data.nickname, tempToken: data.tempToken },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['me'] });
           navigate('/');
         },
         onError: (error) => {

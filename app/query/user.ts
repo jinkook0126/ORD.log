@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const useSaveUserNickname = () => {
   return useMutation({
@@ -19,4 +19,24 @@ const useSaveUserNickname = () => {
   });
 };
 
-export { useSaveUserNickname };
+const useMe = () => {
+  return useQuery({
+    queryKey: ['me'],
+    queryFn: async () => {
+      const res = await fetch('/api/me', {
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        return null;
+      }
+
+      return res.json();
+    },
+    retry: false,
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
+  });
+};
+
+export { useMe, useSaveUserNickname };

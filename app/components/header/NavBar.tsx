@@ -1,6 +1,7 @@
 import { LogIn, PenLine, ScrollText, Trophy } from 'lucide-react';
-import { useState } from 'react';
 import { Link } from 'react-router';
+
+import { useMe } from '~/query/user';
 
 import MobileMenu from './MobileMenu';
 import { NavLink } from './NavLink';
@@ -17,9 +18,9 @@ const guestItems = [{ title: '로그인', to: '/login', icon: LogIn }];
 const authMenuItems = [{ title: '로그 등록', to: '/logs/new', icon: PenLine }];
 
 const NavBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { data: me } = useMe();
 
-  const navItems = [...publicItems, ...(isLoggedIn ? authMenuItems : guestItems)];
+  const navItems = [...publicItems, ...(me ? authMenuItems : guestItems)];
 
   return (
     <header className="border-border bg-background/80 relative sticky top-0 z-50 border-b backdrop-blur-md">
@@ -40,14 +41,7 @@ const NavBar = () => {
               <span>{item.title}</span>
             </NavLink>
           ))}
-          {isLoggedIn && <ProfileDropdown />}
-          <button
-            onClick={() => setIsLoggedIn(!isLoggedIn)}
-            className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-xs font-medium transition-colors"
-            title={isLoggedIn ? '로그아웃' : '로그인 토글'}
-          >
-            {isLoggedIn ? '로그인됨' : '로그인 토글'}
-          </button>
+          {me && <ProfileDropdown />}
           <ThemeToggle />
         </nav>
         <div className="flex items-center gap-1 md:hidden">

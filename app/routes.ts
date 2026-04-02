@@ -8,7 +8,8 @@ export default [
   route('ranking', 'routes/ranking.tsx'),
   route('user/:nickname', 'routes/user.$nickname.tsx'),
   route('oauth', 'routes/oauth.tsx'),
+  route('oauth/nickname', 'routes/oauth.nickname.tsx'),
   route('api/auth/naver', 'routes/api.auth.naver.ts'),
   route('api/user', 'routes/api.user.ts'),
-  route('oauth/nickname', 'routes/oauth.nickname.tsx'),
+  route('api/me', 'routes/api.me.ts'),
 ] satisfies RouteConfig;

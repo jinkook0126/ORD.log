@@ -53,3 +53,10 @@ export const saveUserNickname = async ({
   });
   return newUser;
 };
+
+export const getUserById = async (id: number) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  return user;
+};
