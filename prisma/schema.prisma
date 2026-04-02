@@ -30,3 +30,20 @@ model SocialAccount {
   @@unique([provider, providerUserId])
   @@map("social_accounts")
 }
+
+model Grade {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  rank  Int
+  units Unit[]
+}
+
+model Unit {
+  id           Int    @id @default(autoincrement())
+  name         String
+  gradeId      Int
+  thumbnailUrl String
+  grade        Grade  @relation(fields: [gradeId], references: [id])
+
+  @@unique([name, gradeId])
+}
