@@ -15,7 +15,7 @@ const publicItems = [
 
 const guestItems = [{ title: '로그인', to: '/login', icon: LogIn }];
 
-const authMenuItems = [{ title: '로그 등록', to: '/logs/new', icon: PenLine }];
+const authMenuItems = [{ title: '로그 등록', to: '/clears/new', icon: PenLine }];
 
 const NavBar = () => {
   const { data: me } = useMe();

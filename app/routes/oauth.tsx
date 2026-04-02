@@ -18,7 +18,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     if (data.isNewUser) {
       return redirect(`/oauth/nickname?tempToken=${data.tempToken}`);
     } else {
-      return redirect('/');
+      return redirect('/', {
+        headers: {
+          'Set-Cookie': [
+            `accessToken=${data.accessToken}; HttpOnly; Path=/; Max-Age=3600; SameSite=Lax ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`,
+          ].join(', '),
+          'Content-Type': 'application/json',
+        },
+      });
     }
   } catch (error) {
     console.error(error);

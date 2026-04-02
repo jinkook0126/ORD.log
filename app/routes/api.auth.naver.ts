@@ -34,14 +34,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const user = await userResponse.json();
     if (user) {
       const accessToken = await createAccessToken(user.userId);
-      return new Response(JSON.stringify({ isNewUser: false }), {
-        headers: {
-          'Set-Cookie': [
-            `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=3600; SameSite=Lax ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`,
-          ].join(', '),
-          'Content-Type': 'application/json',
-        },
-      });
+      return new Response(JSON.stringify({ isNewUser: false, accessToken }));
     } else {
       const tempToken = await createTempToken(
         userNaverInfo.response.id,

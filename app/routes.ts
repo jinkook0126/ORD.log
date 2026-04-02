@@ -5,6 +5,7 @@ export default [
   index('routes/home.tsx'),
   route('login', 'routes/login.tsx'),
   route('clears', 'routes/clears.tsx'),
+  route('clears/new', 'routes/clears.new.tsx'),
   route('ranking', 'routes/ranking.tsx'),
   route('user/:nickname', 'routes/user.$nickname.tsx'),
   route('oauth', 'routes/oauth.tsx'),
