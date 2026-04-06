@@ -1,6 +1,6 @@
 import { Camera } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import UnitSearch from './UnitSearch';
 
@@ -20,6 +20,7 @@ const LogRegisterForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    control,
   } = useForm<ClearFormData>({
     defaultValues: {
       unitIds: [],
@@ -98,7 +99,32 @@ const LogRegisterForm = () => {
         <label className="text-sm font-medium">
           결과 <span className="text-red-500">*</span>
         </label>
-        <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
+        <Controller
+          name="success"
+          control={control}
+          render={({ field }) => (
+            <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
+              {[
+                { value: true, label: '성공' },
+                { value: false, label: '실패' },
+              ].map(({ value, label }) => (
+                <button
+                  type="button"
+                  key={label}
+                  onClick={() => field.onChange(value)}
+                  className={`flex-1 cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition ${
+                    field.value === value
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-foreground hover:bg-muted'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+        />
+        {/* <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
           {[
             { value: true, label: '성공' },
             { value: false, label: '실패' },
@@ -123,12 +149,11 @@ const LogRegisterForm = () => {
               </div>
             </label>
           ))}
-        </div>
+        </div> */}
         {errors.success && <p className="text-xs text-red-500">{errors.success.message}</p>}
       </div>
 
-      {/* 유닛 카운트 - 성공 시만 표시 */}
-      {success !== 'false' && (
+      {success && (
         <div className="space-y-3">
           <label className="text-sm font-medium">
             유닛 카운트 <span className="text-red-500">*</span>
@@ -139,7 +164,7 @@ const LogRegisterForm = () => {
             disabled={isSubmitting}
             className="border-border/50 bg-background text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition outline-none focus:ring-2"
             {...register('unitCount', {
-              required: success !== 'false' ? '유닛 카운트를 입력해주세요' : false,
+              required: success ? '유닛 카운트를 입력해주세요' : false,
               valueAsNumber: true,
             })}
           />
@@ -148,7 +173,7 @@ const LogRegisterForm = () => {
       )}
 
       {/* 점수 - 성공 시만 표시 */}
-      {success !== 'false' && (
+      {success && (
         <div className="space-y-3">
           <label className="text-sm font-medium">
             점수 <span className="text-red-500">*</span>
@@ -159,7 +184,7 @@ const LogRegisterForm = () => {
             disabled={isSubmitting}
             className="border-border/50 bg-background text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition outline-none focus:ring-2"
             {...register('score', {
-              required: success !== 'false' ? '점수를 입력해주세요' : false,
+              required: success ? '점수를 입력해주세요' : false,
               valueAsNumber: true,
             })}
           />
