@@ -15,6 +15,10 @@ model User {
   updatedAt      DateTime        @updatedAt
   thumbnailUrl   String          @default("")
   socialAccounts SocialAccount[]
+  gameRecords        GameRecord[]
+  userStats          UserStat?
+  userUnitStats      UserUnitStat[]
+  userDifficultyStats UserDifficultyStat[]
 
   @@map("users")
 }
@@ -46,4 +50,76 @@ model Unit {
   grade        Grade  @relation(fields: [gradeId], references: [id])
 
   @@unique([name, gradeId])
+}
+
+
+enum Difficulty {
+  GOD
+  NIGHTMARE
+}
+
+model GameRecord {
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  score      Int
+  unitCount  Int
+  success    Boolean
+  difficulty Difficulty
+  imageUrl   String?    // ⭐️ 추가 (게임 이미지)
+  createdAt  DateTime   @default(now())
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  units  GameRecordUnit[]
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model GameRecordUnit {
+  id            Int @id @default(autoincrement())
+  gameRecordId  Int
+  unitId        Int
+
+  gameRecord GameRecord @relation(fields: [gameRecordId], references: [id], onDelete: Cascade)
+
+  @@index([gameRecordId])
+  @@index([unitId])
+}
+
+model UserStat {
+  userId          Int      @id
+  totalGames      Int      @default(0)
+  totalSuccess    Int      @default(0)
+  totalScore      Int      @default(0)
+  totalUnitCount  Int      @default(0)
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserUnitStat {
+  userId     Int
+  unitId     Int
+  pickCount  Int @default(0)
+  winCount   Int @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, unitId])
+  @@index([unitId])
+}
+
+model UserDifficultyStat {
+  userId          Int
+  difficulty      Difficulty
+  totalGames      Int @default(0)
+  totalSuccess    Int @default(0)
+  totalScore      Int @default(0)
+  totalUnitCount  Int @default(0)
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, difficulty])
+  @@index([difficulty])
 }
