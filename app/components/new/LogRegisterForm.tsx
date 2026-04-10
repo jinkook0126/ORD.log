@@ -2,10 +2,10 @@ import { Camera } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import UnitSearch from './UnitSearch';
+import UnitSearch, { type Unit } from './UnitSearch';
 
 interface ClearFormData {
-  unitIds: string[];
+  unitIds: Unit[];
   unitCount: number;
   score: number;
   photo: FileList;
@@ -24,14 +24,13 @@ const LogRegisterForm = () => {
   } = useForm<ClearFormData>({
     defaultValues: {
       unitIds: [],
-      unitCount: 0,
-      score: 0,
+      unitCount: undefined,
+      score: undefined,
       difficulty: '신',
       success: true,
     },
   });
   const photoFiles = watch('photo');
-  const difficulty = watch('difficulty');
   const success = watch('success');
   useEffect(() => {
     const file = photoFiles?.[0];
@@ -49,6 +48,9 @@ const LogRegisterForm = () => {
   const onSubmit = async (data: ClearFormData) => {
     // TODO: API 호출 구현
     console.log('Form data:', {
+      success: data.success,
+      difficulty: data.difficulty,
+      unitIds: data.unitIds,
       unitCount: data.unitCount,
       score: data.score,
       photo: data.photo?.[0],
@@ -58,7 +60,17 @@ const LogRegisterForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6">
       {/* 클리어 유닛 */}
       <div className="space-y-3">
-        <UnitSearch />
+        <Controller
+          name="unitIds"
+          control={control}
+          rules={{
+            required: '유닛을 선택해주세요',
+          }}
+          render={({ field }) => (
+            <UnitSearch selectedUnits={field.value} onComplete={field.onChange} />
+          )}
+        />
+        {/* <UnitSearch /> */}
       </div>
 
       {/* 난이도 */}
@@ -66,31 +78,31 @@ const LogRegisterForm = () => {
         <label className="text-sm font-medium">
           난이도 <span className="text-red-500">*</span>
         </label>
-        <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
-          {['신', '악몽'].map((level) => (
-            <label key={level} className="flex-1 cursor-pointer">
-              <input
-                type="radio"
-                value={level}
-                {...register('difficulty', {
-                  required: '난이도를 선택해주세요',
-                })}
-                className="hidden"
-              />
-              <div
-                className={`rounded-md px-3 py-2 text-center text-sm font-medium transition ${
-                  difficulty === level
-                    ? level === '악몽'
-                      ? 'bg-destructive text-destructive-foreground'
-                      : 'bg-primary text-primary-foreground'
-                    : 'text-foreground hover:bg-muted bg-transparent'
-                }`}
-              >
-                {level}
-              </div>
-            </label>
-          ))}
-        </div>
+        <Controller
+          name="difficulty"
+          control={control}
+          rules={{
+            required: '난이도를 선택해주세요',
+          }}
+          render={({ field }) => (
+            <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
+              {['신', '악몽'].map((level) => (
+                <button
+                  type="button"
+                  key={level}
+                  onClick={() => field.onChange(level)}
+                  className={`flex-1 cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition ${
+                    field.value === level
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-foreground hover:bg-muted'
+                  }`}
+                >
+                  {level}
+                </button>
+              ))}
+            </div>
+          )}
+        />
         {errors.difficulty && <p className="text-xs text-red-500">{errors.difficulty.message}</p>}
       </div>
 
@@ -102,6 +114,9 @@ const LogRegisterForm = () => {
         <Controller
           name="success"
           control={control}
+          rules={{
+            required: '결과를 선택해주세요',
+          }}
           render={({ field }) => (
             <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
               {[
@@ -124,32 +139,6 @@ const LogRegisterForm = () => {
             </div>
           )}
         />
-        {/* <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
-          {[
-            { value: true, label: '성공' },
-            { value: false, label: '실패' },
-          ].map(({ value, label }) => (
-            <label key={label} className="flex-1 cursor-pointer">
-              <input
-                type="radio"
-                value={value ? 'true' : 'false'}
-                {...register('success', {
-                  required: '결과를 선택해주세요',
-                })}
-                className="hidden"
-              />
-              <div
-                className={`rounded-md px-3 py-2 text-center text-sm font-medium transition ${
-                  String(success) === String(value)
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground hover:bg-muted bg-transparent'
-                }`}
-              >
-                {label}
-              </div>
-            </label>
-          ))}
-        </div> */}
         {errors.success && <p className="text-xs text-red-500">{errors.success.message}</p>}
       </div>
 

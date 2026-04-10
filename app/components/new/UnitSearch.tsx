@@ -1,37 +1,29 @@
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
-interface Unit {
-  id: string;
+import { useGetUnitsQuery } from '~/query/unit';
+
+export interface Unit {
+  id: number;
   name: string;
-  thumbnail: string;
+  thumbnailUrl: string;
 }
 
-const UnitSearch = () => {
+const UnitSearch = ({
+  selectedUnits,
+  onComplete,
+}: {
+  selectedUnits: Unit[];
+  onComplete: (units: Unit[]) => void;
+}) => {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUnits, setSelectedUnits] = useState<Unit[]>([]);
+  // const [selectedUnits, setSelectedUnits] = useState<Unit[]>([]);
   const [tempSelectedUnits, setTempSelectedUnits] = useState<Unit[]>([]);
+  const { data: units = [] } = useGetUnitsQuery();
 
-  const mockUnits: Unit[] = [
-    {
-      id: '1',
-      name: '유닛1',
-      thumbnail: 'https://api.dicebear.com/9.x/fun-emoji/svg?seed=Unit1',
-    },
-    {
-      id: '2',
-      name: '유닛2',
-      thumbnail: 'https://api.dicebear.com/9.x/fun-emoji/svg?seed=Unit2',
-    },
-    {
-      id: '3',
-      name: '유닛3',
-      thumbnail: 'https://api.dicebear.com/9.x/fun-emoji/svg?seed=Unit3',
-    },
-  ];
   const filteredUnits = searchTerm
-    ? mockUnits.filter((unit) => unit.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    ? units.filter((unit: Unit) => unit.name.toLowerCase().includes(searchTerm.toLowerCase()))
     : [];
 
   const handleAddUnit = (unit: Unit) => {
@@ -40,11 +32,12 @@ const UnitSearch = () => {
     }
   };
 
-  const handleRemoveUnit = (unitId: string) => {
-    setSelectedUnits(selectedUnits.filter((u) => u.id !== unitId));
+  const handleRemoveUnit = (unitId: number) => {
+    onComplete(selectedUnits.filter((u) => u.id !== unitId));
   };
   const handleCompleteSelection = () => {
-    setSelectedUnits(tempSelectedUnits);
+    // setSelectedUnits(tempSelectedUnits);
+    onComplete(tempSelectedUnits);
     setIsSearchModalOpen(false);
     setSearchTerm('');
     setTempSelectedUnits([]);
@@ -81,7 +74,7 @@ const UnitSearch = () => {
             {/* 검색 결과 목록 */}
             <div className="border-border/50 max-h-96 space-y-2 overflow-y-auto border-b p-4">
               {filteredUnits.length > 0 ? (
-                filteredUnits.map((unit) => (
+                filteredUnits.map((unit: Unit) => (
                   <button
                     key={unit.id}
                     type="button"
@@ -90,7 +83,7 @@ const UnitSearch = () => {
                     className="hover:bg-muted flex w-full items-center gap-3 rounded-md p-2 transition disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <img
-                      src={unit.thumbnail}
+                      src={unit.thumbnailUrl}
                       alt={unit.name}
                       className="h-12 w-12 rounded object-cover"
                     />
@@ -144,7 +137,7 @@ const UnitSearch = () => {
                 <X className="h-4 w-4" />
               </button>
               <img
-                src={unit.thumbnail}
+                src={unit.thumbnailUrl}
                 alt={unit.name}
                 className="h-16 w-16 rounded object-cover"
               />

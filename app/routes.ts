@@ -13,5 +13,5 @@ export default [
   route('api/auth/naver', 'routes/api.auth.naver.ts'),
   route('api/user', 'routes/api.user.ts'),
   route('api/me', 'routes/api.me.ts'),
-  route('api/units', 'routes/api.unit.ts'),
+  route('api/unit', 'routes/api.unit.ts'),
 ] satisfies RouteConfig;

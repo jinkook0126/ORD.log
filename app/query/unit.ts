@@ -4,7 +4,7 @@ const useGetUnitsQuery = () => {
   return useQuery({
     queryKey: ['units'],
     queryFn: async () => {
-      const res = await fetch('/api/units');
+      const res = await fetch('/api/unit');
       return res.json();
     },
   });
