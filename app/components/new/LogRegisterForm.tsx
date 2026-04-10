@@ -34,14 +34,31 @@ const LogRegisterForm = () => {
   const success = watch('success');
   useEffect(() => {
     const file = photoFiles?.[0];
-    if (file) {
+    if (!file) {
+      setPhotoPreview(null);
+      return;
+    }
+
+    const isHeic =
+      file.type === 'image/heic' ||
+      file.type === 'image/heif' ||
+      file.name.toLowerCase().endsWith('.heic') ||
+      file.name.toLowerCase().endsWith('.heif');
+
+    if (isHeic) {
+      import('heic2any').then(({ default: heic2any }) => {
+        heic2any({ blob: file, toType: 'image/jpeg', quality: 0.8 }).then((converted) => {
+          const blob = Array.isArray(converted) ? converted[0] : converted;
+          const url = URL.createObjectURL(blob);
+          setPhotoPreview(url);
+        });
+      });
+    } else {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-    } else {
-      setPhotoPreview(null);
     }
   }, [photoFiles]);
 
