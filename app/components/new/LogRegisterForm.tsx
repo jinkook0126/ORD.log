@@ -2,6 +2,8 @@ import { Camera } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import type { Difficulty } from '~/lib/prismaClient';
+
 import UnitSearch, { type Unit } from './UnitSearch';
 
 interface ClearFormData {
@@ -9,7 +11,7 @@ interface ClearFormData {
   unitCount: number;
   score: number;
   photo: FileList;
-  difficulty: '신' | '악몽';
+  difficulty: Difficulty;
   success: boolean;
 }
 const LogRegisterForm = () => {
@@ -26,7 +28,7 @@ const LogRegisterForm = () => {
       unitIds: [],
       unitCount: undefined,
       score: undefined,
-      difficulty: '신',
+      difficulty: 'GOD',
       success: true,
     },
   });
@@ -72,6 +74,21 @@ const LogRegisterForm = () => {
       score: data.score,
       photo: data.photo?.[0],
     });
+    const res = await fetch('/api/log', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message);
+    }
+    const result = await res.json();
+    console.log(result);
+    return data;
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6">
@@ -103,7 +120,7 @@ const LogRegisterForm = () => {
           }}
           render={({ field }) => (
             <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
-              {['신', '악몽'].map((level) => (
+              {['GOD', 'NIGHTMARE'].map((level) => (
                 <button
                   type="button"
                   key={level}
@@ -114,7 +131,7 @@ const LogRegisterForm = () => {
                       : 'text-foreground hover:bg-muted'
                   }`}
                 >
-                  {level}
+                  {'GOD' === level ? '신' : '악몽'}
                 </button>
               ))}
             </div>
