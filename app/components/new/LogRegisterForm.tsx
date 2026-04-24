@@ -16,6 +16,7 @@ interface ClearFormData {
 }
 const LogRegisterForm = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [convertedFile, setConvertedFile] = useState<File | null>(null);
 
   const {
     register,
@@ -23,6 +24,7 @@ const LogRegisterForm = () => {
     formState: { errors, isSubmitting },
     watch,
     control,
+    setError,
   } = useForm<ClearFormData>({
     defaultValues: {
       unitIds: [],
@@ -49,13 +51,16 @@ const LogRegisterForm = () => {
 
     if (isHeic) {
       import('heic2any').then(({ default: heic2any }) => {
-        heic2any({ blob: file, toType: 'image/jpeg', quality: 0.8 }).then((converted) => {
+        heic2any({ blob: file, toType: 'image/webp', quality: 0.8 }).then((converted) => {
           const blob = Array.isArray(converted) ? converted[0] : converted;
-          const url = URL.createObjectURL(blob);
-          setPhotoPreview(url);
+          const webpFileName = file.name.replace(/\.(heic|heif)$/i, '.webp');
+          const webpFile = new File([blob], webpFileName, { type: 'image/webp' });
+          setConvertedFile(webpFile);
+          setPhotoPreview(URL.createObjectURL(blob));
         });
       });
     } else {
+      setConvertedFile(null);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result as string);
@@ -74,12 +79,21 @@ const LogRegisterForm = () => {
       score: data.score,
       photo: data.photo?.[0],
     });
+    const formData = new FormData();
+    if (!convertedFile) {
+      setError('photo', { message: '클리어 사진을 선택해주세요' });
+      return;
+    }
+    formData.append('photo', convertedFile);
+    Object.entries(data).forEach(([key, value]) => {
+      if (key !== 'photo') {
+        formData.append(key, value as string);
+      }
+    });
     const res = await fetch('/api/log', {
       method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      // body: JSON.stringify(data),
+      body: formData,
       credentials: 'include',
     });
     if (!res.ok) {
@@ -88,7 +102,6 @@ const LogRegisterForm = () => {
     }
     const result = await res.json();
     console.log(result);
-    return data;
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6">

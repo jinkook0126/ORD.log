@@ -9,10 +9,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   const userId = await getUserId(request);
   console.log(userId);
-  const body = await request.json();
-  const { success, difficulty, unitIds, unitCount, score, photo } = body;
-  console.log(photo);
-  const imageUrl = await uploadFile(photo);
+  const formData = await request.formData();
+  const imageUrl = await uploadFile(formData.get('photo') as File);
+  console.log(imageUrl);
   // const log = await createLog({ success, difficulty, unitIds, unitCount, score, imageUrl, userId });
   // console.log(log);
   return Response.json({ success: true });
