@@ -13,7 +13,6 @@ export function meta() {
 
 export default function () {
   const { data } = useGetHomeQuery();
-  console.log(data);
   return (
     <main className="mx-auto max-w-4xl px-8">
       <section className="flex flex-col items-center gap-6 py-16">
@@ -22,7 +21,7 @@ export default function () {
       </section>
       <div className="grid gap-6 pb-12">
         <RecentClears data={data?.recentClears} />
-        <Ranking />
+        <Ranking god={data?.godRanking} nightmare={data?.nightmareRanking} />
       </div>
     </main>
   );
