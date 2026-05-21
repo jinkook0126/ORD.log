@@ -2,6 +2,7 @@ import Logo from '~/components/main/Logo';
 import { Ranking } from '~/components/main/Ranking';
 import RecentClears from '~/components/main/RecentClears';
 import SearchInput from '~/components/main/SearchInput';
+import { useGetHomeQuery } from '~/query/home';
 
 export function meta() {
   return [
@@ -11,6 +12,8 @@ export function meta() {
 }
 
 export default function () {
+  const { data } = useGetHomeQuery();
+  console.log(data);
   return (
     <main className="mx-auto max-w-4xl px-8">
       <section className="flex flex-col items-center gap-6 py-16">
@@ -18,7 +21,7 @@ export default function () {
         <SearchInput />
       </section>
       <div className="grid gap-6 pb-12">
-        <RecentClears />
+        <RecentClears data={data?.recentClears} />
         <Ranking />
       </div>
     </main>
