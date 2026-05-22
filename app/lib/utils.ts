@@ -15,11 +15,11 @@ export function formatTimeAgo(date: string): string {
   return `${Math.floor(hours / 24)}일 전`;
 }
 
-export function getModeBadgeVariant(mode: string) {
-  switch (mode) {
-    case '신':
+export function getModeBadgeVariant(difficulty: Difficulty) {
+  switch (difficulty) {
+    case 'GOD':
       return 'default';
-    case '악몽':
+    case 'NIGHTMARE':
       return 'destructive';
     default:
       return 'secondary';

@@ -16,4 +16,5 @@ export default [
   route('api/unit', 'routes/api.unit.ts'),
   route('api/log', 'routes/api.log.ts'),
   route('api/home', 'routes/api.home.ts'),
+  route('api/clears', 'routes/api.clear.ts'),
 ] satisfies RouteConfig;
