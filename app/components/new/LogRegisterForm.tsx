@@ -85,14 +85,14 @@ const LogRegisterForm = () => {
       return;
     }
     formData.append('photo', convertedFile);
+    formData.append('unitIds', data.unitIds.map((unit) => unit.id).join(','));
     Object.entries(data).forEach(([key, value]) => {
-      if (key !== 'photo') {
+      if (key !== 'photo' && key !== 'unitIds') {
         formData.append(key, value as string);
       }
     });
     const res = await fetch('/api/log', {
       method: 'POST',
-      // body: JSON.stringify(data),
       body: formData,
       credentials: 'include',
     });

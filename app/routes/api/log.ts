@@ -1,5 +1,7 @@
+import type { Difficulty } from 'generated/prisma/enums';
 import type { ActionFunctionArgs } from 'react-router';
 
+import { createLog } from '~/db/log';
 import { getUserId } from '~/lib/auth.server';
 import { uploadFile } from '~/lib/storage.server';
 
@@ -8,11 +10,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return new Response('Method not allowed', { status: 405 });
   }
   const userId = await getUserId(request);
-  console.log(userId);
   const formData = await request.formData();
   const imageUrl = await uploadFile(formData.get('photo') as File);
-  console.log(imageUrl);
-  // const log = await createLog({ success, difficulty, unitIds, unitCount, score, imageUrl, userId });
-  // console.log(log);
+  const data = {
+    success: formData.get('success') === 'true',
+    difficulty: formData.get('difficulty') as Difficulty,
+    unitIds: (formData.get('unitIds') as string).split(',').map(Number),
+    unitCount: Number(formData.get('unitCount')),
+    score: Number(formData.get('score')),
+    imageUrl,
+    userId,
+  };
+  const log = await createLog(data);
+  console.log(log);
   return Response.json({ success: true });
 };
