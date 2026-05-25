@@ -49,6 +49,7 @@ model Unit {
   thumbnailUrl    String
   grade           Grade            @relation(fields: [gradeId], references: [id])
   gameRecordUnits GameRecordUnit[]
+  userUnitStats   UserUnitStat[]
 
   @@unique([name, gradeId])
 }
@@ -99,15 +100,20 @@ model UserStat {
 }
 
 model UserUnitStat {
-  userId    Int
-  unitId    Int
+  userId     Int
+  unitId     Int
+  difficulty Difficulty
+
   pickCount Int @default(0)
   winCount  Int @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  unit Unit @relation(fields: [unitId], references: [id])
 
-  @@id([userId, unitId])
+  @@id([userId, unitId, difficulty])
+
   @@index([unitId])
+  @@index([difficulty])
 }
 
 model UserDifficultyStat {
@@ -122,5 +128,7 @@ model UserDifficultyStat {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, difficulty])
-  @@index([difficulty])
+
+  @@index([difficulty, totalScore(sort: Desc)])
+  @@index([difficulty, totalSuccess(sort: Desc)])
 }

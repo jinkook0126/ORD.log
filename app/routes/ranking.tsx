@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import type { TRankingType } from '~/db/ranking';
+import type { Difficulty } from '~/lib/prismaClient';
 
 interface RankItem {
   rank: number;
@@ -314,11 +316,11 @@ const DUMMY: Record<TabKey, RankItem[]> = {
   ],
 };
 
-const TABS: { key: TabKey; label: string; mode: string; type: string; unit: string }[] = [
-  { key: '신-클리어', label: '신 · 클리어', mode: '신', type: '클리어', unit: '회' },
-  { key: '신-점수', label: '신 · 점수', mode: '신', type: '점수', unit: '점' },
-  { key: '악몽-클리어', label: '악몽 · 클리어', mode: '악몽', type: '클리어', unit: '회' },
-  { key: '악몽-점수', label: '악몽 · 점수', mode: '악몽', type: '점수', unit: '점' },
+const TABS: { key: TabKey; mode: Difficulty; type: TRankingType; unit: string }[] = [
+  { key: '신-클리어', mode: 'GOD', type: 'clear', unit: '회' },
+  { key: '신-점수', mode: 'GOD', type: 'score', unit: '점' },
+  { key: '악몽-클리어', mode: 'NIGHTMARE', type: 'clear', unit: '회' },
+  { key: '악몽-점수', mode: 'NIGHTMARE', type: 'score', unit: '점' },
 ];
 
 function getRankStyle(rank: number) {
@@ -371,6 +373,7 @@ function Ranking() {
   const [activeTab, setActiveTab] = useState<TabKey>('신-클리어');
 
   const currentTab = TABS.find((t) => t.key === activeTab)!;
+  console.log(currentTab);
   const data = DUMMY[activeTab];
 
   return (
@@ -394,8 +397,10 @@ function Ranking() {
             }`}
           >
             <span className="flex flex-col items-center leading-tight">
-              <span className="text-[11px] font-semibold sm:text-xs">{tab.mode}</span>
-              <span className="text-[10px] font-medium opacity-80 sm:text-[11px]">{tab.type}</span>
+              <span className="text-[11px] font-semibold sm:text-xs">{tab.key.split('-')[0]}</span>
+              <span className="text-[10px] font-medium opacity-80 sm:text-[11px]">
+                {tab.key.split('-')[1]}
+              </span>
             </span>
           </button>
         ))}
@@ -418,7 +423,7 @@ function Ranking() {
             승률
           </span>
           <span className="text-muted-foreground min-w-[70px] px-2 text-right text-xs font-semibold tracking-widest uppercase">
-            {currentTab.label.split(' · ')[1]}
+            {currentTab.key.split('-')[1]}
           </span>
         </div>
 
