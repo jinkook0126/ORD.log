@@ -60,13 +60,14 @@ export const createLog = async ({
     for (const unitId of unitIds) {
       await tx.userUnitStat.upsert({
         where: {
-          userId_unitId: { userId, unitId },
+          userId_unitId_difficulty: { userId, unitId, difficulty },
         },
         create: {
           userId,
           unitId,
           pickCount: 1,
           winCount: success ? 1 : 0,
+          difficulty,
         },
         update: {
           pickCount: { increment: 1 },

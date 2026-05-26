@@ -60,7 +60,7 @@ const LogRegisterForm = () => {
         });
       });
     } else {
-      setConvertedFile(null);
+      setConvertedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result as string);
@@ -70,15 +70,6 @@ const LogRegisterForm = () => {
   }, [photoFiles]);
 
   const onSubmit = async (data: ClearFormData) => {
-    // TODO: API 호출 구현
-    console.log('Form data:', {
-      success: data.success,
-      difficulty: data.difficulty,
-      unitIds: data.unitIds,
-      unitCount: data.unitCount,
-      score: data.score,
-      photo: data.photo?.[0],
-    });
     const formData = new FormData();
     if (!convertedFile) {
       setError('photo', { message: '클리어 사진을 선택해주세요' });

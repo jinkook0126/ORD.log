@@ -64,7 +64,7 @@ function ListContainer({ data }: { data?: ClearItem[] }) {
             <img
               src={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/screen/${item.imageUrl}`}
               alt={item.imageUrl}
-              className="h-full w-full object-cover"
+              className="h-[130px] w-full object-cover"
             />
           </div>
           <div className="flex w-full flex-col items-center gap-1.5 p-3">

@@ -22,6 +22,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     userId,
   };
   const log = await createLog(data);
-  console.log(log);
   return Response.json({ success: true });
 };
