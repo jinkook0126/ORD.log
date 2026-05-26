@@ -1,6 +1,7 @@
 import type { Difficulty } from 'generated/prisma/enums';
 
 import { prisma } from '~/lib/prisma';
+import type { Prisma } from '~/lib/prismaClient';
 
 export type TRankingType = 'score' | 'clear';
 interface GetRankingParams {
@@ -10,6 +11,30 @@ interface GetRankingParams {
   page?: number;
 }
 
+export type RankingPayload = Prisma.UserDifficultyStatGetPayload<{
+  include: {
+    user: {
+      select: {
+        id: true;
+        nickname: true;
+        thumbnailUrl: true;
+      };
+    };
+  };
+}>;
+export type UnitStatPayload = Prisma.UserUnitStatGetPayload<{
+  include: {
+    unit: {
+      include: {
+        grade: true;
+      };
+    };
+  };
+}>;
+
+export interface RankingItem extends RankingPayload {
+  mostUnits: UnitStatPayload[];
+}
 const PAGE_SIZE = 20;
 
 export async function getRanking({ difficulty, type, page = 1 }: GetRankingParams) {

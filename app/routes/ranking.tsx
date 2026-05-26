@@ -1,321 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
 
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import RankingListContainer from '~/components/ranking/RankingListContainer';
 import type { TRankingType } from '~/db/ranking';
 import type { Difficulty } from '~/lib/prismaClient';
 import { useRankingInfiniteQuery } from '~/query/ranking';
 
-interface RankItem {
-  rank: number;
-  photo: string;
-  nickname: string;
-  value: number;
-  topUnits: string[];
-  wins: number;
-  losses: number;
-}
-
 type TabKey = '신-클리어' | '신-점수' | '악몽-클리어' | '악몽-점수';
-
-const DUMMY: Record<TabKey, RankItem[]> = {
-  '신-클리어': [
-    {
-      rank: 1,
-      photo: '/public/assets/test.webp',
-      nickname: 'StormBringer',
-      value: 55,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 55,
-      losses: 5,
-    },
-    {
-      rank: 2,
-      photo: '/public/assets/test.webp',
-      nickname: 'PhoenixRise',
-      value: 49,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 49,
-      losses: 11,
-    },
-    {
-      rank: 3,
-      photo: '/public/assets/test.webp',
-      nickname: 'DarkSlayer',
-      value: 44,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 44,
-      losses: 14,
-    },
-    {
-      rank: 4,
-      photo: '/public/assets/test.webp',
-      nickname: '루나틱',
-      value: 36,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 36,
-      losses: 16,
-    },
-    {
-      rank: 5,
-      photo: '/public/assets/test.webp',
-      nickname: '섀도우',
-      value: 30,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 30,
-      losses: 18,
-    },
-    {
-      rank: 6,
-      photo: '/public/assets/test.webp',
-      nickname: '눈떠보니옆에',
-      value: 28,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 28,
-      losses: 20,
-    },
-    {
-      rank: 7,
-      photo: '/public/assets/test.webp',
-      nickname: 'NightOwl',
-      value: 21,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 21,
-      losses: 22,
-    },
-    {
-      rank: 8,
-      photo: '/public/assets/test.webp',
-      nickname: '천둥번개',
-      value: 18,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 18,
-      losses: 25,
-    },
-  ],
-  '신-점수': [
-    {
-      rank: 1,
-      photo: '/public/assets/test.webp',
-      nickname: 'PhoenixRise',
-      value: 112400,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 52,
-      losses: 8,
-    },
-    {
-      rank: 2,
-      photo: '/public/assets/test.webp',
-      nickname: 'StormBringer',
-      value: 105800,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 55,
-      losses: 5,
-    },
-    {
-      rank: 3,
-      photo: '/public/assets/test.webp',
-      nickname: 'DarkSlayer',
-      value: 98520,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 44,
-      losses: 14,
-    },
-    {
-      rank: 4,
-      photo: '/public/assets/test.webp',
-      nickname: '루나틱',
-      value: 87300,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 38,
-      losses: 18,
-    },
-    {
-      rank: 5,
-      photo: '/public/assets/test.webp',
-      nickname: '섀도우',
-      value: 76100,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 32,
-      losses: 20,
-    },
-    {
-      rank: 6,
-      photo: '/public/assets/test.webp',
-      nickname: '눈떠보니옆에',
-      value: 65400,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 28,
-      losses: 22,
-    },
-    {
-      rank: 7,
-      photo: '/public/assets/test.webp',
-      nickname: 'NightOwl',
-      value: 54200,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 22,
-      losses: 28,
-    },
-    {
-      rank: 8,
-      photo: '/public/assets/test.webp',
-      nickname: '천둥번개',
-      value: 43800,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 18,
-      losses: 30,
-    },
-  ],
-  '악몽-클리어': [
-    {
-      rank: 1,
-      photo: '/public/assets/test.webp',
-      nickname: 'DarkSlayer',
-      value: 42,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 42,
-      losses: 8,
-    },
-    {
-      rank: 2,
-      photo: '/public/assets/test.webp',
-      nickname: '루나틱',
-      value: 38,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 38,
-      losses: 12,
-    },
-    {
-      rank: 3,
-      photo: '/public/assets/test.webp',
-      nickname: '섀도우',
-      value: 31,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 31,
-      losses: 15,
-    },
-    {
-      rank: 4,
-      photo: '/public/assets/test.webp',
-      nickname: 'StormBringer',
-      value: 27,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 27,
-      losses: 18,
-    },
-    {
-      rank: 5,
-      photo: '/public/assets/test.webp',
-      nickname: 'PhoenixRise',
-      value: 22,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 22,
-      losses: 20,
-    },
-    {
-      rank: 6,
-      photo: '/public/assets/test.webp',
-      nickname: '눈떠보니옆에',
-      value: 19,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 19,
-      losses: 22,
-    },
-    {
-      rank: 7,
-      photo: '/public/assets/test.webp',
-      nickname: 'NightOwl',
-      value: 14,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 14,
-      losses: 25,
-    },
-    {
-      rank: 8,
-      photo: '/public/assets/test.webp',
-      nickname: '천둥번개',
-      value: 11,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 11,
-      losses: 28,
-    },
-  ],
-  '악몽-점수': [
-    {
-      rank: 1,
-      photo: '/public/assets/test.webp',
-      nickname: '섀도우',
-      value: 85100,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 35,
-      losses: 10,
-    },
-    {
-      rank: 2,
-      photo: '/public/assets/test.webp',
-      nickname: '루나틱',
-      value: 76300,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 38,
-      losses: 12,
-    },
-    {
-      rank: 3,
-      photo: '/public/assets/test.webp',
-      nickname: 'DarkSlayer',
-      value: 68900,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 42,
-      losses: 8,
-    },
-    {
-      rank: 4,
-      photo: '/public/assets/test.webp',
-      nickname: 'StormBringer',
-      value: 59400,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 27,
-      losses: 18,
-    },
-    {
-      rank: 5,
-      photo: '/public/assets/test.webp',
-      nickname: 'PhoenixRise',
-      value: 51200,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 22,
-      losses: 20,
-    },
-    {
-      rank: 6,
-      photo: '/public/assets/test.webp',
-      nickname: '눈떠보니옆에',
-      value: 44700,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 19,
-      losses: 22,
-    },
-    {
-      rank: 7,
-      photo: '/public/assets/test.webp',
-      nickname: 'NightOwl',
-      value: 37600,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 16,
-      losses: 24,
-    },
-    {
-      rank: 8,
-      photo: '/public/assets/test.webp',
-      nickname: '천둥번개',
-      value: 29100,
-      topUnits: Array(3).fill('/placeholder.svg'),
-      wins: 12,
-      losses: 28,
-    },
-  ],
-};
 
 const TABS: { key: TabKey; mode: Difficulty; type: TRankingType; unit: string }[] = [
   { key: '신-클리어', mode: 'GOD', type: 'clear', unit: '회' },
@@ -324,63 +14,16 @@ const TABS: { key: TabKey; mode: Difficulty; type: TRankingType; unit: string }[
   { key: '악몽-점수', mode: 'NIGHTMARE', type: 'score', unit: '점' },
 ];
 
-function getRankStyle(rank: number) {
-  if (rank === 1) return 'text-yellow-400';
-  if (rank === 2) return 'text-gray-500 dark:text-gray-300';
-  if (rank === 3) return 'text-amber-600';
-  return 'text-muted-foreground';
-}
-
-function getRankBg(rank: number) {
-  if (rank === 1) return 'bg-yellow-400/5';
-  if (rank === 2) return 'bg-gray-300/5';
-  if (rank === 3) return 'bg-amber-600/5';
-  return '';
-}
-
-function WinRateBar({ wins, losses }: { wins: number; losses: number }) {
-  const total = wins + losses;
-  const winPercentage = total > 0 ? (wins / total) * 100 : 0;
-  const lossPercentage = 100 - winPercentage;
-
-  return (
-    <div className="flex items-center gap-2">
-      <div className="flex h-5 w-24 overflow-hidden rounded-sm">
-        <div
-          className="flex h-full items-center justify-start bg-blue-500"
-          style={{ width: `${winPercentage}%` }}
-        >
-          {winPercentage > 25 && (
-            <span className="pl-1 text-[9px] font-bold text-white">{wins}승</span>
-          )}
-        </div>
-        <div
-          className="flex h-full items-center justify-end bg-red-500"
-          style={{ width: `${lossPercentage}%` }}
-        >
-          {lossPercentage > 25 && (
-            <span className="pr-1 text-[9px] font-bold text-white">{losses}패</span>
-          )}
-        </div>
-      </div>
-      <span className="text-muted-foreground text-xs font-medium whitespace-nowrap">
-        {winPercentage.toFixed(0)}%
-      </span>
-    </div>
-  );
-}
+export type TabItem = (typeof TABS)[number];
 
 function Ranking() {
   const [activeTab, setActiveTab] = useState<TabKey>('신-클리어');
 
   const currentTab = TABS.find((t) => t.key === activeTab)!;
-  console.log(currentTab);
-  const data = DUMMY[activeTab];
   const { data: ranking } = useRankingInfiniteQuery({
     difficulty: currentTab.mode,
     type: currentTab.type,
   });
-  console.log(ranking);
   return (
     <main className="mx-auto max-w-3xl px-8 py-10 md:py-16">
       <div className="py-6">
@@ -389,7 +32,6 @@ function Ranking() {
         </h1>
       </div>
 
-      {/* Tabs */}
       <div className="border-border mb-6 flex gap-1 rounded-lg border p-1">
         {TABS.map((tab) => (
           <button
@@ -411,9 +53,7 @@ function Ranking() {
         ))}
       </div>
 
-      {/* Table */}
       <div className="border-border bg-card overflow-hidden rounded-lg border">
-        {/* Header */}
         <div className="border-border bg-secondary/30 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 md:grid-cols-[3rem_1fr_100px_160px_90px]">
           <span className="text-muted-foreground text-center font-mono text-xs font-semibold tracking-widest uppercase">
             #
@@ -432,57 +72,12 @@ function Ranking() {
           </span>
         </div>
 
-        {/* Rows */}
-        {data.map((item) => (
-          <div
-            key={item.rank}
-            className={`border-border hover:bg-secondary/40 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 transition-colors last:border-b-0 md:grid-cols-[3rem_1fr_100px_160px_90px] ${getRankBg(item.rank)}`}
-          >
-            {/* Rank */}
-            <span className={`text-center font-mono text-sm font-bold ${getRankStyle(item.rank)}`}>
-              {item.rank}
-            </span>
+        <RankingListContainer
+          list={ranking?.pages.flatMap((page) => page.items)}
+          tab={currentTab}
+        />
 
-            {/* Nickname */}
-            <div className="flex items-center gap-3">
-              <Avatar className="border-border h-8 w-8 border">
-                <AvatarImage src={item.photo} />
-                <AvatarFallback className="bg-secondary text-[10px]">
-                  {item.nickname[0]}
-                </AvatarFallback>
-              </Avatar>
-              <Link
-                to={`/user/${item.nickname}`}
-                className="text-foreground hover:text-primary text-sm font-medium transition-colors"
-              >
-                {item.nickname}
-              </Link>
-            </div>
-
-            {/* Top Units — desktop only */}
-            <div className="hidden min-w-[90px] items-center gap-1 px-2 pr-6 md:flex">
-              {item.topUnits.map((src, i) => (
-                <Avatar key={i} className="border-border bg-background h-7 w-7 border">
-                  <AvatarImage src={src} />
-                  <AvatarFallback className="bg-secondary text-[8px]">U</AvatarFallback>
-                </Avatar>
-              ))}
-            </div>
-
-            {/* Win Rate — desktop only */}
-            <div className="hidden min-w-[100px] px-2 pl-6 md:flex">
-              <WinRateBar wins={item.wins} losses={item.losses} />
-            </div>
-
-            {/* Value */}
-            <span className="text-foreground min-w-[70px] px-2 text-right font-mono text-sm font-semibold">
-              {item.value.toLocaleString()}
-              <span className="text-muted-foreground ml-0.5 text-xs font-normal">
-                {currentTab.unit}
-              </span>
-            </span>
-          </div>
-        ))}
+        {/* TODO: 인피니티 스크롤 옵저버 설정 */}
       </div>
     </main>
   );
