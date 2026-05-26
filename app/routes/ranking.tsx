@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import type { TRankingType } from '~/db/ranking';
 import type { Difficulty } from '~/lib/prismaClient';
+import { useRankingInfiniteQuery } from '~/query/ranking';
 
 interface RankItem {
   rank: number;
@@ -375,7 +376,11 @@ function Ranking() {
   const currentTab = TABS.find((t) => t.key === activeTab)!;
   console.log(currentTab);
   const data = DUMMY[activeTab];
-
+  const { data: ranking } = useRankingInfiniteQuery({
+    difficulty: currentTab.mode,
+    type: currentTab.type,
+  });
+  console.log(ranking);
   return (
     <main className="mx-auto max-w-3xl px-8 py-10 md:py-16">
       <div className="py-6">

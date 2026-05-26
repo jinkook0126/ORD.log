@@ -14,5 +14,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     type,
     page: page ? Number(page) : 1,
   });
+  console.log(difficulty, type, page, items);
   return Response.json({ items });
 };

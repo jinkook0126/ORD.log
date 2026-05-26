@@ -111,9 +111,9 @@ model UserUnitStat {
   unit Unit @relation(fields: [unitId], references: [id])
 
   @@id([userId, unitId, difficulty])
-
   @@index([unitId])
   @@index([difficulty])
+  @@index([difficulty, userId, pickCount(sort: Desc)])
 }
 
 model UserDifficultyStat {
@@ -128,7 +128,6 @@ model UserDifficultyStat {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, difficulty])
-
   @@index([difficulty, totalScore(sort: Desc)])
   @@index([difficulty, totalSuccess(sort: Desc)])
 }
