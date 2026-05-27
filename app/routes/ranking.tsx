@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import RankingListContainer from '~/components/ranking/RankingListContainer';
 import type { TRankingType } from '~/db/ranking';
@@ -17,13 +18,35 @@ const TABS: { key: TabKey; mode: Difficulty; type: TRankingType; unit: string }[
 export type TabItem = (typeof TABS)[number];
 
 function Ranking() {
+  const { ref, inView } = useInView();
+
   const [activeTab, setActiveTab] = useState<TabKey>('신-클리어');
 
   const currentTab = TABS.find((t) => t.key === activeTab)!;
-  const { data: ranking } = useRankingInfiniteQuery({
+  const {
+    data: ranking,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useRankingInfiniteQuery({
     difficulty: currentTab.mode,
     type: currentTab.type,
   });
+  const rankingList = useMemo(() => {
+    return ranking?.pages.flatMap((page) => page.items) ?? [];
+  }, [ranking]);
+
+  useEffect(() => {
+    if (!inView) return;
+    if (!hasNextPage) return;
+    if (isFetchingNextPage) return;
+    fetchNextPage();
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
   return (
     <main className="mx-auto max-w-3xl px-8 py-10 md:py-16">
       <div className="py-6">
@@ -72,12 +95,9 @@ function Ranking() {
           </span>
         </div>
 
-        <RankingListContainer
-          list={ranking?.pages.flatMap((page) => page.items)}
-          tab={currentTab}
-        />
+        <RankingListContainer list={rankingList} tab={currentTab} />
 
-        {/* TODO: 인피니티 스크롤 옵저버 설정 */}
+        {hasNextPage && <div ref={ref} className="h-10" />}
       </div>
     </main>
   );
