@@ -77,7 +77,7 @@ function Ranking() {
       </div>
 
       <div className="border-border bg-card overflow-hidden rounded-lg border">
-        <div className="border-border bg-secondary/30 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 md:grid-cols-[3rem_1fr_100px_160px_90px]">
+        <div className="border-border bg-secondary/30 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 md:grid-cols-[3rem_1fr_100px_160px_160px]">
           <span className="text-muted-foreground text-center font-mono text-xs font-semibold tracking-widest uppercase">
             #
           </span>

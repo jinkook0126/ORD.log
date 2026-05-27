@@ -92,7 +92,7 @@ const RankingListContainer = ({ list, tab }: { list?: RankingItem[]; tab: TabIte
       {list.map((item, index) => (
         <div
           key={`user-${item.user.id}`}
-          className={`border-border hover:bg-secondary/40 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 transition-colors last:border-b-0 md:grid-cols-[3rem_1fr_100px_160px_90px] ${getRankBg(index + 1)}`}
+          className={`border-border hover:bg-secondary/40 grid grid-cols-[3rem_1fr_auto] items-center gap-0 border-b px-4 py-3 transition-colors last:border-b-0 md:grid-cols-[3rem_1fr_100px_160px_160px] ${getRankBg(index + 1)}`}
         >
           <span className={`text-center font-mono text-sm font-bold ${getRankStyle(index + 1)}`}>
             {index + 1}
