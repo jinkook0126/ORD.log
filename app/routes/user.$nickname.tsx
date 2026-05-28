@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useParams } from 'react-router';
 
+import DifficultySection from '~/components/my/DifficultySection';
+import RankingSection from '~/components/my/RankingSection';
+import SummarySection from '~/components/my/SummarySection';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Badge } from '~/components/ui/badge';
 
@@ -144,60 +147,6 @@ const DUMMY_RECORDS: GameRecord[] = [
 ];
 
 type UnitStatMode = '통합' | '신' | '악몽';
-
-// 더미 랭킹 데이터
-interface RankingEntry {
-  nickname: string;
-  shinMaxScore: number;
-  shinClears: number;
-  nightmareMaxScore: number;
-  nightmareClears: number;
-}
-
-const DUMMY_RANKINGS: RankingEntry[] = [
-  {
-    nickname: '플레이어1',
-    shinMaxScore: 58900,
-    shinClears: 12,
-    nightmareMaxScore: 62100,
-    nightmareClears: 8,
-  },
-  {
-    nickname: '플레이어2',
-    shinMaxScore: 56200,
-    shinClears: 11,
-    nightmareMaxScore: 59800,
-    nightmareClears: 7,
-  },
-  {
-    nickname: '플레이어3',
-    shinMaxScore: 54500,
-    shinClears: 10,
-    nightmareMaxScore: 57500,
-    nightmareClears: 6,
-  },
-  {
-    nickname: '플레이어4',
-    shinMaxScore: 51200,
-    shinClears: 9,
-    nightmareMaxScore: 55200,
-    nightmareClears: 5,
-  },
-  {
-    nickname: '플레이어5',
-    shinMaxScore: 48900,
-    shinClears: 8,
-    nightmareMaxScore: 52100,
-    nightmareClears: 4,
-  },
-  {
-    nickname: '플레이어6',
-    shinMaxScore: 45200,
-    shinClears: 7,
-    nightmareMaxScore: 49500,
-    nightmareClears: 3,
-  },
-];
 
 const DUMMY_UNIT_STATS: Record<UnitStatMode, UnitStat[]> = {
   통합: [
@@ -442,33 +391,13 @@ export default function UserDetail() {
   const [openId, setOpenId] = useState<number | null>(null);
   const [unitStatMode, setUnitStatMode] = useState<UnitStatMode>('통합');
 
-  const totalScore = DUMMY_RECORDS.reduce((sum, record) => sum + record.score, 0);
-  const totalClears = DUMMY_RECORDS.filter((record) => record.cleared).length;
-  const avgUnit =
-    DUMMY_RECORDS.length > 0
-      ? (
-          DUMMY_RECORDS.reduce((sum, record) => sum + record.unitCount, 0) / DUMMY_RECORDS.length
-        ).toFixed(1)
-      : 0;
-
   // 난이도별 통계
   const shinRecords = DUMMY_RECORDS.filter((r) => r.mode === '신');
   const nightmareRecords = DUMMY_RECORDS.filter((r) => r.mode === '악몽');
 
-  const myShiMaxScore = shinRecords.length > 0 ? Math.max(...shinRecords.map((r) => r.score)) : 0;
   const myShiClears = shinRecords.filter((r) => r.cleared).length;
 
-  const myNightmareMaxScore =
-    nightmareRecords.length > 0 ? Math.max(...nightmareRecords.map((r) => r.score)) : 0;
   const myNightmareClears = nightmareRecords.filter((r) => r.cleared).length;
-
-  // 순위 계산
-  const shinScoreRank = DUMMY_RANKINGS.filter((r) => r.shinMaxScore > myShiMaxScore).length + 1;
-  const shinClearRank = DUMMY_RANKINGS.filter((r) => r.shinClears > myShiClears).length + 1;
-  const nightmareScoreRank =
-    DUMMY_RANKINGS.filter((r) => r.nightmareMaxScore > myNightmareMaxScore).length + 1;
-  const nightmareClearRank =
-    DUMMY_RANKINGS.filter((r) => r.nightmareClears > myNightmareClears).length + 1;
 
   // 난이도별 상세 정보
   const shinWinRate =
@@ -501,66 +430,18 @@ export default function UserDetail() {
         {/* 좌측: 프로필 영역 */}
         <div className="border-border bg-card sticky top-0 h-fit rounded-lg border p-6">
           <div className="space-y-4">
-            <div className="border-border bg-secondary/20 rounded-lg border p-4">
-              <span className="text-muted-foreground mb-1 block text-xs font-semibold tracking-widest uppercase">
-                총 점수
-              </span>
-              <p className="text-foreground font-mono text-2xl font-bold">
-                {totalScore.toLocaleString()}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="border-border bg-secondary/20 rounded-lg border p-4">
-                <span className="text-muted-foreground mb-1 block text-xs font-semibold tracking-widest uppercase">
-                  클리어 횟수
-                </span>
-                <p className="text-foreground font-mono text-xl font-bold">{totalClears}회</p>
-              </div>
-              <div className="border-border bg-secondary/20 rounded-lg border p-4">
-                <span className="text-muted-foreground mb-1 block text-xs font-semibold tracking-widest uppercase">
-                  평균 유닛
-                </span>
-                <p className="text-foreground font-mono text-xl font-bold">{avgUnit}</p>
-              </div>
-            </div>
+            <SummarySection nickname={nickname!} />
 
             {/* 랭킹정보 */}
-            <div className="pt-4">
-              <span className="text-muted-foreground mb-3 block text-xs font-semibold tracking-widest uppercase">
-                랭킹정보
-              </span>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="border-border rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
-                  <span className="mb-1 block text-xs font-semibold text-blue-400">신-점수</span>
-                  <p className="text-foreground font-mono text-lg font-bold">{shinScoreRank}위</p>
-                </div>
-                <div className="border-border rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
-                  <span className="mb-1 block text-xs font-semibold text-blue-400">신-클리어</span>
-                  <p className="text-foreground font-mono text-lg font-bold">{shinClearRank}위</p>
-                </div>
-                <div className="border-border rounded-lg border border-red-500/30 bg-red-500/10 p-3">
-                  <span className="mb-1 block text-xs font-semibold text-red-400">악몽-점수</span>
-                  <p className="text-foreground font-mono text-lg font-bold">
-                    {nightmareScoreRank}위
-                  </p>
-                </div>
-                <div className="border-border rounded-lg border border-red-500/30 bg-red-500/10 p-3">
-                  <span className="mb-1 block text-xs font-semibold text-red-400">악몽-클리어</span>
-                  <p className="text-foreground font-mono text-lg font-bold">
-                    {nightmareClearRank}위
-                  </p>
-                </div>
-              </div>
-            </div>
+            <RankingSection nickname={nickname!} />
 
             {/* 난이도별 정보 */}
-            <div className="pt-4">
+            <DifficultySection nickname={nickname!} />
+            {/* <div className="pt-4">
               <span className="text-muted-foreground mb-3 block text-xs font-semibold tracking-widest uppercase">
                 난이도별 정보
               </span>
               <div className="grid grid-cols-2 gap-3">
-                {/* 신 모드 */}
                 <div className="border-border rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
                   <p className="mb-3 text-xs font-semibold text-blue-400">신</p>
                   <div className="space-y-2">
@@ -585,7 +466,6 @@ export default function UserDetail() {
                   </div>
                 </div>
 
-                {/* 악몽 모드 */}
                 <div className="border-border rounded-lg border border-red-500/30 bg-red-500/10 p-3">
                   <p className="mb-3 text-xs font-semibold text-red-400">악몽</p>
                   <div className="space-y-2">
@@ -610,7 +490,7 @@ export default function UserDetail() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* 모스트 유닛 */}
             <div className="pt-4">
