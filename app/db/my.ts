@@ -135,28 +135,55 @@ export async function getMostUnits({ nickname }: { nickname: string }) {
   if (!user) {
     return null;
   }
-  const mostUnits = await prisma.userUnitStat.findMany({
+
+  const topUnits = await prisma.userUnitStat.groupBy({
+    by: ['unitId'],
+
     where: {
       userId: user.id,
-    },
-    orderBy: {
-      pickCount: 'desc',
-    },
-    take: 3,
-    include: {
       unit: {
-        select: {
-          id: true,
-          name: true,
-          thumbnailUrl: true,
-          grade: {
-            select: {
-              name: true,
-            },
+        grade: {
+          rank: {
+            gte: 4,
           },
         },
       },
     },
+    _sum: {
+      pickCount: true,
+      winCount: true,
+      totalUnitCount: true,
+    },
+    orderBy: {
+      _sum: {
+        pickCount: 'desc',
+      },
+    },
+    take: 3,
   });
-  return mostUnits;
+  const units = await prisma.unit.findMany({
+    where: {
+      id: {
+        in: topUnits.map((v) => v.unitId),
+      },
+    },
+  });
+  const result = topUnits.map((stat) => {
+    const unit = units.find((u) => u.id === stat.unitId);
+
+    const pickCount = stat._sum?.pickCount ?? 0;
+    const winCount = stat._sum?.winCount ?? 0;
+    const totalUnitCount = stat._sum?.totalUnitCount ?? 0;
+
+    return {
+      unit,
+      pickCount,
+      winCount,
+
+      winRate: pickCount > 0 ? Number(((winCount / pickCount) * 100).toFixed(1)) : 0,
+
+      avgUnitCount: pickCount > 0 ? Number((totalUnitCount / pickCount).toFixed(1)) : 0,
+    };
+  });
+  return result;
 }

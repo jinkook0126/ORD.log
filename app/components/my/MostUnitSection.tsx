@@ -4,8 +4,8 @@ import { useMyMostUnitsQuery } from '~/query/my';
 import WinRateBar from '../common/WinRateBar';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
-const MostUnitSection = () => {
-  const { data: mostUnits, isLoading } = useMyMostUnitsQuery({ nickname: 'test' });
+const MostUnitSection = ({ nickname }: { nickname: string }) => {
+  const { data: mostUnits, isLoading } = useMyMostUnitsQuery({ nickname });
   if (isLoading) {
     return null;
   }

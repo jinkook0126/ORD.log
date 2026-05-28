@@ -106,6 +106,7 @@ model UserUnitStat {
 
   pickCount Int @default(0)
   winCount  Int @default(0)
+  totalUnitCount  Int @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   unit Unit @relation(fields: [unitId], references: [id])
