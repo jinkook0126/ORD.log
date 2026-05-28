@@ -391,33 +391,6 @@ export default function UserDetail() {
   const [openId, setOpenId] = useState<number | null>(null);
   const [unitStatMode, setUnitStatMode] = useState<UnitStatMode>('통합');
 
-  // 난이도별 통계
-  const shinRecords = DUMMY_RECORDS.filter((r) => r.mode === '신');
-  const nightmareRecords = DUMMY_RECORDS.filter((r) => r.mode === '악몽');
-
-  const myShiClears = shinRecords.filter((r) => r.cleared).length;
-
-  const myNightmareClears = nightmareRecords.filter((r) => r.cleared).length;
-
-  // 난이도별 상세 정보
-  const shinWinRate =
-    shinRecords.length > 0 ? ((myShiClears / shinRecords.length) * 100).toFixed(1) : 0;
-  const shinAvgUnit =
-    shinRecords.length > 0
-      ? (shinRecords.reduce((sum, r) => sum + r.unitCount, 0) / shinRecords.length).toFixed(1)
-      : 0;
-
-  const nightmareWinRate =
-    nightmareRecords.length > 0
-      ? ((myNightmareClears / nightmareRecords.length) * 100).toFixed(1)
-      : 0;
-  const nightmareAvgUnit =
-    nightmareRecords.length > 0
-      ? (
-          nightmareRecords.reduce((sum, r) => sum + r.unitCount, 0) / nightmareRecords.length
-        ).toFixed(1)
-      : 0;
-
   return (
     <main className="mx-auto max-w-6xl px-8 py-10 md:py-16">
       <div className="mb-8">
@@ -437,60 +410,6 @@ export default function UserDetail() {
 
             {/* 난이도별 정보 */}
             <DifficultySection nickname={nickname!} />
-            {/* <div className="pt-4">
-              <span className="text-muted-foreground mb-3 block text-xs font-semibold tracking-widest uppercase">
-                난이도별 정보
-              </span>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="border-border rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
-                  <p className="mb-3 text-xs font-semibold text-blue-400">신</p>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground text-[11px]">클리어</span>
-                      <span className="text-foreground font-mono text-xs font-bold">
-                        {myShiClears}회
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground text-[11px]">승률</span>
-                      <span className="text-foreground font-mono text-xs font-bold">
-                        {shinWinRate}%
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground text-[11px]">평균 유닛</span>
-                      <span className="text-foreground font-mono text-xs font-bold">
-                        {shinAvgUnit}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-border rounded-lg border border-red-500/30 bg-red-500/10 p-3">
-                  <p className="mb-3 text-xs font-semibold text-red-400">악몽</p>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground text-[11px]">클리어</span>
-                      <span className="text-foreground font-mono text-xs font-bold">
-                        {myNightmareClears}회
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground text-[11px]">승률</span>
-                      <span className="text-foreground font-mono text-xs font-bold">
-                        {nightmareWinRate}%
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground text-[11px]">평균 유닛</span>
-                      <span className="text-foreground font-mono text-xs font-bold">
-                        {nightmareAvgUnit}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
 
             {/* 모스트 유닛 */}
             <div className="pt-4">

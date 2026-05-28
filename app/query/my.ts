@@ -29,3 +29,13 @@ export const useMyDifficultySummaryQuery = ({ nickname }: { nickname: string }) 
     },
   });
 };
+
+export const useMyMostUnitsQuery = ({ nickname }: { nickname: string }) => {
+  return useQuery({
+    queryKey: ['my-most-units', nickname],
+    queryFn: async () => {
+      const res = await fetch(`/api/my/most-units?nickname=${nickname}`);
+      return res.json();
+    },
+  });
+};

@@ -125,3 +125,38 @@ export async function getDifficultySummary({ nickname }: { nickname: string }) {
     nightmare: nightmare,
   };
 }
+
+export async function getMostUnits({ nickname }: { nickname: string }) {
+  const user = await prisma.user.findFirst({
+    where: {
+      nickname: nickname,
+    },
+  });
+  if (!user) {
+    return null;
+  }
+  const mostUnits = await prisma.userUnitStat.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      pickCount: 'desc',
+    },
+    take: 3,
+    include: {
+      unit: {
+        select: {
+          id: true,
+          name: true,
+          thumbnailUrl: true,
+          grade: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return mostUnits;
+}
