@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { TMostUnit } from '~/db/my';
+import type { TGameRecord, TMostUnit } from '~/db/my';
 
 export const useMySummaryQuery = ({ nickname }: { nickname: string }) => {
   return useQuery({
@@ -42,6 +42,16 @@ export const useMyMostUnitsQuery = ({ nickname }: { nickname: string }) => {
     queryKey: ['my-most-units', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/most-units?nickname=${nickname}`);
+      return res.json();
+    },
+  });
+};
+
+export const useMyGameRecordsQuery = ({ nickname }: { nickname: string }) => {
+  return useQuery<TGameRecord[]>({
+    queryKey: ['my-game-records', nickname],
+    queryFn: async () => {
+      const res = await fetch(`/api/my/game-records?nickname=${nickname}`);
       return res.json();
     },
   });

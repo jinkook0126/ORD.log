@@ -1,5 +1,5 @@
 import { prisma } from '~/lib/prisma';
-import type { Grade, Unit } from '~/lib/prismaClient';
+import type { Grade, Prisma, Unit } from '~/lib/prismaClient';
 
 export type TMostUnit = {
   unit: Unit & { grade: Grade };
@@ -8,6 +8,20 @@ export type TMostUnit = {
   winRate: number;
   avgUnitCount: number;
 };
+
+export type TGameRecord = Prisma.GameRecordGetPayload<{
+  include: {
+    units: {
+      include: {
+        unit: {
+          include: {
+            grade: true;
+          };
+        };
+      };
+    };
+  };
+}>;
 
 export async function getSummary({ nickname }: { nickname: string }) {
   const user = await prisma.user.findFirst({
@@ -213,4 +227,32 @@ export async function getMostUnits({ nickname }: { nickname: string }) {
     };
   });
   return result;
+}
+
+export async function getGameRecords({ nickname }: { nickname: string }) {
+  const user = await prisma.user.findFirst({
+    where: {
+      nickname: nickname,
+    },
+  });
+  if (!user) {
+    return null;
+  }
+  const gameRecords = await prisma.gameRecord.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      units: {
+        include: {
+          unit: {
+            include: {
+              grade: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return gameRecords;
 }
