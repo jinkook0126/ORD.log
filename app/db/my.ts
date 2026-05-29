@@ -1,4 +1,13 @@
 import { prisma } from '~/lib/prisma';
+import type { Grade, Unit } from '~/lib/prismaClient';
+
+export type TMostUnit = {
+  unit: Unit & { grade: Grade };
+  pickCount: number;
+  winCount: number;
+  winRate: number;
+  avgUnitCount: number;
+};
 
 export async function getSummary({ nickname }: { nickname: string }) {
   const user = await prisma.user.findFirst({
@@ -20,12 +29,14 @@ export async function getSummary({ nickname }: { nickname: string }) {
 export async function getRanking({ nickname }: { nickname: string }) {
   const user = await prisma.user.findFirst({
     where: {
-      nickname: nickname,
+      nickname,
     },
   });
+
   if (!user) {
     return null;
   }
+
   const [god, nightmare] = await Promise.all([
     prisma.userDifficultyStat.findUnique({
       where: {
@@ -47,47 +58,59 @@ export async function getRanking({ nickname }: { nickname: string }) {
   ]);
 
   const [godScoreRank, godClearRank, nightmareScoreRank, nightmareClearRank] = await Promise.all([
-    prisma.userDifficultyStat.count({
-      where: {
-        difficulty: 'GOD',
-        totalScore: {
-          gt: god?.totalScore ?? 0,
-        },
-      },
-    }),
+    god
+      ? prisma.userDifficultyStat.count({
+          where: {
+            difficulty: 'GOD',
+            totalScore: {
+              gt: god.totalScore,
+            },
+          },
+        })
+      : null,
 
-    prisma.userDifficultyStat.count({
-      where: {
-        difficulty: 'GOD',
-        totalSuccess: {
-          gt: god?.totalSuccess ?? 0,
-        },
-      },
-    }),
+    god
+      ? prisma.userDifficultyStat.count({
+          where: {
+            difficulty: 'GOD',
+            totalSuccess: {
+              gt: god.totalSuccess,
+            },
+          },
+        })
+      : null,
 
-    prisma.userDifficultyStat.count({
-      where: {
-        difficulty: 'NIGHTMARE',
-        totalScore: {
-          gt: nightmare?.totalScore ?? 0,
-        },
-      },
-    }),
+    nightmare
+      ? prisma.userDifficultyStat.count({
+          where: {
+            difficulty: 'NIGHTMARE',
+            totalScore: {
+              gt: nightmare.totalScore,
+            },
+          },
+        })
+      : null,
 
-    prisma.userDifficultyStat.count({
-      where: {
-        difficulty: 'NIGHTMARE',
-        totalSuccess: {
-          gt: nightmare?.totalSuccess ?? 0,
-        },
-      },
-    }),
+    nightmare
+      ? prisma.userDifficultyStat.count({
+          where: {
+            difficulty: 'NIGHTMARE',
+            totalSuccess: {
+              gt: nightmare.totalSuccess,
+            },
+          },
+        })
+      : null,
   ]);
+
   return {
-    godScoreRank: godScoreRank + 1,
-    godClearRank: godClearRank + 1,
-    nightmareScoreRank: nightmareScoreRank + 1,
-    nightmareClearRank: nightmareClearRank + 1,
+    godScoreRank: godScoreRank !== null ? godScoreRank + 1 : null,
+
+    godClearRank: godClearRank !== null ? godClearRank + 1 : null,
+
+    nightmareScoreRank: nightmareScoreRank !== null ? nightmareScoreRank + 1 : null,
+
+    nightmareClearRank: nightmareClearRank !== null ? nightmareClearRank + 1 : null,
   };
 }
 
@@ -167,7 +190,11 @@ export async function getMostUnits({ nickname }: { nickname: string }) {
         in: topUnits.map((v) => v.unitId),
       },
     },
+    include: {
+      grade: true,
+    },
   });
+  console.log(topUnits);
   const result = topUnits.map((stat) => {
     const unit = units.find((u) => u.id === stat.unitId);
 

@@ -72,6 +72,7 @@ export const createLog = async ({
         update: {
           pickCount: { increment: 1 },
           winCount: success ? { increment: 1 } : undefined,
+          totalUnitCount: { increment: unitCount },
         },
       });
     }

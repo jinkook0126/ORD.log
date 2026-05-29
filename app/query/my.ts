@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import type { TMostUnit } from '~/db/my';
+
 export const useMySummaryQuery = ({ nickname }: { nickname: string }) => {
   return useQuery({
     queryKey: ['my-summary', nickname],
@@ -11,7 +13,12 @@ export const useMySummaryQuery = ({ nickname }: { nickname: string }) => {
 };
 
 export const useMyRankingQuery = ({ nickname }: { nickname: string }) => {
-  return useQuery({
+  return useQuery<{
+    godScoreRank: number | null;
+    godClearRank: number | null;
+    nightmareScoreRank: number | null;
+    nightmareClearRank: number | null;
+  }>({
     queryKey: ['my-ranking', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/ranking?nickname=${nickname}`);
@@ -31,7 +38,7 @@ export const useMyDifficultySummaryQuery = ({ nickname }: { nickname: string }) 
 };
 
 export const useMyMostUnitsQuery = ({ nickname }: { nickname: string }) => {
-  return useQuery({
+  return useQuery<TMostUnit[]>({
     queryKey: ['my-most-units', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/most-units?nickname=${nickname}`);

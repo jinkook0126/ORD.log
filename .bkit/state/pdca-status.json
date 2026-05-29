@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-05-26T08:10:52.869Z",
+  "lastUpdated": "2026-05-29T01:41:04.124Z",
   "activeFeatures": [
     "ord-log",
     "routes",
@@ -72,7 +72,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-05-26T05:53:07.489Z",
-        "lastUpdated": "2026-05-26T05:53:07.489Z"
+        "lastUpdated": "2026-05-29T01:41:04.124Z"
       },
       "lastFile": "D:\\jinqook\\ord-log\\app\\components\\new\\LogRegisterForm.tsx"
     },
@@ -98,7 +98,7 @@
   "session": {
     "startedAt": "2026-03-16T00:42:30.217Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-05-26T08:10:52.869Z"
+    "lastActivity": "2026-05-29T01:41:04.124Z"
   },
   "history": [
     {
@@ -1112,6 +1112,24 @@
     {
       "timestamp": "2026-05-26T08:10:52.869Z",
       "feature": "ranking",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-05-29T01:40:57.423Z",
+      "feature": "new",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-05-29T01:41:01.091Z",
+      "feature": "new",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-05-29T01:41:04.124Z",
+      "feature": "new",
       "phase": "do",
       "action": "updated"
     }

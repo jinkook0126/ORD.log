@@ -1,6 +1,7 @@
 import { Camera } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 import type { Difficulty } from '~/lib/prismaClient';
 
@@ -15,6 +16,7 @@ interface ClearFormData {
   success: boolean;
 }
 const LogRegisterForm = () => {
+  const navigate = useNavigate();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [convertedFile, setConvertedFile] = useState<File | null>(null);
 
@@ -71,11 +73,13 @@ const LogRegisterForm = () => {
 
   const onSubmit = async (data: ClearFormData) => {
     const formData = new FormData();
-    if (!convertedFile) {
+    if (data.success && !convertedFile) {
       setError('photo', { message: '클리어 사진을 선택해주세요' });
       return;
     }
-    formData.append('photo', convertedFile);
+    if (convertedFile) {
+      formData.append('photo', convertedFile);
+    }
     formData.append('unitIds', data.unitIds.map((unit) => unit.id).join(','));
     Object.entries(data).forEach(([key, value]) => {
       if (key !== 'photo' && key !== 'unitIds') {
@@ -92,7 +96,9 @@ const LogRegisterForm = () => {
       throw new Error(data.message);
     }
     const result = await res.json();
-    console.log(result);
+    if (result.success) {
+      navigate('/clears');
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6">
@@ -152,9 +158,6 @@ const LogRegisterForm = () => {
         <Controller
           name="success"
           control={control}
-          rules={{
-            required: '결과를 선택해주세요',
-          }}
           render={({ field }) => (
             <div className="border-border/50 bg-muted flex gap-2 rounded-lg border p-1">
               {[
@@ -222,7 +225,7 @@ const LogRegisterForm = () => {
       {/* 클리어 사진 */}
       <div className="space-y-3">
         <label className="text-sm font-medium">
-          클리어 사진 <span className="text-red-500">*</span>
+          클리어 사진 {success && <span className="text-red-500">*</span>}
         </label>
 
         {/* 파일 입력 */}
@@ -232,7 +235,7 @@ const LogRegisterForm = () => {
           disabled={isSubmitting}
           className="file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 block w-full text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:px-3 file:py-2"
           {...register('photo', {
-            required: '클리어 사진을 선택해주세요',
+            required: success ? '클리어 사진을 선택해주세요' : false,
           })}
         />
         {errors.photo && <p className="text-xs text-red-500">{errors.photo.message}</p>}
@@ -253,7 +256,7 @@ const LogRegisterForm = () => {
       {/* 버튼 */}
       <button
         type="submit"
-        disabled={isSubmitting || !photoFiles?.[0]}
+        disabled={isSubmitting || (success && !photoFiles?.[0])}
         className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-lg py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting ? '저장 중...' : '저장'}

@@ -40,15 +40,15 @@ export function getLabelWithDifficulty(difficulty: Difficulty) {
   }
 }
 
-export function getTierStyle(tier: UnitTier) {
-  switch (tier) {
-    case '초월':
+export function getTierStyle(grade: number) {
+  switch (grade) {
+    case 4: // 전설
       return 'bg-violet-500/15 text-violet-400 border-violet-500/30';
-    case '영원':
+    case 5:
       return 'bg-sky-500/15 text-sky-400 border-sky-500/30';
-    case '제한':
+    case 6:
       return 'bg-amber-500/15 text-amber-400 border-amber-500/30';
-    case '전설':
+    case 7:
       return 'bg-orange-500/15 text-orange-400 border-orange-500/30';
   }
 }
