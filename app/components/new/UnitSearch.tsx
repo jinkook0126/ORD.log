@@ -1,32 +1,27 @@
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
+import type { TUnit } from '~/db/unit';
+import { getTierStyle } from '~/lib/utils';
 import { useGetUnitsQuery } from '~/query/unit';
-
-export interface Unit {
-  id: number;
-  name: string;
-  thumbnailUrl: string;
-}
 
 const UnitSearch = ({
   selectedUnits,
   onComplete,
 }: {
-  selectedUnits: Unit[];
-  onComplete: (units: Unit[]) => void;
+  selectedUnits: TUnit[];
+  onComplete: (units: TUnit[]) => void;
 }) => {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  // const [selectedUnits, setSelectedUnits] = useState<Unit[]>([]);
-  const [tempSelectedUnits, setTempSelectedUnits] = useState<Unit[]>([]);
+  const [tempSelectedUnits, setTempSelectedUnits] = useState<TUnit[]>([]);
   const { data: units = [] } = useGetUnitsQuery();
 
   const filteredUnits = searchTerm
-    ? units.filter((unit: Unit) => unit.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    ? units.filter((unit: TUnit) => unit.name.toLowerCase().includes(searchTerm.toLowerCase()))
     : [];
 
-  const handleAddUnit = (unit: Unit) => {
+  const handleAddUnit = (unit: TUnit) => {
     if (!tempSelectedUnits.find((u) => u.id === unit.id)) {
       setTempSelectedUnits([...tempSelectedUnits, unit]);
     }
@@ -48,7 +43,6 @@ const UnitSearch = ({
     setSearchTerm('');
     setTempSelectedUnits([]);
   };
-
   return (
     <div>
       <label className="text-sm font-medium">
@@ -74,7 +68,7 @@ const UnitSearch = ({
             {/* 검색 결과 목록 */}
             <div className="border-border/50 max-h-96 space-y-2 overflow-y-auto border-b p-4">
               {filteredUnits.length > 0 ? (
-                filteredUnits.map((unit: Unit) => (
+                filteredUnits.map((unit: TUnit) => (
                   <button
                     key={unit.id}
                     type="button"
@@ -87,7 +81,15 @@ const UnitSearch = ({
                       alt={unit.name}
                       className="h-12 w-12 rounded object-cover"
                     />
-                    <span className="flex-1 text-left text-sm">{unit.name}</span>
+                    <div className="flex flex-col gap-1">
+                      <span className="flex-1 text-left text-sm">{unit.name}</span>
+                      <span
+                        className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.grade.rank)}`}
+                      >
+                        {unit.grade.name}
+                      </span>
+                    </div>
+
                     {tempSelectedUnits.some((u) => u.id === unit.id) && (
                       <span className="text-primary text-xs font-medium">선택됨</span>
                     )}
@@ -123,7 +125,7 @@ const UnitSearch = ({
       </div>
       {/* 선택된 유닛 목록 */}
       {selectedUnits.length > 0 && (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="mt-3 grid grid-cols-2 gap-3">
           {selectedUnits.map((unit) => (
             <div
               key={unit.id}
@@ -142,21 +144,18 @@ const UnitSearch = ({
                 className="h-16 w-16 rounded object-cover"
               />
               <p className="text-center text-xs font-medium">{unit.name}</p>
+              <p className="text-muted-foreground text-center text-xs">
+                <span
+                  className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.grade.rank)}`}
+                >
+                  {unit.grade.name}
+                </span>
+              </p>
             </div>
           ))}
         </div>
       )}
-
       {selectedUnits.length === 0 && <p className="text-xs text-red-500">유닛을 선택해주세요</p>}
-
-      {/* <input
-        type="hidden"
-        {...register('unitIds', {
-          required: '유닛을 선택해주세요',
-          validate: () => selectedUnits.length > 0 || '유닛을 선택해주세요',
-        })}
-        value={selectedUnits.map((u) => u.id).join(',')}
-      /> */}
     </div>
   );
 };
