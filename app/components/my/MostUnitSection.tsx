@@ -3,11 +3,12 @@ import { useMyMostUnitsQuery } from '~/query/my';
 
 import WinRateBar from '../common/WinRateBar';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import MostUnitLoading from './MostUnitLoading';
 
 const MostUnitSection = ({ nickname }: { nickname: string }) => {
   const { data: mostUnits, isLoading } = useMyMostUnitsQuery({ nickname });
   if (isLoading || !mostUnits) {
-    return null;
+    return <MostUnitLoading />;
   }
   return (
     <div className="pt-4">
