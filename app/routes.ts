@@ -23,4 +23,5 @@ export default [
   route('api/my/difficulty', 'routes/api/my/difficulty.ts'),
   route('api/my/most-units', 'routes/api/my/most-units.ts'),
   route('api/my/game-records', 'routes/api/my/game-records.ts'),
+  route('api/my/unit-summary', 'routes/api/my/unit-summary.ts'),
 ] satisfies RouteConfig;

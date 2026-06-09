@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import type { Difficulty } from 'generated/prisma/enums';
 
-import type { TGameRecord, TMostUnit } from '~/db/my';
+import type { TGameRecord, TMostUnit, TUnitSummary } from '~/db/my';
 
 export const useMySummaryQuery = ({ nickname }: { nickname: string }) => {
   return useQuery({
@@ -52,6 +53,24 @@ export const useMyGameRecordsQuery = ({ nickname }: { nickname: string }) => {
     queryKey: ['my-game-records', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/game-records?nickname=${nickname}`);
+      return res.json();
+    },
+  });
+};
+
+export const useMyUnitSummaryQuery = ({
+  nickname,
+  difficulty,
+}: {
+  nickname: string;
+  difficulty?: Difficulty;
+}) => {
+  return useQuery<TUnitSummary[]>({
+    queryKey: ['my-unit-summary', nickname, difficulty],
+    queryFn: async () => {
+      const res = await fetch(
+        `/api/my/unit-summary?nickname=${nickname}${difficulty ? `&difficulty=${difficulty}` : ''}`,
+      );
       return res.json();
     },
   });

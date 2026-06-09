@@ -23,7 +23,7 @@ export const useRankingInfiniteQuery = ({
     },
 
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < 20) {
+      if (lastPage.items.length < 20) {
         return undefined;
       }
 

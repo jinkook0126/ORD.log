@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router';
 
 import { formatTimeAgo, getLabelWithDifficulty } from '~/lib/utils';
 import { useMyGameRecordsQuery } from '~/query/my';
@@ -6,8 +7,9 @@ import { useMyGameRecordsQuery } from '~/query/my';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
 
-const GameRecord = ({ nickname }: { nickname: string }) => {
-  const { data: gameRecords, isLoading } = useMyGameRecordsQuery({ nickname });
+const GameRecord = () => {
+  const { nickname } = useParams();
+  const { data: gameRecords, isLoading } = useMyGameRecordsQuery({ nickname: nickname! });
   const [openId, setOpenId] = useState<number | null>(null);
   if (isLoading || !gameRecords) {
     return <div>Loading...</div>;

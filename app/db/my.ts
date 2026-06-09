@@ -1,5 +1,5 @@
 import { prisma } from '~/lib/prisma';
-import type { Grade, Prisma, Unit } from '~/lib/prismaClient';
+import type { Difficulty, Grade, Prisma, Unit } from '~/lib/prismaClient';
 
 export type TMostUnit = {
   unit: Unit & { grade: Grade };
@@ -22,6 +22,18 @@ export type TGameRecord = Prisma.GameRecordGetPayload<{
     };
   };
 }>;
+
+export type TUnitSummary = {
+  unitId: number;
+  name: string;
+  thumbnailUrl: string;
+  grade: number;
+  gradeName: string;
+  pickCount: number;
+  winCount: number;
+  winRate: number;
+  avgUnitCount: number;
+};
 
 export async function getSummary({ nickname }: { nickname: string }) {
   const user = await prisma.user.findFirst({
@@ -208,7 +220,6 @@ export async function getMostUnits({ nickname }: { nickname: string }) {
       grade: true,
     },
   });
-  console.log(topUnits);
   const result = topUnits.map((stat) => {
     const unit = units.find((u) => u.id === stat.unitId);
 
@@ -255,4 +266,137 @@ export async function getGameRecords({ nickname }: { nickname: string }) {
     },
   });
   return gameRecords;
+}
+
+export async function getUnitSummary({
+  nickname,
+  difficulty,
+}: {
+  nickname: string;
+  difficulty?: Difficulty;
+}) {
+  const user = await prisma.user.findFirst({
+    where: {
+      nickname: nickname,
+    },
+  });
+  if (!user) {
+    return null;
+  }
+  if (difficulty) {
+    const stats = await prisma.userUnitStat.findMany({
+      where: {
+        userId: user.id,
+        difficulty: difficulty,
+        unit: {
+          grade: {
+            rank: {
+              gte: 4,
+            },
+          },
+        },
+      },
+      include: {
+        unit: {
+          include: {
+            grade: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          pickCount: 'desc',
+        },
+        {
+          unitId: 'asc',
+        },
+      ],
+    });
+    return stats.map((stat) => ({
+      unitId: stat.unitId,
+      name: stat.unit.name,
+      thumbnailUrl: stat.unit.thumbnailUrl,
+
+      // grade 테이블 구조에 맞게 수정
+      grade: stat.unit.grade.rank,
+      gradeName: stat.unit.grade.name,
+
+      pickCount: stat.pickCount,
+      winCount: stat.winCount,
+
+      avgUnitCount: stat.pickCount > 0 ? stat.totalUnitCount / stat.pickCount : 0,
+
+      winRate: stat.pickCount > 0 ? (stat.winCount / stat.pickCount) * 100 : 0,
+    }));
+  }
+  const grouped = await prisma.userUnitStat.groupBy({
+    by: ['unitId'],
+
+    where: {
+      userId: user.id,
+      unit: {
+        grade: {
+          rank: {
+            gte: 4,
+          },
+        },
+      },
+    },
+
+    _sum: {
+      pickCount: true,
+      winCount: true,
+      totalUnitCount: true,
+    },
+
+    orderBy: [
+      {
+        _sum: {
+          pickCount: 'desc',
+        },
+      },
+      {
+        unitId: 'asc',
+      },
+    ],
+  });
+  const units = await prisma.unit.findMany({
+    where: {
+      id: {
+        in: grouped.map((g) => g.unitId),
+      },
+    },
+    include: {
+      grade: true,
+    },
+  });
+
+  const unitMap = new Map(units.map((unit) => [unit.id, unit]));
+  return grouped.map((stat) => {
+    const unit = unitMap.get(stat.unitId);
+
+    if (!unit) {
+      throw new Error(`Unit not found: ${stat.unitId}`);
+    }
+
+    const pickCount = stat._sum.pickCount ?? 0;
+    const winCount = stat._sum.winCount ?? 0;
+    const totalUnitCount = stat._sum.totalUnitCount ?? 0;
+
+    return {
+      unitId: unit.id,
+      name: unit.name,
+      thumbnailUrl: unit.thumbnailUrl,
+
+      grade: unit.grade.id,
+      gradeName: unit.grade.name,
+
+      pickCount,
+      winCount,
+
+      avgUnitCount: pickCount > 0 ? totalUnitCount / pickCount : 0,
+
+      winRate: pickCount > 0 ? (winCount / pickCount) * 100 : 0,
+    };
+  });
 }

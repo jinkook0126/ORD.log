@@ -3,10 +3,10 @@ import { useParams } from 'react-router';
 
 import DifficultySection from '~/components/my/DifficultySection';
 import GameRecord from '~/components/my/GameRecord';
+import { GameUnitRecord } from '~/components/my/GameUnitRecord';
 import MostUnitSection from '~/components/my/MostUnitSection';
 import RankingSection from '~/components/my/RankingSection';
 import SummarySection from '~/components/my/SummarySection';
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 
 interface GameUnit {
   name: string;
@@ -39,113 +39,6 @@ interface UnitStat {
 }
 
 const UNIT_PHOTO = '/public/assets/test.webp';
-const SCREENSHOT = '/public/assets/test.webp';
-
-const DUMMY_RECORDS: GameRecord[] = [
-  {
-    id: 1,
-    mode: '신',
-    cleared: true,
-    score: 45200,
-    unitCount: 3,
-    clearedUnits: [
-      { name: '불사조', photo: UNIT_PHOTO },
-      { name: '아르키온', photo: UNIT_PHOTO },
-      { name: '케이스', photo: UNIT_PHOTO },
-    ],
-    screenshot: SCREENSHOT,
-    date: '2026-03-26T14:30:00',
-  },
-  {
-    id: 2,
-    mode: '악몽',
-    cleared: true,
-    score: 52100,
-    unitCount: 4,
-    clearedUnits: [
-      { name: '아르키온', photo: UNIT_PHOTO },
-      { name: '케이스', photo: UNIT_PHOTO },
-      { name: '슬로우', photo: UNIT_PHOTO },
-      { name: '팬텀', photo: UNIT_PHOTO },
-    ],
-    screenshot: SCREENSHOT,
-    date: '2026-03-26T13:15:00',
-  },
-  {
-    id: 3,
-    mode: '신',
-    cleared: false,
-    score: 18500,
-    unitCount: 2,
-    clearedUnits: [],
-    screenshot: SCREENSHOT,
-    date: '2026-03-26T10:45:00',
-  },
-  {
-    id: 4,
-    mode: '신',
-    cleared: true,
-    score: 48900,
-    unitCount: 3,
-    clearedUnits: [
-      { name: '케이스', photo: UNIT_PHOTO },
-      { name: '슬로우', photo: UNIT_PHOTO },
-      { name: '팬텀', photo: UNIT_PHOTO },
-    ],
-    screenshot: SCREENSHOT,
-    date: '2026-03-25T14:30:00',
-  },
-  {
-    id: 5,
-    mode: '악몽',
-    cleared: true,
-    score: 35600,
-    unitCount: 2,
-    clearedUnits: [
-      { name: '불사조', photo: UNIT_PHOTO },
-      { name: '슬로우', photo: UNIT_PHOTO },
-    ],
-    screenshot: SCREENSHOT,
-    date: '2026-03-24T09:20:00',
-  },
-  {
-    id: 6,
-    mode: '신',
-    cleared: true,
-    score: 51200,
-    unitCount: 3,
-    clearedUnits: [
-      { name: '아르키온', photo: UNIT_PHOTO },
-      { name: '케이스', photo: UNIT_PHOTO },
-      { name: '팬텀', photo: UNIT_PHOTO },
-    ],
-    screenshot: SCREENSHOT,
-    date: '2026-03-23T16:45:00',
-  },
-  {
-    id: 7,
-    mode: '악몽',
-    cleared: false,
-    score: 22100,
-    unitCount: 1,
-    clearedUnits: [],
-    screenshot: SCREENSHOT,
-    date: '2026-03-22T11:30:00',
-  },
-  {
-    id: 8,
-    mode: '신',
-    cleared: true,
-    score: 46800,
-    unitCount: 2,
-    clearedUnits: [
-      { name: '팬텀', photo: UNIT_PHOTO },
-      { name: '아르키온', photo: UNIT_PHOTO },
-    ],
-    screenshot: SCREENSHOT,
-    date: '2026-03-20T15:00:00',
-  },
-];
 
 type UnitStatMode = '통합' | '신' | '악몽';
 
@@ -338,26 +231,9 @@ function getTierStyle(tier: UnitTier) {
   }
 }
 
-function getRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffMins < 1) return '방금 전';
-  if (diffMins < 60) return `${diffMins}분 전`;
-  if (diffHours < 24) return `${diffHours}시간 전`;
-  if (diffDays < 30) return `${diffDays}일 전`;
-
-  return date.toLocaleDateString('ko-KR');
-}
-
 export default function UserDetail() {
   const { nickname } = useParams();
   const [activeTab, setActiveTab] = useState<TabType>('게임기록');
-  const [openId, setOpenId] = useState<number | null>(null);
   const [unitStatMode, setUnitStatMode] = useState<UnitStatMode>('통합');
 
   return (
@@ -405,81 +281,10 @@ export default function UserDetail() {
           </div>
 
           {/* 게임 기록 탭 */}
-          {activeTab === '게임기록' && <GameRecord nickname={nickname!} />}
+          {activeTab === '게임기록' && <GameRecord />}
 
           {/* 유닛통계 탭 */}
-          {activeTab === '유닛통계' && (
-            <>
-              {/* 난이도 서브탭 */}
-              <div className="border-border border-b px-3 py-2">
-                <div className="flex gap-1">
-                  {(['통합', '신', '악몽'] as const).map((mode) => (
-                    <button
-                      key={mode}
-                      onClick={() => setUnitStatMode(mode)}
-                      className={`cursor-pointer rounded-md px-3 py-1 text-xs font-semibold transition-all duration-150 ${
-                        unitStatMode === mode
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
-                      }`}
-                    >
-                      {mode}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3 p-4 sm:grid-cols-2">
-                {DUMMY_UNIT_STATS[unitStatMode].map((unit) => (
-                  <div
-                    key={unit.id}
-                    className="border-border bg-secondary/20 hover:bg-secondary/40 flex flex-col gap-3 rounded-lg border p-3 transition-colors"
-                  >
-                    {/* 상단: 썸네일 + 이름 + 횟수 뱃지 */}
-                    <div className="flex items-center gap-3">
-                      <Avatar className="border-border h-11 w-11 shrink-0 border">
-                        <AvatarImage src={unit.photo} />
-                        <AvatarFallback className="bg-secondary text-sm">
-                          {unit.unitName[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5">
-                          <p className="text-foreground truncate text-sm font-semibold">
-                            {unit.unitName}
-                          </p>
-                          <span
-                            className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.tier)}`}
-                          >
-                            {unit.tier}
-                          </span>
-                        </div>
-                      </div>
-                      <span className="bg-primary/10 text-primary shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold">
-                        {unit.count}회
-                      </span>
-                    </div>
-
-                    {/* 하단: 통계 뱃지 2개 */}
-                    <div className="flex gap-2">
-                      <div className="border-border bg-background flex flex-1 items-center justify-between rounded-md border px-3 py-1.5">
-                        <span className="text-muted-foreground text-[11px]">평균 유닛</span>
-                        <span className="text-foreground font-mono text-xs font-bold">
-                          {unit.avgUnitCount.toFixed(1)}
-                        </span>
-                      </div>
-                      <div className="border-border bg-background flex flex-1 items-center justify-between rounded-md border px-3 py-1.5">
-                        <span className="text-muted-foreground text-[11px]">최소 유닛</span>
-                        <span className="text-foreground font-mono text-xs font-bold">
-                          {unit.minUnitCount}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+          {activeTab === '유닛통계' && <GameUnitRecord />}
         </div>
       </div>
     </main>
