@@ -6,13 +6,14 @@ import { useMyGameRecordsQuery } from '~/query/my';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
+import GameRecordLoading from './GameRecordLoading';
 
 const GameRecord = () => {
   const { nickname } = useParams();
   const { data: gameRecords, isLoading } = useMyGameRecordsQuery({ nickname: nickname! });
   const [openId, setOpenId] = useState<number | null>(null);
   if (isLoading || !gameRecords) {
-    return <div>Loading...</div>;
+    return <GameRecordLoading />;
   }
   return (
     <>

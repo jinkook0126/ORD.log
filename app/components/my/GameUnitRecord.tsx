@@ -5,7 +5,10 @@ import { getTierStyle } from '~/lib/utils';
 import { useMyUnitSummaryQuery } from '~/query/my';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import GameUnitLoading from './GameUnitLoading';
+
 type UnitStatMode = '통합' | '신' | '악몽';
+
 export function GameUnitRecord() {
   const { nickname } = useParams();
   const [unitStatMode, setUnitStatMode] = useState<UnitStatMode>('통합');
@@ -14,7 +17,7 @@ export function GameUnitRecord() {
     difficulty: unitStatMode === '신' ? 'GOD' : unitStatMode === '악몽' ? 'NIGHTMARE' : undefined,
   });
   if (isLoading || !unitSummary) {
-    return <div>Loading...</div>;
+    return <GameUnitLoading />;
   }
   return (
     <>
