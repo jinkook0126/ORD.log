@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import type { TUnit } from '~/db/unit';
 import { getTierStyle } from '~/lib/utils';
@@ -15,6 +15,9 @@ const UnitSearch = ({
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [tempSelectedUnits, setTempSelectedUnits] = useState<TUnit[]>([]);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const { data: units = [] } = useGetUnitsQuery();
 
   const filteredUnits = searchTerm
@@ -31,7 +34,6 @@ const UnitSearch = ({
     onComplete(selectedUnits.filter((u) => u.id !== unitId));
   };
   const handleCompleteSelection = () => {
-    // setSelectedUnits(tempSelectedUnits);
     onComplete(tempSelectedUnits);
     setIsSearchModalOpen(false);
     setSearchTerm('');
@@ -43,14 +45,53 @@ const UnitSearch = ({
     setSearchTerm('');
     setTempSelectedUnits([]);
   };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.key === 'Process') {
+      return;
+    }
+    if (e.key === 'ArrowDown' && isSearchModalOpen && filteredUnits.length > 0) {
+      e.preventDefault();
+      listRefs.current[0]?.focus();
+    }
+  };
+
+  const handleItemKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    index: number,
+    unit: TUnit,
+  ) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      listRefs.current[index + 1]?.focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (index === 0) {
+        inputRef.current?.focus();
+      } else {
+        listRefs.current[index - 1]?.focus();
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const updated = tempSelectedUnits.find((u) => u.id === unit.id)
+        ? tempSelectedUnits
+        : [...tempSelectedUnits, unit];
+      onComplete(updated);
+      setIsSearchModalOpen(false);
+      setSearchTerm('');
+      setTempSelectedUnits([]);
+      setTimeout(() => inputRef.current?.focus(), 0);
+    }
+  };
+
   return (
     <div>
       <label className="text-sm font-medium">
         유닛 <span className="text-red-500">*</span>
       </label>
-      {/* 유닛 검색 input */}
       <div className="relative">
         <input
+          ref={inputRef}
           type="text"
           placeholder="유닛 검색..."
           value={searchTerm}
@@ -59,6 +100,7 @@ const UnitSearch = ({
             setTempSelectedUnits(selectedUnits);
             setIsSearchModalOpen(true);
           }}
+          onKeyDown={handleInputKeyDown}
           className="border-border/50 bg-background text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition outline-none focus:ring-2"
         />
 
@@ -68,13 +110,17 @@ const UnitSearch = ({
             {/* 검색 결과 목록 */}
             <div className="border-border/50 max-h-96 space-y-2 overflow-y-auto border-b p-4">
               {filteredUnits.length > 0 ? (
-                filteredUnits.map((unit: TUnit) => (
+                filteredUnits.map((unit: TUnit, index: number) => (
                   <button
                     key={unit.id}
+                    ref={(el) => {
+                      listRefs.current[index] = el;
+                    }}
                     type="button"
                     onClick={() => handleAddUnit(unit)}
+                    onKeyDown={(e) => handleItemKeyDown(e, index, unit)}
                     disabled={tempSelectedUnits.some((u) => u.id === unit.id)}
-                    className="hover:bg-muted flex w-full items-center gap-3 rounded-md p-2 transition disabled:cursor-not-allowed disabled:opacity-50"
+                    className="hover:bg-muted focus:bg-muted flex w-full items-center gap-3 rounded-md p-2 transition outline-none disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <img
                       src={unit.thumbnailUrl}
@@ -123,7 +169,6 @@ const UnitSearch = ({
           </div>
         )}
       </div>
-      {/* 선택된 유닛 목록 */}
       {selectedUnits.length > 0 && (
         <div className="mt-3 grid grid-cols-2 gap-3">
           {selectedUnits.map((unit) => (
@@ -155,7 +200,6 @@ const UnitSearch = ({
           ))}
         </div>
       )}
-      {selectedUnits.length === 0 && <p className="text-xs text-red-500">유닛을 선택해주세요</p>}
     </div>
   );
 };
