@@ -11,7 +11,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   const userId = await getUserId(request);
   const formData = await request.formData();
-  const imageUrl = await uploadFile(formData.get('photo') as File);
+  const photo = formData.get('photo') as File | null;
+  const imageUrl = photo && photo.size > 0 ? await uploadFile(photo) : null;
   const data = {
     success: formData.get('success') === 'true',
     difficulty: formData.get('difficulty') as Difficulty,

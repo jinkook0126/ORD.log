@@ -1,22 +1,31 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { Camera } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
+import type { TUnit } from '~/db/unit';
 import type { Difficulty } from '~/lib/prismaClient';
+import { useCreateLogMutation } from '~/query/log';
 
-import UnitSearch, { type Unit } from './UnitSearch';
+import UnitSearch from './UnitSearch';
 
-interface ClearFormData {
-  unitIds: Unit[];
+export interface ClearFormData {
+  unitIds: TUnit[];
   unitCount: number;
   score: number;
   photo: FileList;
   difficulty: Difficulty;
   success: boolean;
 }
+
+const GOD_MAX_COUNT = 50;
+const NIGHTMARE_MAX_COUNT = 45;
 const LogRegisterForm = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { mutate: createLogMutation } = useCreateLogMutation();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [convertedFile, setConvertedFile] = useState<File | null>(null);
 
@@ -26,7 +35,6 @@ const LogRegisterForm = () => {
     formState: { errors, isSubmitting },
     watch,
     control,
-    setError,
   } = useForm<ClearFormData>({
     defaultValues: {
       unitIds: [],
@@ -71,34 +79,43 @@ const LogRegisterForm = () => {
     }
   }, [photoFiles]);
 
+  const getMaxScore = (difficulty: Difficulty) => {
+    if (difficulty === 'GOD') {
+      return GOD_MAX_COUNT;
+    }
+    return NIGHTMARE_MAX_COUNT;
+  };
+
   const onSubmit = async (data: ClearFormData) => {
     const formData = new FormData();
-    if (data.success && !convertedFile) {
-      setError('photo', { message: '클리어 사진을 선택해주세요' });
-      return;
-    }
-    if (convertedFile) {
+    if (data.success && convertedFile) {
       formData.append('photo', convertedFile);
     }
     formData.append('unitIds', data.unitIds.map((unit) => unit.id).join(','));
-    Object.entries(data).forEach(([key, value]) => {
-      if (key !== 'photo' && key !== 'unitIds') {
-        formData.append(key, value as string);
-      }
+    formData.append('score', data.success ? data.score.toString() : '0');
+    formData.append(
+      'unitCount',
+      data.success ? data.unitCount.toString() : getMaxScore(data.difficulty).toString(),
+    );
+    formData.append('difficulty', data.difficulty);
+    formData.append('success', data.success.toString());
+    createLogMutation(formData, {
+      onSuccess: () => {
+        toast.success('로그 등록에 성공하였습니다.');
+        navigate('/clears');
+        queryClient.invalidateQueries({ queryKey: ['clears'] });
+        queryClient.invalidateQueries({ queryKey: ['gameRecords'] });
+        queryClient.invalidateQueries({ queryKey: ['userStats'] });
+        queryClient.invalidateQueries({ queryKey: ['userUnitStats'] });
+        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByDifficulty'] });
+        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByUnit'] });
+        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByUnitAndDifficulty'] });
+        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByUnitAndDifficulty'] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
     });
-    const res = await fetch('/api/log', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',
-    });
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.message);
-    }
-    const result = await res.json();
-    if (result.success) {
-      navigate('/clears');
-    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6">
@@ -110,11 +127,16 @@ const LogRegisterForm = () => {
           rules={{
             required: '유닛을 선택해주세요',
           }}
-          render={({ field }) => (
-            <UnitSearch selectedUnits={field.value} onComplete={field.onChange} />
+          render={({ field, fieldState }) => (
+            <div className="gap-2">
+              <UnitSearch selectedUnits={field.value} onComplete={field.onChange} />
+
+              {fieldState.error && (
+                <p className="mt-3 text-xs text-red-500">{fieldState.error.message}</p>
+              )}
+            </div>
           )}
         />
-        {/* <UnitSearch /> */}
       </div>
 
       {/* 난이도 */}
@@ -256,7 +278,8 @@ const LogRegisterForm = () => {
       {/* 버튼 */}
       <button
         type="submit"
-        disabled={isSubmitting || (success && !photoFiles?.[0])}
+        // disabled={isSubmitting || (success && !photoFiles?.[0])}
+        disabled={isSubmitting}
         className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-lg py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting ? '저장 중...' : '저장'}

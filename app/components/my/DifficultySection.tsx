@@ -59,7 +59,7 @@ const DifficultySection = ({ nickname }: { nickname: string }) => {
       </span>
       <div className="grid grid-cols-2 gap-3">
         {/* 신 모드 */}
-        <div className="border-border rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
+        <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
           <p className="mb-3 text-xs font-semibold text-blue-400">신</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -71,7 +71,10 @@ const DifficultySection = ({ nickname }: { nickname: string }) => {
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground text-[11px]">승률</span>
               <span className="text-foreground font-mono text-xs font-bold">
-                {(summary.god?.totalSuccess / summary.god?.totalGames || 0) * 100}%
+                {Number(
+                  ((summary.god?.totalSuccess / summary.god?.totalGames || 0) * 100).toFixed(1),
+                )}
+                %
               </span>
             </div>
             <div className="flex items-center justify-between">

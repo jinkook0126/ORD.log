@@ -264,6 +264,9 @@ export async function getGameRecords({ nickname }: { nickname: string }) {
         },
       },
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
   return gameRecords;
 }

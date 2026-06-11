@@ -14,7 +14,7 @@ export const createLog = async ({
   unitCount: number;
   success: boolean;
   difficulty: 'GOD' | 'NIGHTMARE';
-  imageUrl: string;
+  imageUrl: string | null;
   unitIds: number[];
 }) => {
   await prisma.$transaction(async (tx) => {
@@ -68,6 +68,7 @@ export const createLog = async ({
           pickCount: 1,
           winCount: success ? 1 : 0,
           difficulty,
+          totalUnitCount: unitCount,
         },
         update: {
           pickCount: { increment: 1 },

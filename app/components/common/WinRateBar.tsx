@@ -22,7 +22,7 @@ function WinRateBar({ wins, total }: { wins: number; total: number }) {
         </div>
       </div>
       <span className="text-muted-foreground text-xs font-medium whitespace-nowrap">
-        {total > 0 ? (wins / total) * 100 : 0}%
+        {total > 0 ? Number(((wins / total) * 100).toFixed(1)) : 0}%
       </span>
     </div>
   );
