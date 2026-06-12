@@ -23,7 +23,7 @@ const NavBar = () => {
   const navItems = [...publicItems, ...(me ? authMenuItems : guestItems)];
 
   return (
-    <header className="border-border bg-background/80 relative sticky top-0 z-50 border-b backdrop-blur-md">
+    <header className="border-border bg-background/80 sticky top-0 z-50 border-b backdrop-blur-md">
       <div className="flex h-14 items-center justify-between px-8">
         <Link to="/" className="flex items-center font-mono text-lg font-bold tracking-tight">
           <span className="text-primary">ORD</span>

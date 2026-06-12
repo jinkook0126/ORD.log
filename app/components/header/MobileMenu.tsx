@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+import { useMe } from '~/query/user';
+
 import { Avatar, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 import {
@@ -25,7 +27,8 @@ import { Separator } from '../ui/separator';
 import { NavLink } from './NavLink';
 const MobileMenu = () => {
   const [open, setOpen] = useState(false);
-  const isLoggedIn = false;
+  const { data: me } = useMe();
+  const isLoggedIn = !!me;
 
   const onClose = () => setOpen(false);
 
@@ -41,14 +44,16 @@ const MobileMenu = () => {
               <div className="flex items-center gap-3">
                 <Avatar className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white p-0">
                   <AvatarImage
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
+                    src={me?.thumbnailUrl}
                     alt="profile"
                     className="h-full w-full object-cover"
                   />
                 </Avatar>
                 <div className="flex flex-col gap-0.5">
-                  <DrawerTitle className="text-foreground text-base font-bold">닉네임</DrawerTitle>
-                  <p className="text-muted-foreground text-xs">user@example.com</p>
+                  <DrawerTitle className="text-foreground text-base font-bold">
+                    {me?.nickname}
+                  </DrawerTitle>
+                  <p className="text-muted-foreground text-xs">{me?.email}</p>
                 </div>
               </div>
             ) : (
@@ -91,7 +96,7 @@ const MobileMenu = () => {
         </NavLink>
         {isLoggedIn && (
           <NavLink
-            to="/ranking"
+            to="/clears/new"
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
             activeClassName="text-primary bg-secondary"
@@ -107,7 +112,7 @@ const MobileMenu = () => {
               내 정보
             </h2>
             <NavLink
-              to="/logs"
+              to={`/user/${me?.nickname}`}
               onClick={onClose}
               className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
               activeClassName="text-primary bg-secondary"
