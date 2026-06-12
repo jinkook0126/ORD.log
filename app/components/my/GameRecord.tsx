@@ -98,7 +98,7 @@ const GameRecord = () => {
                         className="border-border h-32 w-full rounded-md border object-cover sm:w-52"
                       />
                     ) : (
-                      <div className="border-border flex h-32 w-full flex-col items-center justify-center gap-1.5 rounded-md border border-dashed border-red-500/30 bg-red-500/10 sm:w-52">
+                      <div className="flex h-32 w-full flex-col items-center justify-center gap-1.5 rounded-md border border-dashed border-red-500/30 bg-red-500/10 sm:w-52">
                         <svg
                           className="h-7 w-7 text-red-400/60"
                           fill="none"
