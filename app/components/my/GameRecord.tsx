@@ -31,7 +31,7 @@ const GameRecord = () => {
     <div className="border-border bg-secondary/20 border-t px-4 py-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
         <div className="shrink-0">
-          {record.success ? (
+          {record.success || record.imageUrl ? (
             <img
               src={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/screen/${record.imageUrl}`}
               alt="게임 스크린샷"

@@ -88,7 +88,7 @@ const LogRegisterForm = () => {
 
   const onSubmit = async (data: ClearFormData) => {
     const formData = new FormData();
-    if (data.success && convertedFile) {
+    if (convertedFile) {
       formData.append('photo', convertedFile);
     }
     formData.append('unitIds', data.unitIds.map((unit) => unit.id).join(','));
@@ -245,37 +245,35 @@ const LogRegisterForm = () => {
       )}
 
       {/* 클리어 사진 */}
-      {success && (
-        <div className="space-y-3">
-          <label className="text-sm font-medium">
-            클리어 사진 {success && <span className="text-red-500">*</span>}
-          </label>
+      <div className="space-y-3">
+        <label className="text-sm font-medium">
+          클리어 사진 {success && <span className="text-red-500">*</span>}
+        </label>
 
-          {/* 파일 입력 */}
-          <input
-            type="file"
-            accept="image/*"
-            disabled={isSubmitting}
-            className="file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 block w-full text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:px-3 file:py-2"
-            {...register('photo', {
-              required: success ? '클리어 사진을 선택해주세요' : false,
-            })}
-          />
-          {errors.photo && <p className="text-xs text-red-500">{errors.photo.message}</p>}
+        {/* 파일 입력 */}
+        <input
+          type="file"
+          accept="image/*"
+          disabled={isSubmitting}
+          className="file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 block w-full text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:px-3 file:py-2"
+          {...register('photo', {
+            required: success ? '클리어 사진을 선택해주세요' : false,
+          })}
+        />
+        {errors.photo && <p className="text-xs text-red-500">{errors.photo.message}</p>}
 
-          {/* 사진 프리뷰 박스 */}
-          <div className="border-border/50 bg-muted relative flex h-64 w-full items-center justify-center overflow-hidden rounded-lg border">
-            {photoPreview ? (
-              <img src={photoPreview} alt="Photo preview" className="h-full w-full object-cover" />
-            ) : (
-              <div className="text-muted-foreground flex flex-col items-center gap-2">
-                <Camera className="h-8 w-8" />
-                <p className="text-sm">사진을 업로드 해주세요.</p>
-              </div>
-            )}
-          </div>
+        {/* 사진 프리뷰 박스 */}
+        <div className="border-border/50 bg-muted relative flex h-64 w-full items-center justify-center overflow-hidden rounded-lg border">
+          {photoPreview ? (
+            <img src={photoPreview} alt="Photo preview" className="h-full w-full object-cover" />
+          ) : (
+            <div className="text-muted-foreground flex flex-col items-center gap-2">
+              <Camera className="h-8 w-8" />
+              <p className="text-sm">사진을 업로드 해주세요.</p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* 버튼 */}
       <button

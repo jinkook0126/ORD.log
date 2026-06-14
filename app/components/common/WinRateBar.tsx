@@ -1,6 +1,5 @@
 function WinRateBar({ wins, total }: { wins: number; total: number }) {
   const winPercentage = total > 0 ? (wins / total) * 100 : 0;
-
   return (
     <div className="flex items-center gap-2">
       <div className="flex h-5 w-24 overflow-hidden rounded-sm">
@@ -17,7 +16,7 @@ function WinRateBar({ wins, total }: { wins: number; total: number }) {
           style={{ width: `${100 - winPercentage}%` }}
         >
           {100 - winPercentage > 25 && (
-            <span className="pr-1 text-[9px] font-bold text-white">{100 - winPercentage}패</span>
+            <span className="pr-1 text-[9px] font-bold text-white">{total - wins}패</span>
           )}
         </div>
       </div>
