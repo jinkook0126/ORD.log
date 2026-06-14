@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { Camera } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -23,7 +22,6 @@ export interface ClearFormData {
 const GOD_MAX_COUNT = 50;
 const NIGHTMARE_MAX_COUNT = 45;
 const LogRegisterForm = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { mutate: createLogMutation } = useCreateLogMutation();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -103,14 +101,6 @@ const LogRegisterForm = () => {
       onSuccess: () => {
         toast.success('로그 등록에 성공하였습니다.');
         navigate('/clears');
-        queryClient.invalidateQueries({ queryKey: ['clears'] });
-        queryClient.invalidateQueries({ queryKey: ['gameRecords'] });
-        queryClient.invalidateQueries({ queryKey: ['userStats'] });
-        queryClient.invalidateQueries({ queryKey: ['userUnitStats'] });
-        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByDifficulty'] });
-        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByUnit'] });
-        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByUnitAndDifficulty'] });
-        queryClient.invalidateQueries({ queryKey: ['userUnitStatsByUnitAndDifficulty'] });
       },
       onError: (error) => {
         toast.error(error.message);

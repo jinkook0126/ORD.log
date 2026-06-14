@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
-
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 export const useCreateLogMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: FormData) => {
       const res = await fetch('/api/log', {
@@ -12,6 +12,9 @@ export const useCreateLogMutation = () => {
         throw new Error('로그 등록에 실패하였습니다.');
       }
       return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my'] });
     },
   });
 };

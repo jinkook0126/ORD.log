@@ -29,5 +29,7 @@ export const useRankingInfiniteQuery = ({
 
       return allPages.length + 1;
     },
+    staleTime: 0,
+    refetchOnMount: true,
   });
 };

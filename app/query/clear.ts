@@ -12,5 +12,7 @@ export const useClearInfiniteQuery = () => {
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: undefined as number | undefined,
+    staleTime: 0,
+    refetchOnMount: true,
   });
 };

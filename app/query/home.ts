@@ -7,6 +7,8 @@ const useGetHomeQuery = () => {
       const res = await fetch('/api/home');
       return res.json();
     },
+    staleTime: 0,
+    refetchOnMount: true,
   });
 };
 

@@ -8,7 +8,7 @@ const DifficultyLoading = () => (
       난이도별 정보
     </span>
     <div className="grid grid-cols-2 gap-3">
-      <div className="border-border rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
+      <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
         <p className="mb-3 text-xs font-semibold text-blue-400">신</p>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -26,7 +26,7 @@ const DifficultyLoading = () => (
         </div>
       </div>
 
-      <div className="border-border rounded-lg border border-red-500/30 bg-red-500/10 p-3">
+      <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3">
         <p className="mb-3 text-xs font-semibold text-red-400">악몽</p>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -59,7 +59,7 @@ const DifficultySection = ({ nickname }: { nickname: string }) => {
       </span>
       <div className="grid grid-cols-2 gap-3">
         {/* 신 모드 */}
-        <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
+        <div className="rounded-lg bg-blue-500/10 p-3">
           <p className="mb-3 text-xs font-semibold text-blue-400">신</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -86,7 +86,7 @@ const DifficultySection = ({ nickname }: { nickname: string }) => {
           </div>
         </div>
 
-        <div className="border-border rounded-lg border border-red-500/30 bg-red-500/10 p-3">
+        <div className="rounded-lg bg-red-500/10 p-3">
           <p className="mb-3 text-xs font-semibold text-red-400">악몽</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between">

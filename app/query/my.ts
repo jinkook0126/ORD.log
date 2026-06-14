@@ -5,7 +5,7 @@ import type { TGameRecord, TMostUnit, TUnitSummary } from '~/db/my';
 
 export const useMySummaryQuery = ({ nickname }: { nickname: string }) => {
   return useQuery({
-    queryKey: ['my-summary', nickname],
+    queryKey: ['my', 'summary', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/summary?nickname=${nickname}`);
       return res.json();
@@ -20,7 +20,7 @@ export const useMyRankingQuery = ({ nickname }: { nickname: string }) => {
     nightmareScoreRank: number | null;
     nightmareClearRank: number | null;
   }>({
-    queryKey: ['my-ranking', nickname],
+    queryKey: ['my', 'ranking', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/ranking?nickname=${nickname}`);
       return res.json();
@@ -30,7 +30,7 @@ export const useMyRankingQuery = ({ nickname }: { nickname: string }) => {
 
 export const useMyDifficultySummaryQuery = ({ nickname }: { nickname: string }) => {
   return useQuery({
-    queryKey: ['my-difficulty', nickname],
+    queryKey: ['my', 'difficulty', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/difficulty?nickname=${nickname}`);
       return res.json();
@@ -40,7 +40,7 @@ export const useMyDifficultySummaryQuery = ({ nickname }: { nickname: string }) 
 
 export const useMyMostUnitsQuery = ({ nickname }: { nickname: string }) => {
   return useQuery<TMostUnit[]>({
-    queryKey: ['my-most-units', nickname],
+    queryKey: ['my', 'most-units', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/most-units?nickname=${nickname}`);
       return res.json();
@@ -50,7 +50,7 @@ export const useMyMostUnitsQuery = ({ nickname }: { nickname: string }) => {
 
 export const useMyGameRecordsQuery = ({ nickname }: { nickname: string }) => {
   return useQuery<TGameRecord[]>({
-    queryKey: ['my-game-records', nickname],
+    queryKey: ['my', 'game-records', nickname],
     queryFn: async () => {
       const res = await fetch(`/api/my/game-records?nickname=${nickname}`);
       return res.json();
@@ -66,7 +66,7 @@ export const useMyUnitSummaryQuery = ({
   difficulty?: Difficulty;
 }) => {
   return useQuery<TUnitSummary[]>({
-    queryKey: ['my-unit-summary', nickname, difficulty],
+    queryKey: ['my', 'unit-summary', nickname, difficulty],
     queryFn: async () => {
       const res = await fetch(
         `/api/my/unit-summary?nickname=${nickname}${difficulty ? `&difficulty=${difficulty}` : ''}`,
