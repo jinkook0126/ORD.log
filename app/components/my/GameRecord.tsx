@@ -67,7 +67,9 @@ const GameRecord = () => {
                   className="border-border bg-card flex items-center gap-2 rounded-md border px-2 py-1.5"
                 >
                   <Avatar className="border-border h-7 w-7 shrink-0 border">
-                    <AvatarImage src={unit.unit.thumbnailUrl} />
+                    <AvatarImage
+                      src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
+                    />
                     <AvatarFallback className="bg-secondary text-[10px]">
                       {unit.unit.name[0]}
                     </AvatarFallback>
@@ -131,7 +133,9 @@ const GameRecord = () => {
                 <div className="flex items-center gap-1">
                   {record.units.slice(0, 4).map((unit, idx) => (
                     <Avatar key={idx} className="border-border h-6 w-6 border">
-                      <AvatarImage src={unit.unit.thumbnailUrl} />
+                      <AvatarImage
+                        src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
+                      />
                       <AvatarFallback className="bg-secondary text-[10px]">
                         {unit.unit.name[0]}
                       </AvatarFallback>
@@ -202,7 +206,9 @@ const GameRecord = () => {
                 <div className="flex items-center gap-1">
                   {record.units.slice(0, 5).map((unit, idx) => (
                     <Avatar key={idx} className="border-border h-6 w-6 border">
-                      <AvatarImage src={unit.unit.thumbnailUrl} />
+                      <AvatarImage
+                        src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
+                      />
                       <AvatarFallback className="bg-secondary text-[10px]">
                         {unit.unit.name[0]}
                       </AvatarFallback>

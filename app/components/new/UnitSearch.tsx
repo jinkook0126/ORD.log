@@ -123,14 +123,14 @@ const UnitSearch = ({
                     className="hover:bg-muted focus:bg-muted flex w-full items-center gap-3 rounded-md p-2 transition outline-none disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <img
-                      src={unit.thumbnailUrl}
+                      src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.thumbnailUrl}`}
                       alt={unit.name}
                       className="h-12 w-12 rounded object-cover"
                     />
                     <div className="flex flex-col gap-1">
                       <span className="flex-1 text-left text-sm">{unit.name}</span>
                       <span
-                        className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.grade.rank)}`}
+                        className={`w-fit shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.grade.rank)}`}
                       >
                         {unit.grade.name}
                       </span>
@@ -184,7 +184,7 @@ const UnitSearch = ({
                 <X className="h-4 w-4" />
               </button>
               <img
-                src={unit.thumbnailUrl}
+                src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.thumbnailUrl}`}
                 alt={unit.name}
                 className="h-16 w-16 rounded object-cover"
               />

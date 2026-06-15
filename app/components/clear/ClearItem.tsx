@@ -64,9 +64,7 @@ function ClearCard({ item }: { item: TClearItem }) {
           {visibleUnits.map((unit) => (
             <Avatar key={unit.unit.id} className="border-border bg-background h-7 w-7 border">
               <AvatarImage
-                src={`
-                  ${unit.unit.thumbnailUrl.includes('https') ? unit.unit.thumbnailUrl : `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/units/${unit.unit.thumbnailUrl}`}
-                  `}
+                src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
                 alt={unit.unit.name}
               />
               <AvatarFallback className="bg-secondary text-[12px]">

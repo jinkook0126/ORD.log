@@ -24,7 +24,9 @@ const MostUnitSection = ({ nickname }: { nickname: string }) => {
             >
               <div className="flex items-start gap-2">
                 <Avatar className="border-border h-12 w-12 shrink-0 border">
-                  <AvatarImage src={unit.unit.thumbnailUrl} />
+                  <AvatarImage
+                    src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
+                  />
                   <AvatarFallback className="bg-secondary text-sm">
                     {unit.unit.name[0]}
                   </AvatarFallback>

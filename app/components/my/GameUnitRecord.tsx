@@ -49,7 +49,9 @@ export function GameUnitRecord() {
             {/* 상단: 썸네일 + 이름 + 횟수 뱃지 */}
             <div className="flex items-center gap-3">
               <Avatar className="border-border h-11 w-11 shrink-0 border">
-                <AvatarImage src={unit.thumbnailUrl} />
+                <AvatarImage
+                  src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.thumbnailUrl}`}
+                />
                 <AvatarFallback className="bg-secondary text-sm">{unit.name[0]}</AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">

@@ -87,7 +87,9 @@ const RankingListContainer = ({ list, tab }: { list?: RankingItem[]; tab: TabIte
           <div className="hidden min-w-[90px] items-center gap-1 px-2 pr-6 md:flex">
             {item.mostUnits.map((unit, i) => (
               <Avatar key={i} className="border-border bg-background h-7 w-7 border">
-                <AvatarImage src={unit.unit.thumbnailUrl} />
+                <AvatarImage
+                  src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
+                />
                 <AvatarFallback className="bg-secondary text-[8px]">
                   {unit.unit.name[0]}
                 </AvatarFallback>
