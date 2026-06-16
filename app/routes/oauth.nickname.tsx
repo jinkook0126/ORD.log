@@ -3,6 +3,13 @@ import { type LoaderFunctionArgs, redirect, useLoaderData } from 'react-router';
 import { Card, CardContent } from '~/components/ui/card';
 import SignUpForm from '~/components/user/SignUpForm';
 
+export function meta() {
+  return [
+    { title: 'ORD.log - 닉네임 설정' },
+    { name: 'description', content: 'ORD.log에서 사용할 닉네임을 설정하세요' },
+  ];
+}
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const tempToken = url.searchParams.get('tempToken');

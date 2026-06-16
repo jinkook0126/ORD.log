@@ -5,10 +5,7 @@ import SearchInput from '~/components/main/SearchInput';
 import { useGetHomeQuery } from '~/query/home';
 
 export function meta() {
-  return [
-    { title: 'New React Router App' },
-    { name: 'description', content: 'Welcome to React Router!' },
-  ];
+  return [{ title: 'ORD.log' }, { name: 'description', content: '게임 클리어 기록을 검색하세요' }];
 }
 
 export default function () {

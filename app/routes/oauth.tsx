@@ -1,6 +1,10 @@
 import { Loader2 } from 'lucide-react';
 import { type LoaderFunctionArgs, redirect, useNavigation } from 'react-router';
 
+export function meta() {
+  return [{ title: 'ORD.log - 로그인 처리 중' }];
+}
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');

@@ -4,6 +4,13 @@ import { useInView } from 'react-intersection-observer';
 import ClearListContainer from '~/components/clear/ClearListContainer';
 import { useClearInfiniteQuery } from '~/query/clear';
 
+export function meta() {
+  return [
+    { title: 'ORD.log - 클리어 기록' },
+    { name: 'description', content: '최근 클리어 기록을 확인하세요' },
+  ];
+}
+
 const ClearsPage = () => {
   const { ref, inView } = useInView();
 

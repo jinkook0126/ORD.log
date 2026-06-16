@@ -6,6 +6,13 @@ import type { TRankingType } from '~/db/ranking';
 import type { Difficulty } from '~/lib/prismaClient';
 import { useRankingInfiniteQuery } from '~/query/ranking';
 
+export function meta() {
+  return [
+    { title: 'ORD.log - 랭킹' },
+    { name: 'description', content: '신·악몽 모드 클리어 및 점수 랭킹' },
+  ];
+}
+
 type TabKey = '신-클리어' | '신-점수' | '악몽-클리어' | '악몽-점수';
 
 const TABS: { key: TabKey; mode: Difficulty; type: TRankingType; unit: string }[] = [

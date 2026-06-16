@@ -8,7 +8,16 @@ import MostUnitSection from '~/components/my/MostUnitSection';
 import RankingSection from '~/components/my/RankingSection';
 import SummarySection from '~/components/my/SummarySection';
 
+import type { Route } from './+types/user.$nickname';
+
 type TabType = '게임기록' | '유닛통계';
+
+export function meta({ params }: Route.MetaArgs) {
+  return [
+    { title: `ORD.log - ${params.nickname}` },
+    { name: 'description', content: `${params.nickname}님의 게임 클리어 기록` },
+  ];
+}
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { nickname } = params;

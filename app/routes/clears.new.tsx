@@ -1,5 +1,12 @@
 import LogRegisterForm from '~/components/new/LogRegisterForm';
 
+export function meta() {
+  return [
+    { title: 'ORD.log - 클리어 저장' },
+    { name: 'description', content: '클리어 기록을 등록하세요' },
+  ];
+}
+
 const ClearsNew = () => {
   return (
     <main className="mx-auto max-w-5xl px-8 py-10 md:py-16">
