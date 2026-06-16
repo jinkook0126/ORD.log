@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { Badge } from '~/components/ui/badge';
 import { Skeleton } from '~/components/ui/skeleton';
@@ -69,6 +69,7 @@ function EmptyRankList({ mode }: { mode: '신' | '악몽' }) {
 }
 
 function RankList({ data, mode }: { data?: RankItem[]; mode: '신' | '악몽' }) {
+  const navigate = useNavigate();
   if (!data) return <LoadingRankList mode={mode} />;
   if (data.length === 0) return <EmptyRankList mode={mode} />;
 
@@ -82,6 +83,7 @@ function RankList({ data, mode }: { data?: RankItem[]; mode: '신' | '악몽' })
       {data.map((item, index) => (
         <div
           key={item.userId}
+          onClick={() => navigate(`/user/${item.user.nickname}`)}
           className="hover:bg-secondary/50 flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-colors"
         >
           <span

@@ -1,5 +1,5 @@
 import type { Difficulty } from 'generated/prisma/enums';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { Badge } from '~/components/ui/badge';
 import { Skeleton } from '~/components/ui/skeleton';
@@ -51,6 +51,7 @@ function Empty() {
   );
 }
 function ListContainer({ data }: { data?: ClearItem[] }) {
+  const navigate = useNavigate();
   if (!data) return <Loading />;
   if (data.length === 0) return <Empty />;
   return (
@@ -58,6 +59,7 @@ function ListContainer({ data }: { data?: ClearItem[] }) {
       {data.map((item) => (
         <div
           key={item.id}
+          onClick={() => navigate(`/user/${item.user.nickname}`)}
           className="border-border bg-secondary/50 hover:bg-secondary flex cursor-pointer flex-col items-center overflow-hidden rounded-lg border transition-colors"
         >
           <div className="bg-muted aspect-2/1 w-full">

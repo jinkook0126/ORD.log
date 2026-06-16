@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import type { TClearItem } from '~/db/clear';
 import { formatTimeAgo, getLabelWithDifficulty, getModeBadgeVariant } from '~/lib/utils';
@@ -11,8 +11,12 @@ const MAX_VISIBLE_UNITS = 5;
 function ClearCard({ item }: { item: TClearItem }) {
   const visibleUnits = item.units.slice(0, MAX_VISIBLE_UNITS);
   const remaining = item.units.length - MAX_VISIBLE_UNITS;
+  const navigate = useNavigate();
   return (
-    <div className="group border-border bg-card hover:border-primary/40 hover:shadow-primary/10 cursor-pointer overflow-hidden rounded-lg border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <div
+      onClick={() => navigate(`/user/${item.user.nickname}`)}
+      className="group border-border bg-card hover:border-primary/40 hover:shadow-primary/10 cursor-pointer overflow-hidden rounded-lg border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+    >
       <div className="bg-muted relative aspect-video w-full overflow-hidden">
         <img
           src={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/screen/${item.imageUrl}`}
