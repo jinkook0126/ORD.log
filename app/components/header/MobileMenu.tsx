@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import {
   ChevronRight,
   ClipboardList,
@@ -10,6 +11,7 @@ import {
   X,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { useMe } from '~/query/user';
 
@@ -26,12 +28,21 @@ import {
 import { Separator } from '../ui/separator';
 import { NavLink } from './NavLink';
 const MobileMenu = () => {
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const { data: me } = useMe();
   const isLoggedIn = !!me;
-
+  const navigate = useNavigate();
   const onClose = () => setOpen(false);
 
+  const onLogout = async () => {
+    await fetch('/api/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
+    queryClient.invalidateQueries({ queryKey: ['me'] });
+    navigate('/');
+  };
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger>
@@ -124,7 +135,10 @@ const MobileMenu = () => {
         )}
         <Separator />
         {isLoggedIn ? (
-          <button className="text-destructive/80 hover:text-destructive flex cursor-pointer items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors">
+          <button
+            onClick={onLogout}
+            className="text-destructive/80 hover:text-destructive flex cursor-pointer items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
+          >
             <LogOutIcon className="h-4 w-4" />
             <span>로그아웃</span>
           </button>

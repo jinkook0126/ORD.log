@@ -19,6 +19,7 @@ export default [
   route('api/log', 'routes/api/log.ts'),
   route('api/home', 'routes/api/home.ts'),
   route('api/clears', 'routes/api/clear.ts'),
+  route('api/logout', 'routes/api/logout.ts'),
   route('api/ranking', 'routes/api/ranking.ts'),
   route('api/my/summary', 'routes/api/my/summary.ts'),
   route('api/my/ranking', 'routes/api/my/ranking.ts'),

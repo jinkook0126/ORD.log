@@ -1,5 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { ClipboardList, LogOutIcon } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import {
   DropdownMenu,
@@ -15,6 +16,16 @@ import { useMe } from '~/query/user';
 import { Avatar, AvatarImage } from '../ui/avatar';
 const ProfileDropdown = () => {
   const { data: me } = useMe();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const onLogout = async () => {
+    await fetch('/api/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
+    queryClient.invalidateQueries({ queryKey: ['me'] });
+    navigate('/');
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,7 +47,7 @@ const ProfileDropdown = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem variant="destructive" onClick={onLogout}>
             <LogOutIcon />
             로그아웃
           </DropdownMenuItem>
