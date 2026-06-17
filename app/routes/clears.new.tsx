@@ -1,4 +1,7 @@
+import { type LoaderFunctionArgs, redirect } from 'react-router';
+
 import LogRegisterForm from '~/components/new/LogRegisterForm';
+import { getLoggedInUser } from '~/lib/auth.server';
 
 export function meta() {
   return [
@@ -7,6 +10,15 @@ export function meta() {
   ];
 }
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await getLoggedInUser(request);
+
+  if (!user) {
+    return redirect('/login');
+  }
+
+  return { user };
+}
 const ClearsNew = () => {
   return (
     <main className="mx-auto max-w-5xl px-8 py-10 md:py-16">
