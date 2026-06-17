@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { ClipboardList, LogOutIcon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 import {
   DropdownMenu,
@@ -24,6 +25,7 @@ const ProfileDropdown = () => {
       credentials: 'include',
     });
     queryClient.invalidateQueries({ queryKey: ['me'] });
+    toast.success('로그아웃 되었습니다.');
     navigate('/');
   };
   return (

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 import { useMe } from '~/query/user';
 
@@ -41,6 +42,8 @@ const MobileMenu = () => {
       credentials: 'include',
     });
     queryClient.invalidateQueries({ queryKey: ['me'] });
+    onClose();
+    toast.success('로그아웃 되었습니다.');
     navigate('/');
   };
   return (
