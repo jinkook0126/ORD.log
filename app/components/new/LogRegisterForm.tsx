@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import type { TUnit } from '~/db/unit';
 import type { Difficulty } from '~/lib/prismaClient';
 import { useCreateLogMutation } from '~/query/log';
+import { useMe } from '~/query/user';
 
 import UnitSearch from './UnitSearch';
 
@@ -22,6 +23,7 @@ export interface ClearFormData {
 const GOD_MAX_COUNT = 50;
 const NIGHTMARE_MAX_COUNT = 45;
 const LogRegisterForm = () => {
+  const { data: me } = useMe();
   const navigate = useNavigate();
   const { mutate: createLogMutation } = useCreateLogMutation();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -85,6 +87,11 @@ const LogRegisterForm = () => {
   };
 
   const onSubmit = async (data: ClearFormData) => {
+    if (!me) {
+      toast.error('로그인 후 이용해주세요.');
+      navigate('/login');
+      return;
+    }
     const formData = new FormData();
     if (convertedFile) {
       formData.append('photo', convertedFile);
