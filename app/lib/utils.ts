@@ -66,6 +66,8 @@ export function getTierStyle(grade: number) {
       return 'bg-red-500/15 text-red-400 border-red-500/30';
     case 13: // 불멸
       return 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30';
+    case 15: // 특수함
+      return 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30';
     default:
       return 'bg-muted text-muted-foreground border-border';
   }

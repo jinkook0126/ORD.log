@@ -257,4 +257,13 @@ export const units = [
   { name: '블랙마리아', gradeId: 14, thumbnailUrl: `/units/distort/Maria.png` },
   { name: '페로나', gradeId: 14, thumbnailUrl: `/units/distort/Perona.png` },
   { name: '퀸', gradeId: 14, thumbnailUrl: `/units/distort/queen.png` },
+
+  //특수함
+  { name: '베티', gradeId: 15, thumbnailUrl: `/units/special/Betty.png` },
+  { name: '블고리', gradeId: 15, thumbnailUrl: `/units/special/blugori.png` },
+  { name: '폭시', gradeId: 15, thumbnailUrl: `/units/special/Foxy.png` },
+  { name: '아이스버그', gradeId: 15, thumbnailUrl: `/units/special/Iceburg.png` },
+  { name: '모건', gradeId: 15, thumbnailUrl: `/units/special/Morgan.png` },
+  { name: '오타마', gradeId: 15, thumbnailUrl: `/units/special/O-Tama.png` },
+  { name: '페루', gradeId: 15, thumbnailUrl: `/units/special/Pell.png` },
 ];
