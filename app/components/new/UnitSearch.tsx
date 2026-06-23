@@ -1,7 +1,9 @@
+import Fuse from 'fuse.js';
 import { X } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import type { TUnit } from '~/db/unit';
+import { searchUnits } from '~/lib/searchUnits';
 import { getTierStyle } from '~/lib/utils';
 import { useGetUnitsQuery } from '~/query/unit';
 
@@ -20,9 +22,22 @@ const UnitSearch = ({
   const listRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const { data: units = [] } = useGetUnitsQuery();
 
-  const filteredUnits = searchTerm
-    ? units.filter((unit: TUnit) => unit.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    : [];
+  const fuse = useMemo(() => {
+    return new Fuse<TUnit>(units, {
+      keys: ['name'],
+      threshold: 0.35,
+      ignoreLocation: true,
+      minMatchCharLength: 1,
+    });
+  }, [units]);
+
+  const filteredUnits = useMemo(() => {
+    if (!searchTerm) {
+      return [];
+    }
+
+    return searchUnits(units, searchTerm, fuse);
+  }, [units, searchTerm, fuse]);
 
   const handleAddUnit = (unit: TUnit) => {
     if (!tempSelectedUnits.find((u) => u.id === unit.id)) {
