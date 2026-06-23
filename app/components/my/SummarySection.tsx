@@ -32,7 +32,8 @@ const SummarySection = ({ nickname }: { nickname: string }) => {
   if (isLoading) {
     return <SummaryLoading />;
   }
-  const avgUnit = summary?.totalUnitCount / summary?.totalSuccess;
+
+  const avgUnit = summary?.totalUnitCount / summary?.totalGames || 0;
   return (
     <div className="space-y-4">
       <div className="border-border bg-secondary/20 rounded-lg border p-4">

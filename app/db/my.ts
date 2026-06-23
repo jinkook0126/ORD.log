@@ -49,6 +49,14 @@ export async function getSummary({ nickname }: { nickname: string }) {
       userId: user.id,
     },
   });
+  if (!summary) {
+    return {
+      totalScore: 0,
+      totalSuccess: 0,
+      totalGames: 0,
+      totalUnitCount: 0,
+    };
+  }
   return summary;
 }
 

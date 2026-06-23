@@ -80,7 +80,7 @@ const DifficultySection = ({ nickname }: { nickname: string }) => {
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground text-[11px]">평균 유닛</span>
               <span className="text-foreground font-mono text-xs font-bold">
-                {+(summary.god?.totalUnitCount / summary.god?.totalSuccess || 0).toFixed(1)}
+                {+(summary.god?.totalUnitCount / summary.god?.totalGames || 0).toFixed(1)}
               </span>
             </div>
           </div>
