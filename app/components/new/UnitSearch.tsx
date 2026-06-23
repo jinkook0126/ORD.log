@@ -39,8 +39,10 @@ const UnitSearch = ({
     return searchUnits(units, searchTerm, fuse);
   }, [units, searchTerm, fuse]);
 
-  const handleAddUnit = (unit: TUnit) => {
-    if (!tempSelectedUnits.find((u) => u.id === unit.id)) {
+  const handleToggleUnit = (unit: TUnit) => {
+    if (tempSelectedUnits.find((u) => u.id === unit.id)) {
+      setTempSelectedUnits(tempSelectedUnits.filter((u) => u.id !== unit.id));
+    } else {
       setTempSelectedUnits([...tempSelectedUnits, unit]);
     }
   };
@@ -88,14 +90,7 @@ const UnitSearch = ({
       }
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      const updated = tempSelectedUnits.find((u) => u.id === unit.id)
-        ? tempSelectedUnits
-        : [...tempSelectedUnits, unit];
-      onComplete(updated);
-      setIsSearchModalOpen(false);
-      setSearchTerm('');
-      setTempSelectedUnits([]);
-      setTimeout(() => inputRef.current?.focus(), 0);
+      handleToggleUnit(unit);
     }
   };
 
@@ -125,37 +120,43 @@ const UnitSearch = ({
             {/* 검색 결과 목록 */}
             <div className="border-border/50 max-h-96 space-y-2 overflow-y-auto border-b p-4">
               {filteredUnits.length > 0 ? (
-                filteredUnits.map((unit: TUnit, index: number) => (
-                  <button
-                    key={unit.id}
-                    ref={(el) => {
-                      listRefs.current[index] = el;
-                    }}
-                    type="button"
-                    onClick={() => handleAddUnit(unit)}
-                    onKeyDown={(e) => handleItemKeyDown(e, index, unit)}
-                    disabled={tempSelectedUnits.some((u) => u.id === unit.id)}
-                    className="hover:bg-muted focus:bg-muted flex w-full items-center gap-3 rounded-md p-2 transition outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <img
-                      src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.thumbnailUrl}`}
-                      alt={unit.name}
-                      className="h-12 w-12 rounded object-cover"
-                    />
-                    <div className="flex flex-col gap-1">
-                      <span className="flex-1 text-left text-sm">{unit.name}</span>
-                      <span
-                        className={`w-fit shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.grade.rank)}`}
-                      >
-                        {unit.grade.name}
-                      </span>
-                    </div>
+                filteredUnits.map((unit: TUnit, index: number) => {
+                  const isSelected = tempSelectedUnits.some((u) => u.id === unit.id);
+                  return (
+                    <button
+                      key={unit.id}
+                      ref={(el) => {
+                        listRefs.current[index] = el;
+                      }}
+                      type="button"
+                      onClick={() => handleToggleUnit(unit)}
+                      onKeyDown={(e) => handleItemKeyDown(e, index, unit)}
+                      className={`flex w-full items-center gap-3 rounded-md p-2 transition outline-none ${
+                        isSelected
+                          ? 'bg-primary/10 ring-primary/30 ring-1'
+                          : 'hover:bg-muted focus:bg-muted'
+                      }`}
+                    >
+                      <img
+                        src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.thumbnailUrl}`}
+                        alt={unit.name}
+                        className="h-12 w-12 rounded object-cover"
+                      />
+                      <div className="flex flex-col gap-1">
+                        <span className="flex-1 text-left text-sm">{unit.name}</span>
+                        <span
+                          className={`w-fit shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.grade.rank)}`}
+                        >
+                          {unit.grade.name}
+                        </span>
+                      </div>
 
-                    {tempSelectedUnits.some((u) => u.id === unit.id) && (
-                      <span className="text-primary text-xs font-medium">선택됨</span>
-                    )}
-                  </button>
-                ))
+                      {isSelected && (
+                        <span className="text-primary text-xs font-medium">선택됨</span>
+                      )}
+                    </button>
+                  );
+                })
               ) : (
                 <p className="text-muted-foreground py-4 text-center text-xs">
                   검색 결과가 없습니다
@@ -175,7 +176,7 @@ const UnitSearch = ({
               <button
                 type="button"
                 onClick={handleCompleteSelection}
-                disabled={tempSelectedUnits.length === 0}
+                // disabled={tempSelectedUnits.length === 0}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 cursor-pointer rounded-lg py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50"
               >
                 완료
