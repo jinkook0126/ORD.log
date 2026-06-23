@@ -1,9 +1,20 @@
 import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import { useTheme } from '~/hooks/use-theme';
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <button className="text-muted-foreground rounded-md p-2" aria-label="Toggle theme" />;
+  }
 
   return (
     <button
