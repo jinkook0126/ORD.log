@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { Badge } from '~/components/ui/badge';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { Difficulty } from '~/lib/prismaClient';
+import { getRankColor } from '~/lib/utils';
 
 interface RankItem {
   difficulty: Difficulty;
@@ -15,19 +16,6 @@ interface RankItem {
     id: number;
     nickname: string;
   };
-}
-
-function getRankColor(rank: number): string {
-  switch (rank) {
-    case 1:
-      return 'text-yellow-400';
-    case 2:
-      return 'text-gray-300';
-    case 3:
-      return 'text-amber-600';
-    default:
-      return 'text-muted-foreground';
-  }
 }
 
 function LoadingRankList({ mode }: { mode: '신' | '악몽' }) {

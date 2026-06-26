@@ -1,5 +1,6 @@
 import Logo from '~/components/main/Logo';
 import { Ranking } from '~/components/main/Ranking';
+import RankingUnitTop5 from '~/components/main/RankingUnitTop5';
 import RecentClears from '~/components/main/RecentClears';
 import SearchInput from '~/components/main/SearchInput';
 import { useGetHomeQuery } from '~/query/home';
@@ -19,6 +20,7 @@ export default function () {
       <div className="grid gap-6 pb-12">
         <RecentClears data={data?.recentClears} />
         <Ranking god={data?.godRanking} nightmare={data?.nightmareRanking} />
+        <RankingUnitTop5 data={data?.rankingUnitTop5} />
       </div>
     </main>
   );

@@ -19,6 +19,16 @@ const getIsDesktop = () => window.matchMedia('(min-width: 768px)').matches;
 
 const useIsDesktop = () => useSyncExternalStore(subscribeMediaQuery, getIsDesktop, () => true);
 
+function getRecordRowClassName(success: boolean, unitCount: number) {
+  if (unitCount === 0) {
+    return 'bg-amber-400/25 hover:bg-amber-400/35 ring-1 ring-inset ring-amber-400/50';
+  }
+  if (success) {
+    return 'bg-blue-500/15 hover:bg-blue-500/20';
+  }
+  return 'bg-red-500/15 hover:bg-red-500/20';
+}
+
 const GameRecord = () => {
   const { nickname } = useParams();
   const { data: gameRecords, isLoading } = useMyGameRecordsQuery({ nickname: nickname! });
@@ -150,11 +160,7 @@ const GameRecord = () => {
             <div key={record.id} className="border-border border-b last:border-b-0">
               <div
                 onClick={() => setOpenId(isOpen ? null : record.id)}
-                className={`grid cursor-pointer grid-cols-[80px_100px_80px_1fr_120px] items-center gap-0 px-4 py-3 transition-colors ${
-                  record.success
-                    ? 'bg-blue-500/15 hover:bg-blue-500/20'
-                    : 'bg-red-500/15 hover:bg-red-500/20'
-                }`}
+                className={`grid cursor-pointer grid-cols-[80px_100px_80px_1fr_120px] items-center gap-0 px-4 py-3 transition-colors ${getRecordRowClassName(record.success, record.unitCount)}`}
               >
                 <Badge
                   variant={record.difficulty === 'GOD' ? 'default' : 'destructive'}
@@ -205,11 +211,7 @@ const GameRecord = () => {
             <div key={record.id}>
               <div
                 onClick={() => setOpenId(isOpen ? null : record.id)}
-                className={`cursor-pointer px-4 py-3 transition-colors ${
-                  record.success
-                    ? 'bg-blue-500/15 hover:bg-blue-500/20'
-                    : 'bg-red-500/15 hover:bg-red-500/20'
-                }`}
+                className={`cursor-pointer px-4 py-3 transition-colors ${getRecordRowClassName(record.success, record.unitCount)}`}
               >
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <Badge

@@ -72,3 +72,16 @@ export function getTierStyle(grade: number) {
       return 'bg-muted text-muted-foreground border-border';
   }
 }
+
+export function getRankColor(rank: number) {
+  switch (rank) {
+    case 1:
+      return 'text-yellow-400';
+    case 2:
+      return 'text-gray-300';
+    case 3:
+      return 'text-amber-600';
+    default:
+      return 'text-muted-foreground';
+  }
+}
