@@ -68,9 +68,11 @@ function UnitCard({ item, rank }: { item: RankingUnitItem; rank: number }) {
         >
           {item.gradeName}
         </span>
-        <span className="text-muted-foreground font-mono text-[11px]">픽 {item.pickCount}</span>
+        <span className="text-muted-foreground font-mono text-[11px]">
+          픽 횟수 {item.pickCount}
+        </span>
         <span className="text-primary font-mono text-xs font-bold">
-          평균 {item.averageUnitCount}
+          평균 유닛{item.averageUnitCount}
         </span>
       </div>
     </div>
