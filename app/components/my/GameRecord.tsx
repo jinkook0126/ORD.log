@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useParams } from 'react-router';
 
 import { formatTimeAgo, getLabelWithDifficulty } from '~/lib/utils';
@@ -8,10 +9,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
 import GameRecordLoading from './GameRecordLoading';
 
+const subscribeMediaQuery = (callback: () => void) => {
+  const mediaQuery = window.matchMedia('(min-width: 768px)');
+  mediaQuery.addEventListener('change', callback);
+  return () => mediaQuery.removeEventListener('change', callback);
+};
+
+const getIsDesktop = () => window.matchMedia('(min-width: 768px)').matches;
+
+const useIsDesktop = () => useSyncExternalStore(subscribeMediaQuery, getIsDesktop, () => true);
+
 const GameRecord = () => {
   const { nickname } = useParams();
   const { data: gameRecords, isLoading } = useMyGameRecordsQuery({ nickname: nickname! });
   const [openId, setOpenId] = useState<number | null>(null);
+  const isDesktop = useIsDesktop();
   if (isLoading || !gameRecords) {
     return <GameRecordLoading />;
   }
@@ -27,67 +39,87 @@ const GameRecord = () => {
     </svg>
   );
 
-  const RecordDetail = ({ record }: { record: (typeof gameRecords)[number] }) => (
-    <div className="border-border bg-secondary/20 border-t px-4 py-4">
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-        <div className="shrink-0">
-          {record.success || record.imageUrl ? (
-            <img
-              src={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/screen/${record.imageUrl}`}
-              alt="게임 스크린샷"
-              className="border-border h-32 w-full rounded-md border object-cover sm:w-52"
-            />
-          ) : (
-            <div className="flex h-32 w-full flex-col items-center justify-center gap-1.5 rounded-md border border-dashed border-red-500/30 bg-red-500/10 sm:w-52">
-              <svg
-                className="h-7 w-7 text-red-400/60"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              <span className="text-xs font-medium text-red-400/80">클리어 실패</span>
-            </div>
-          )}
-        </div>
+  const RecordDetail = ({
+    record,
+    showPhotoView,
+  }: {
+    record: (typeof gameRecords)[number];
+    showPhotoView: boolean;
+  }) => {
+    const screenshotUrl = record.imageUrl
+      ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/screen/${record.imageUrl}`
+      : null;
 
-        <div className="flex flex-col gap-2">
-          <span className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-            클리어 유닛
-          </span>
-          {record.units.length === 0 ? (
-            <span className="text-muted-foreground text-sm">없음</span>
-          ) : (
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {record.units.map((unit, idx) => (
-                <div
-                  key={idx}
-                  className="border-border bg-card flex items-center gap-2 rounded-md border px-2 py-1.5"
+    const screenshot = screenshotUrl ? (
+      <img
+        src={screenshotUrl}
+        alt="게임 스크린샷"
+        className="border-border h-32 w-full cursor-zoom-in rounded-md border object-cover sm:w-52"
+      />
+    ) : null;
+
+    return (
+      <div className="border-border bg-secondary/20 border-t px-4 py-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+          <div className="shrink-0">
+            {screenshot ? (
+              showPhotoView ? (
+                <PhotoView src={screenshotUrl!}>{screenshot}</PhotoView>
+              ) : (
+                screenshot
+              )
+            ) : (
+              <div className="flex h-32 w-full flex-col items-center justify-center gap-1.5 rounded-md border border-dashed border-red-500/30 bg-red-500/10 sm:w-52">
+                <svg
+                  className="h-7 w-7 text-red-400/60"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
                 >
-                  <Avatar className="border-border h-7 w-7 shrink-0 border">
-                    <AvatarImage
-                      src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
-                    />
-                    <AvatarFallback className="bg-secondary text-[10px]">
-                      {unit.unit.name[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="text-foreground truncate text-xs font-medium">
-                    {unit.unit.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <span className="text-xs font-medium text-red-400/80">클리어 실패</span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
+              클리어 유닛
+            </span>
+            {record.units.length === 0 ? (
+              <span className="text-muted-foreground text-sm">없음</span>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {record.units.map((unit, idx) => (
+                  <div
+                    key={idx}
+                    className="border-border bg-card flex items-center gap-2 rounded-md border px-2 py-1.5"
+                  >
+                    <Avatar className="border-border h-7 w-7 shrink-0 border">
+                      <AvatarImage
+                        src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}${unit.unit.thumbnailUrl}`}
+                      />
+                      <AvatarFallback className="bg-secondary text-[10px]">
+                        {unit.unit.name[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-foreground truncate text-xs font-medium">
+                      {unit.unit.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
-    <>
+    <PhotoProvider>
       {/* 데스크톱: 테이블 */}
       <div className="hidden md:block">
         <div className="border-border bg-secondary/30 grid grid-cols-[80px_100px_80px_1fr_120px] items-center gap-0 border-b px-4 py-3">
@@ -155,7 +187,7 @@ const GameRecord = () => {
                 </div>
               </div>
 
-              {isOpen && <RecordDetail record={record} />}
+              {isOpen && <RecordDetail record={record} showPhotoView={isDesktop} />}
             </div>
           );
         })}
@@ -222,12 +254,12 @@ const GameRecord = () => {
                 </div>
               </div>
 
-              {isOpen && <RecordDetail record={record} />}
+              {isOpen && <RecordDetail record={record} showPhotoView={!isDesktop} />}
             </div>
           );
         })}
       </div>
-    </>
+    </PhotoProvider>
   );
 };
 
