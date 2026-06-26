@@ -2,7 +2,7 @@ import { useState, useSyncExternalStore } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useParams } from 'react-router';
 
-import { formatTimeAgo, getLabelWithDifficulty } from '~/lib/utils';
+import { formatTimeAgo, getLabelWithDifficulty, getTierStyle } from '~/lib/utils';
 import { useMyGameRecordsQuery } from '~/query/my';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -85,9 +85,6 @@ const GameRecord = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-              클리어 유닛
-            </span>
             {record.units.length === 0 ? (
               <span className="text-muted-foreground text-sm">없음</span>
             ) : (
@@ -105,9 +102,16 @@ const GameRecord = () => {
                         {unit.unit.name[0]}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-foreground truncate text-xs font-medium">
-                      {unit.unit.name}
-                    </span>
+                    <div className="flex min-w-0 flex-col gap-0.5">
+                      <span className="text-foreground truncate text-xs font-medium">
+                        {unit.unit.name}
+                      </span>
+                      <span
+                        className={`w-fit shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getTierStyle(unit.unit.grade.rank)}`}
+                      >
+                        {unit.unit.grade.name}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>

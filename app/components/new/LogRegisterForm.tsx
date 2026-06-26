@@ -20,8 +20,8 @@ export interface ClearFormData {
   success: boolean;
 }
 
-const GOD_MAX_COUNT = 50;
-const NIGHTMARE_MAX_COUNT = 45;
+const GOD_MAX_COUNT = 55;
+const NIGHTMARE_MAX_COUNT = 50;
 const LogRegisterForm = () => {
   const { data: me } = useMe();
   const navigate = useNavigate();
