@@ -16,7 +16,6 @@ const UnitSearch = ({
 }) => {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [tempSelectedUnits, setTempSelectedUnits] = useState<TUnit[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -40,27 +39,20 @@ const UnitSearch = ({
   }, [units, searchTerm, fuse]);
 
   const handleToggleUnit = (unit: TUnit) => {
-    if (tempSelectedUnits.find((u) => u.id === unit.id)) {
-      setTempSelectedUnits(tempSelectedUnits.filter((u) => u.id !== unit.id));
+    if (selectedUnits.find((u) => u.id === unit.id)) {
+      onComplete(selectedUnits.filter((u) => u.id !== unit.id));
     } else {
-      setTempSelectedUnits([...tempSelectedUnits, unit]);
+      onComplete([...selectedUnits, unit]);
     }
   };
 
   const handleRemoveUnit = (unitId: number) => {
     onComplete(selectedUnits.filter((u) => u.id !== unitId));
   };
-  const handleCompleteSelection = () => {
-    onComplete(tempSelectedUnits);
+  const handleCloseSearch = () => {
     setIsSearchModalOpen(false);
     setSearchTerm('');
-    setTempSelectedUnits([]);
-  };
-
-  const handleCancelSelection = () => {
-    setIsSearchModalOpen(false);
-    setSearchTerm('');
-    setTempSelectedUnits([]);
+    inputRef.current?.blur();
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -106,10 +98,7 @@ const UnitSearch = ({
           placeholder="유닛 검색..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onFocus={() => {
-            setTempSelectedUnits(selectedUnits);
-            setIsSearchModalOpen(true);
-          }}
+          onFocus={() => setIsSearchModalOpen(true)}
           onKeyDown={handleInputKeyDown}
           className="border-border/50 bg-background text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition outline-none focus:ring-2"
         />
@@ -121,7 +110,7 @@ const UnitSearch = ({
             <div className="border-border/50 max-h-96 space-y-2 overflow-y-auto border-b p-4">
               {filteredUnits.length > 0 ? (
                 filteredUnits.map((unit: TUnit, index: number) => {
-                  const isSelected = tempSelectedUnits.some((u) => u.id === unit.id);
+                  const isSelected = selectedUnits.some((u) => u.id === unit.id);
                   return (
                     <button
                       key={unit.id}
@@ -129,6 +118,7 @@ const UnitSearch = ({
                         listRefs.current[index] = el;
                       }}
                       type="button"
+                      onMouseDown={(e) => e.preventDefault()}
                       onClick={() => handleToggleUnit(unit)}
                       onKeyDown={(e) => handleItemKeyDown(e, index, unit)}
                       className={`flex w-full items-center gap-3 rounded-md p-2 transition outline-none ${
@@ -164,22 +154,14 @@ const UnitSearch = ({
               )}
             </div>
 
-            {/* 모달 버튼 */}
-            <div className="flex gap-3 p-4">
+            {/* 모달 닫기 */}
+            <div className="p-3">
               <button
                 type="button"
-                onClick={handleCancelSelection}
-                className="border-border/50 text-foreground hover:bg-muted flex-1 rounded-lg border px-4 py-3 font-semibold transition"
+                onClick={handleCloseSearch}
+                className="border-border/50 text-foreground hover:bg-muted w-full rounded-lg border px-4 py-2.5 text-sm font-semibold transition"
               >
-                취소
-              </button>
-              <button
-                type="button"
-                onClick={handleCompleteSelection}
-                // disabled={tempSelectedUnits.length === 0}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 cursor-pointer rounded-lg py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                완료
+                닫기
               </button>
             </div>
           </div>
