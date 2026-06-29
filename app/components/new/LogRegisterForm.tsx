@@ -9,6 +9,7 @@ import type { Difficulty } from '~/lib/prismaClient';
 import { useCreateLogMutation } from '~/query/log';
 import { useMe } from '~/query/user';
 
+import { Spinner } from '../ui/spinner';
 import UnitSearch from './UnitSearch';
 
 export interface ClearFormData {
@@ -25,14 +26,14 @@ const NIGHTMARE_MAX_COUNT = 50;
 const LogRegisterForm = () => {
   const { data: me } = useMe();
   const navigate = useNavigate();
-  const { mutate: createLogMutation } = useCreateLogMutation();
+  const { mutate: createLogMutation, isPending } = useCreateLogMutation();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [convertedFile, setConvertedFile] = useState<File | null>(null);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     watch,
     control,
   } = useForm<ClearFormData>({
@@ -116,6 +117,15 @@ const LogRegisterForm = () => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-md space-y-6">
+      {isPending && (
+        <div className="bg-background/80 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner className="text-primary size-10" />
+            <p className="text-muted-foreground text-sm font-medium">업로드 중...</p>
+          </div>
+        </div>
+      )}
+
       {/* 클리어 유닛 */}
       <div className="space-y-3">
         <Controller
@@ -210,7 +220,7 @@ const LogRegisterForm = () => {
           <input
             type="number"
             placeholder="유닛 수를 입력하세요"
-            disabled={isSubmitting}
+            disabled={isPending}
             className="border-border/50 bg-background text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition outline-none focus:ring-2"
             {...register('unitCount', {
               required: success ? '유닛 카운트를 입력해주세요' : false,
@@ -230,7 +240,7 @@ const LogRegisterForm = () => {
           <input
             type="number"
             placeholder="점수를 입력하세요"
-            disabled={isSubmitting}
+            disabled={isPending}
             className="border-border/50 bg-background text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition outline-none focus:ring-2"
             {...register('score', {
               required: success ? '점수를 입력해주세요' : false,
@@ -251,7 +261,7 @@ const LogRegisterForm = () => {
         <input
           type="file"
           accept="image/*"
-          disabled={isSubmitting}
+          disabled={isPending}
           className="file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 block w-full text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:px-3 file:py-2"
           {...register('photo', {
             required: success ? '클리어 사진을 선택해주세요' : false,
@@ -275,11 +285,17 @@ const LogRegisterForm = () => {
       {/* 버튼 */}
       <button
         type="submit"
-        // disabled={isSubmitting || (success && !photoFiles?.[0])}
-        disabled={isSubmitting}
-        className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-lg py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50"
+        disabled={isPending}
+        className="bg-primary text-primary-foreground hover:bg-primary/90 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isSubmitting ? '저장 중...' : '저장'}
+        {isPending ? (
+          <>
+            <Spinner className="size-4" />
+            업로드 중...
+          </>
+        ) : (
+          '저장'
+        )}
       </button>
     </form>
   );

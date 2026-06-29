@@ -26,11 +26,11 @@ export const links: Route.LinksFunction = () => [
     rel: 'stylesheet',
     href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap',
   },
-  { rel: 'icon', href: 'favicon/favicon.png', sizes: '32x32' },
-  { rel: 'icon', href: 'favicon/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
-  { rel: 'apple-touch-icon', href: 'favicon/favicon-144x144.png', sizes: '144x144' },
-  { rel: 'icon', href: 'favicon/favicon-192x192.png', type: 'image/png', sizes: '192x192' },
-  { rel: 'icon', href: 'favicon/favicon-512x512.png', type: 'image/png', sizes: '512x512' },
+  { rel: 'icon', href: '/favicon/favicon.png', sizes: '32x32' },
+  { rel: 'icon', href: '/favicon/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+  { rel: 'apple-touch-icon', href: '/favicon/favicon-144x144.png', sizes: '144x144' },
+  { rel: 'icon', href: '/favicon/favicon-192x192.png', type: 'image/png', sizes: '192x192' },
+  { rel: 'icon', href: '/favicon/favicon-512x512.png', type: 'image/png', sizes: '512x512' },
 ];
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
