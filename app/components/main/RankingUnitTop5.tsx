@@ -68,12 +68,18 @@ function UnitCard({ item, rank }: { item: RankingUnitItem; rank: number }) {
         >
           {item.gradeName}
         </span>
-        <span className="text-muted-foreground font-mono text-[11px]">
-          픽 횟수 {item.pickCount}
-        </span>
-        <span className="text-primary font-mono text-xs font-bold">
-          평균 유닛{item.averageUnitCount}
-        </span>
+        <div className="mt-0.5 flex w-full items-start justify-center gap-4">
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-muted-foreground text-[9px]">픽 횟수</span>
+            <span className="text-muted-foreground font-mono text-[11px]">{item.pickCount}</span>
+          </div>
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-muted-foreground text-[9px]">평균 유카</span>
+            <span className="text-primary font-mono text-xs font-bold">
+              {item.averageUnitCount}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -86,8 +92,16 @@ function LoadingCard() {
       <div className="flex w-full flex-col items-center gap-1 pt-2.5">
         <Skeleton className="h-3.5 w-16 rounded" />
         <Skeleton className="h-4 w-12 rounded" />
-        <Skeleton className="h-3 w-10 rounded" />
-        <Skeleton className="h-3.5 w-14 rounded" />
+        <div className="mt-0.5 flex w-full items-start justify-center gap-4">
+          <div className="flex flex-col items-center gap-0.5">
+            <Skeleton className="h-2.5 w-8 rounded" />
+            <Skeleton className="h-3 w-6 rounded" />
+          </div>
+          <div className="flex flex-col items-center gap-0.5">
+            <Skeleton className="h-2.5 w-10 rounded" />
+            <Skeleton className="h-3.5 w-6 rounded" />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -129,12 +143,12 @@ function List({ data }: { data: RankingUnitTop5Data }) {
 
 const RankingUnitTop5 = ({ data }: { data?: RankingUnitTop5Data }) => {
   return (
-    <section className="border-border bg-card rounded-lg border p-4 sm:p-6">
+    <section className="border-border bg-card min-w-0 rounded-lg border p-4 sm:p-6">
       <div className="mb-4">
         <h2 className="text-base font-semibold sm:text-lg">
           <span className="text-primary font-mono">&gt;</span> 인기 유닛 TOP 5
         </h2>
-        <p className="text-muted-foreground mt-1 text-xs">최근 100판 기준</p>
+        <p className="text-muted-foreground mt-1 text-xs">최근 100판 클리어 기준</p>
       </div>
       {!data ? <Loading /> : data.length === 0 ? <Empty /> : <List data={data} />}
     </section>
