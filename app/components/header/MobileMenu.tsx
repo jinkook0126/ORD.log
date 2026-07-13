@@ -8,6 +8,7 @@ import {
   PenLine,
   ScrollText,
   Trophy,
+  UserCog,
   X,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -133,6 +134,15 @@ const MobileMenu = () => {
             >
               <ClipboardList className="h-4 w-4" />
               <span>나의 로그</span>
+            </NavLink>
+            <NavLink
+              to="/settings"
+              onClick={onClose}
+              className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
+              activeClassName="text-primary bg-secondary"
+            >
+              <UserCog className="h-4 w-4" />
+              <span>내 정보 변경</span>
             </NavLink>
           </div>
         )}

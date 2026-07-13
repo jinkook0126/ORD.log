@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { ClipboardList, LogOutIcon } from 'lucide-react';
+import { ClipboardList, LogOutIcon, UserCog } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
@@ -45,6 +45,10 @@ const ProfileDropdown = () => {
           <DropdownMenuItem>
             <ClipboardList />
             <Link to={`/user/${me?.nickname}`}>나의 로그</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <UserCog />
+            <Link to="/settings">내 정보 변경</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const useSaveUserNickname = () => {
   return useMutation({
@@ -39,4 +39,25 @@ const useMe = () => {
   });
 };
 
-export { useMe, useSaveUserNickname };
+const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (formData: FormData) => {
+      const res = await fetch('/api/profile', {
+        method: 'PATCH',
+        body: formData,
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+    },
+  });
+};
+
+export { useMe, useSaveUserNickname, useUpdateProfile };

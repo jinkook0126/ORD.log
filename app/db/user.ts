@@ -60,3 +60,22 @@ export const getUserById = async (id: number) => {
   });
   return user;
 };
+
+export const updateUserProfile = async ({
+  userId,
+  nickname,
+  thumbnailUrl,
+}: {
+  userId: number;
+  nickname: string;
+  thumbnailUrl?: string;
+}) => {
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      nickname,
+      ...(thumbnailUrl ? { thumbnailUrl } : {}),
+    },
+  });
+  return user;
+};
