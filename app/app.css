@@ -186,3 +186,7 @@
 .glow-primary {
   box-shadow: 0 0 20px hsl(var(--ring) / 0.15);
 }
+
+.ReactCrop__drag-handle {
+  border-radius: 9999px;
+}

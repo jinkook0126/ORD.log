@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
+import { compressImageFile } from '~/lib/cropImage';
 import { useMe, useUpdateProfile } from '~/query/user';
 
 import { Spinner } from '../ui/spinner';
@@ -18,6 +19,7 @@ const ProfileEditForm = () => {
   const { data: me } = useMe();
   const { mutate: updateProfile, isPending } = useUpdateProfile();
   const [preview, setPreview] = useState<string | null>(null);
+  const [convertedFile, setConvertedFile] = useState<File | null>(null);
 
   const {
     register,
@@ -40,16 +42,19 @@ const ProfileEditForm = () => {
     if (!file) {
       return;
     }
-    const reader = new FileReader();
-    reader.onloadend = () => setPreview(reader.result as string);
-    reader.readAsDataURL(file);
+    compressImageFile(file).then((compressed) => {
+      setConvertedFile(compressed);
+      const reader = new FileReader();
+      reader.onloadend = () => setPreview(reader.result as string);
+      reader.readAsDataURL(compressed);
+    });
   }, [thumbnailFiles]);
 
   const onSubmit = (data: ProfileFormData) => {
     const formData = new FormData();
     formData.append('nickname', data.nickname);
-    if (data.thumbnail?.[0]) {
-      formData.append('thumbnail', data.thumbnail[0]);
+    if (convertedFile) {
+      formData.append('thumbnail', convertedFile);
     }
     updateProfile(formData, {
       onSuccess: () => {

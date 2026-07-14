@@ -1,4 +1,4 @@
-import { Camera } from 'lucide-react';
+import { Camera, Crop } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
@@ -10,6 +10,7 @@ import { useCreateLogMutation } from '~/query/log';
 import { useMe } from '~/query/user';
 
 import { Spinner } from '../ui/spinner';
+import ImageCropDialog from './ImageCropDialog';
 import UnitSearch from './UnitSearch';
 
 export interface ClearFormData {
@@ -29,6 +30,9 @@ const LogRegisterForm = () => {
   const { mutate: createLogMutation, isPending } = useCreateLogMutation();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [convertedFile, setConvertedFile] = useState<File | null>(null);
+  const [cropSource, setCropSource] = useState<string | null>(null);
+  const [cropFileName, setCropFileName] = useState('photo.webp');
+  const [cropDialogOpen, setCropDialogOpen] = useState(false);
 
   const {
     register,
@@ -36,6 +40,7 @@ const LogRegisterForm = () => {
     formState: { errors },
     watch,
     control,
+    resetField,
   } = useForm<ClearFormData>({
     defaultValues: {
       unitIds: [],
@@ -51,6 +56,7 @@ const LogRegisterForm = () => {
     const file = photoFiles?.[0];
     if (!file) {
       setPhotoPreview(null);
+      setConvertedFile(null);
       return;
     }
 
@@ -65,20 +71,35 @@ const LogRegisterForm = () => {
         heic2any({ blob: file, toType: 'image/webp', quality: 0.8 }).then((converted) => {
           const blob = Array.isArray(converted) ? converted[0] : converted;
           const webpFileName = file.name.replace(/\.(heic|heif)$/i, '.webp');
-          const webpFile = new File([blob], webpFileName, { type: 'image/webp' });
-          setConvertedFile(webpFile);
-          setPhotoPreview(URL.createObjectURL(blob));
+          setCropFileName(webpFileName);
+          setCropSource(URL.createObjectURL(blob));
+          setCropDialogOpen(true);
         });
       });
     } else {
-      setConvertedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPhotoPreview(reader.result as string);
+        setCropFileName(file.name);
+        setCropSource(reader.result as string);
+        setCropDialogOpen(true);
       };
       reader.readAsDataURL(file);
     }
   }, [photoFiles]);
+
+  const handleCropComplete = (file: File) => {
+    setConvertedFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+    setCropDialogOpen(false);
+  };
+
+  const handleCropDialogOpenChange = (open: boolean) => {
+    setCropDialogOpen(open);
+    if (!open && !convertedFile) {
+      resetField('photo');
+      setCropSource(null);
+    }
+  };
 
   const getMaxScore = (difficulty: Difficulty) => {
     if (difficulty === 'GOD') {
@@ -272,7 +293,18 @@ const LogRegisterForm = () => {
         {/* 사진 프리뷰 박스 */}
         <div className="border-border/50 bg-muted relative flex h-64 w-full items-center justify-center overflow-hidden rounded-lg border">
           {photoPreview ? (
-            <img src={photoPreview} alt="Photo preview" className="h-full w-full object-cover" />
+            <>
+              <img src={photoPreview} alt="Photo preview" className="h-full w-full object-cover" />
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => setCropDialogOpen(true)}
+                className="bg-background/80 text-foreground hover:bg-background absolute right-2 bottom-2 flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 text-xs font-medium shadow transition"
+              >
+                <Crop className="h-3.5 w-3.5" />
+                다시 자르기
+              </button>
+            </>
           ) : (
             <div className="text-muted-foreground flex flex-col items-center gap-2">
               <Camera className="h-8 w-8" />
@@ -281,6 +313,16 @@ const LogRegisterForm = () => {
           )}
         </div>
       </div>
+
+      {cropSource && (
+        <ImageCropDialog
+          open={cropDialogOpen}
+          imageSrc={cropSource}
+          fileName={cropFileName}
+          onOpenChange={handleCropDialogOpenChange}
+          onComplete={handleCropComplete}
+        />
+      )}
 
       {/* 버튼 */}
       <button
