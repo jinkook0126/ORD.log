@@ -100,3 +100,56 @@ export const createLog = async ({
     });
   });
 };
+
+export const deleteLog = async ({ userId, logId }: { userId: number; logId: number }) => {
+  return prisma.$transaction(async (tx) => {
+    const gameRecord = await tx.gameRecord.findFirst({
+      where: { id: logId, userId },
+      include: { units: true },
+    });
+
+    if (!gameRecord) {
+      return null;
+    }
+
+    await tx.userStat.update({
+      where: { userId },
+      data: {
+        totalGames: { decrement: 1 },
+        totalSuccess: { decrement: gameRecord.success ? 1 : 0 },
+        totalScore: { decrement: gameRecord.score },
+        totalUnitCount: { decrement: gameRecord.unitCount },
+      },
+    });
+
+    await tx.userDifficultyStat.update({
+      where: { userId_difficulty: { userId, difficulty: gameRecord.difficulty } },
+      data: {
+        totalGames: { decrement: 1 },
+        totalSuccess: { decrement: gameRecord.success ? 1 : 0 },
+        totalScore: { decrement: gameRecord.score },
+        totalUnitCount: { decrement: gameRecord.unitCount },
+      },
+    });
+
+    for (const { unitId } of gameRecord.units) {
+      await tx.userUnitStat.update({
+        where: {
+          userId_unitId_difficulty: { userId, unitId, difficulty: gameRecord.difficulty },
+        },
+        data: {
+          pickCount: { decrement: 1 },
+          winCount: { decrement: gameRecord.success ? 1 : 0 },
+          totalUnitCount: { decrement: gameRecord.unitCount },
+        },
+      });
+    }
+
+    await tx.userUnitStat.deleteMany({
+      where: { userId, difficulty: gameRecord.difficulty, pickCount: { lte: 0 } },
+    });
+    await tx.gameRecord.delete({ where: { id: gameRecord.id } });
+
+    return { imageUrl: gameRecord.imageUrl };
+  });
+};

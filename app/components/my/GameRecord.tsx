@@ -1,12 +1,25 @@
+import { Trash2 } from 'lucide-react';
 import { useState, useSyncExternalStore } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useParams } from 'react-router';
+import { toast } from 'sonner';
 
 import { formatTimeAgo, getLabelWithDifficulty, getTierStyle } from '~/lib/utils';
+import { useDeleteLogMutation } from '~/query/log';
 import { useMyGameRecordsQuery } from '~/query/my';
+import { useMe } from '~/query/user';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../ui/dialog';
 import GameRecordLoading from './GameRecordLoading';
 
 const subscribeMediaQuery = (callback: () => void) => {
@@ -32,8 +45,12 @@ function getRecordRowClassName(success: boolean, unitCount: number) {
 const GameRecord = () => {
   const { nickname } = useParams();
   const { data: gameRecords, isLoading } = useMyGameRecordsQuery({ nickname: nickname! });
+  const { data: me } = useMe();
+  const { mutate: deleteLogMutation, isPending: isDeleting } = useDeleteLogMutation();
   const [openId, setOpenId] = useState<number | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const isDesktop = useIsDesktop();
+  const isOwner = me?.nickname === nickname;
   if (isLoading || !gameRecords) {
     return <GameRecordLoading />;
   }
@@ -126,8 +143,58 @@ const GameRecord = () => {
                 ))}
               </div>
             )}
+
+            {isOwner && (
+              <div className="border-border mt-3 flex justify-end border-t pt-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="xs"
+                  className="border-destructive/40 text-destructive hover:border-destructive hover:bg-destructive hover:text-destructive-foreground cursor-pointer rounded-sm"
+                  onClick={() => setDeleteTargetId(record.id)}
+                >
+                  <Trash2 />
+                  로그 삭제
+                </Button>
+              </div>
+            )}
           </div>
         </div>
+
+        <Dialog
+          open={deleteTargetId === record.id}
+          onOpenChange={(open) => !open && setDeleteTargetId(null)}
+        >
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>로그를 삭제할까요?</DialogTitle>
+              <DialogDescription>삭제한 로그는 복구할 수 없습니다.</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setDeleteTargetId(null)}>
+                취소
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                disabled={isDeleting}
+                onClick={() => {
+                  deleteLogMutation(record.id, {
+                    onSuccess: () => {
+                      setDeleteTargetId(null);
+                      toast.success('로그를 삭제했습니다.');
+                    },
+                    onError: (error) => {
+                      toast.error(error.message);
+                    },
+                  });
+                }}
+              >
+                {isDeleting ? '삭제 중...' : '삭제'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   };

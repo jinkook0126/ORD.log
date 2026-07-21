@@ -18,3 +18,22 @@ export const useCreateLogMutation = () => {
     },
   });
 };
+
+export const useDeleteLogMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (logId: number) => {
+      const res = await fetch(`/api/log?id=${logId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        const { message } = await res.json().catch(() => ({ message: null }));
+        throw new Error(message ?? '로그 삭제에 실패했습니다.');
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my'] });
+    },
+  });
+};
