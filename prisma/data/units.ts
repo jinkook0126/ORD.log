@@ -266,4 +266,19 @@ export const units = [
   { name: '모건', gradeId: 15, thumbnailUrl: `/units/special/Morgan.png` },
   { name: '오타마', gradeId: 15, thumbnailUrl: `/units/special/O-Tama.png` },
   { name: '페루', gradeId: 15, thumbnailUrl: `/units/special/Pell.png` },
+
+  // 신비함
+  { name: '고죠 사토루', gradeId: 16, thumbnailUrl: `/units/magical/satoru.png` },
+  { name: '네즈코', gradeId: 16, thumbnailUrl: `/units/magical/nezuko.png` },
+  { name: '료우기 시키', gradeId: 16, thumbnailUrl: `/units/magical/ryougi.png` },
+  { name: '미나토', gradeId: 16, thumbnailUrl: `/units/magical/minato.png` },
+  { name: '뱌쿠야', gradeId: 16, thumbnailUrl: `/units/magical/byakuya.png` },
+  { name: '부릉냐', gradeId: 16, thumbnailUrl: `/units/magical/Brogna.png` },
+  { name: '샌즈', gradeId: 16, thumbnailUrl: `/units/magical/sans.png` },
+  { name: '아냐 포저', gradeId: 16, thumbnailUrl: `/units/magical/anya.png` },
+  { name: '야쿠모 유카리', gradeId: 16, thumbnailUrl: `/units/magical/yakari.png` },
+  { name: '콘파쿠 요우무', gradeId: 16, thumbnailUrl: `/units/magical/konpaku.png` },
+  { name: '쿠죠 죠타로', gradeId: 16, thumbnailUrl: `/units/magical/jotaro.png` },
+  { name: '타츠마키', gradeId: 16, thumbnailUrl: `/units/magical/tatsumaki.png` },
+  { name: '히그마', gradeId: 16, thumbnailUrl: `/units/magical/higuma.png` },
 ];
