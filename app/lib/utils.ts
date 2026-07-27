@@ -56,18 +56,20 @@ export function getTierStyle(grade: number) {
       return 'bg-orange-500/15 text-orange-400 border-orange-500/30';
     case 8: // 제한
       return 'bg-rose-500/15 text-rose-400 border-rose-500/30';
-    case 9:
+    case 9: // 세라핌
       return 'bg-lime-500/15 text-lime-400 border-lime-500/30';
-    case 10: // 세라핌
+    case 10: // 영원
       return 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30';
-    case 11: // 영원
+    case 11: // 초월
       return 'bg-fuchsia-500/15 text-fuchsia-400 border-fuchsia-500/30';
-    case 12: // 초월
+    case 12: // 불멸
       return 'bg-red-500/15 text-red-400 border-red-500/30';
-    case 13: // 불멸
+    case 13: // 왜곡
       return 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30';
-    case 15: // 특수함
+    case 14: // 특수
       return 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30';
+    case 15: // 신비
+      return 'bg-teal-500/15 text-teal-400 border-teal-500/30';
     default:
       return 'bg-muted text-muted-foreground border-border';
   }
