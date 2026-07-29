@@ -11,6 +11,7 @@ import {
 } from 'react-router';
 
 import type { Route } from './+types/root';
+import Footer from './components/common/Footer';
 import NavBar from './components/header/NavBar';
 import { ThemeProvider } from './hooks/use-theme';
 import { queryClient } from './lib/queryClient';
@@ -42,7 +43,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-background flex min-h-screen flex-col">
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -56,7 +57,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
             <NavBar />
-            {children}
+            <div className="flex-1">{children}</div>
+            <Footer />
           </ThemeProvider>
         </QueryClientProvider>
         <ScrollRestoration />
