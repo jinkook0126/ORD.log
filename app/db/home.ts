@@ -12,6 +12,7 @@ export const getRecentClears = async () => {
     include: {
       user: true,
     },
+    take: 4,
   });
   return recentClears;
 };
