@@ -1,4 +1,4 @@
-import { LogIn, PenLine, ScrollText, Trophy } from 'lucide-react';
+import { LogIn, Megaphone, PenLine, ScrollText, Trophy } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { useMe } from '~/query/user';
@@ -11,6 +11,7 @@ import { ThemeToggle } from './ThemeToggle';
 const publicItems = [
   { title: '클리어', to: '/clears', icon: ScrollText },
   { title: '랭킹', to: '/ranking', icon: Trophy },
+  { title: '공지사항', to: '/notices', icon: Megaphone },
 ];
 
 const guestItems = [{ title: '로그인', to: '/login', icon: LogIn }];

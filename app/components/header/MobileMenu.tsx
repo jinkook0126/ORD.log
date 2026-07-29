@@ -4,6 +4,7 @@ import {
   ClipboardList,
   LogInIcon,
   LogOutIcon,
+  Megaphone,
   Menu,
   PenLine,
   ScrollText,
@@ -108,6 +109,15 @@ const MobileMenu = () => {
         >
           <Trophy className="h-4 w-4" />
           <span>랭킹</span>
+        </NavLink>
+        <NavLink
+          to="/notices"
+          onClick={onClose}
+          className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
+          activeClassName="text-primary bg-secondary"
+        >
+          <Megaphone className="h-4 w-4" />
+          <span>공지사항</span>
         </NavLink>
         {isLoggedIn && (
           <NavLink
