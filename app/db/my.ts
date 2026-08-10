@@ -201,7 +201,7 @@ export async function getMostUnits({ nickname }: { nickname: string }) {
       unit: {
         grade: {
           rank: {
-            gte: 4,
+            in: [8, 10, 11, 12, 15],
           },
         },
       },
